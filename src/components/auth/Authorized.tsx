@@ -1,11 +1,12 @@
 import React from "react";
 import useAuthViewModel from "../../viewModel/AuthViewModel.ts";
-import {Button, Card, styled, Typography} from "@mui/material";
+import { Button, Card, styled, Typography} from "@mui/material";
 
 const CardForm = styled(Card)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'center',
+    textAlign: 'center',
     width: '100%',
     padding: theme.spacing(4),
     gap: theme.spacing(2),

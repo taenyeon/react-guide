@@ -5,16 +5,17 @@ import {viewModelStatus} from "../constant/ViewModelStatus.ts";
 import Login from "../components/auth/Login.tsx";
 import Authorized from "../components/auth/Authorized.tsx";
 import ApiError from "../utils/error/ApiError.ts";
+import {Box} from "@mui/material";
 
 const AuthPage: React.FC = () => {
     const {authorization, status, error, init} = useAuthViewModel();
 
     useEffect(() => {
-        init()
-    }, [init])
+        init().then()
+    }, [])
 
     return (
-        <div>
+        <Box sx={{width:"100vw", height:"100vh", bgcolor:"text.disabled" , display:"flex", justifyContent: 'center', alignItems: 'center'}}>
             {{
                 [viewModelStatus.done]: (authorization.isAuthorized && <Authorized/>),
                 [viewModelStatus.loading]: <h1>loading...</h1>,
@@ -24,7 +25,7 @@ const AuthPage: React.FC = () => {
                     <Login/>
                 </div>,
             }[status] || <Login/>}
-        </div>
+        </Box>
     );
 }
 

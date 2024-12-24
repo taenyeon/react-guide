@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import useAuthViewModel from "../../viewModel/AuthViewModel.ts";
-import {Box, Button, Card, FormControl, FormLabel, styled, TextField} from "@mui/material";
+import {Box, Button, Card, FormControl, FormLabel, styled, TextField, Typography} from "@mui/material";
 
 const CardForm = styled(Card)(({theme}) => ({
     display: 'flex',
@@ -61,7 +61,12 @@ const Login: React.FC = () => {
     }
 
     return <CardForm>
-        <h2>Login</h2>
+        <Typography
+            component={"h1"}
+            variant={"h4"}
+        >
+            Login
+        </Typography>
         <Box
             component="form"
             onSubmit={handleLogin}
