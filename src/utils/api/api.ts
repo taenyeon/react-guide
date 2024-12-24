@@ -12,14 +12,15 @@ export const api: () => AxiosInstance =
         instance.interceptors.request.use(
             (config) => {
                 const accessToken = getAccessToken();
-                if (accessToken != null) config.headers["authorization"] = getAccessToken;
-
-                console.log(`\n[\x1B[34mREQUEST\x1B[0m]\n\n
-                method : ${config.method}\n
-                url : ${config.url}\n\n
-                headers : \n${config.headers}\n
-                data  ${config.data}\n
-                queryParams : ${config.params}\n\n`);
+                if (accessToken != null) config.headers["authorization"] = accessToken;
+                console.log(
+                    `\n[\x1B[34mREQUEST\x1B[0m]\n\n` +
+                    `url : ${config.baseURL}/ ${config.url}\n` +
+                    `method : ${config.method}\n\n` +
+                    `headers : \n${JSON.stringify(config.headers, null, 2)}\n` +
+                    `data  ${JSON.stringify(config.data, null, 2)}\n` +
+                    `queryParams : ${config.params}\n\n`
+                );
 
                 return config;
             },
@@ -32,10 +33,12 @@ export const api: () => AxiosInstance =
         instance.interceptors.response.use(
             (response) => {
 
-                console.log(`\n[\x1B[31mRESPONSE\x1B[0m]\n\n
-                url : ${response.request.url}\n\n
-                headers :\n${response.headers}\n
-                body : ${response.data}\n\n`);
+                console.log(
+                    `\n[\x1B[31mRESPONSE\x1B[0m]\n\n` +
+                    `url : ${response.config.baseURL}/${response.config.url}\n` +
+                    `method : ${response.config.method}\n\n` +
+                    `headers :\n${JSON.stringify(response.headers, null, 2)}\n` +
+                    `body : ${JSON.stringify(response.data, null, 2)}\n\n`);
 
                 return response
             },

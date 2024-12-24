@@ -8,7 +8,8 @@ const AuthPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async () => {
+    const handleLogin = async (event: React.FormEvent) => {
+        event.preventDefault();
         await login(username, password)
     }
 

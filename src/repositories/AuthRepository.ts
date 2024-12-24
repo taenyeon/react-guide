@@ -1,6 +1,7 @@
 import {Token} from "../types/Token.ts";
 import Authorization from "../types/Authorization.ts";
 import tokenRepository from "./TokenRepository.ts";
+import api from "../utils/api/api.ts";
 
 type AuthRepository = {
     login: (username: string, password: string) => Promise<Token>;
@@ -12,22 +13,20 @@ const authRepository: AuthRepository = {
 
     login: async (username: string, password: string) => {
 
-        // const response = await api().post("login",
-        //     {
-        //         username: username,
-        //         password: password,
-        //     });
-        // const token: Token = response.data;
+        const response = await api().post("login",
+            {
+                username: username,
+                password: password,
+            });
 
-        if (username != "test" || password != "test") return {accessToken: null, refreshToken: null};
+        const token: Token = response.data;
 
-        const token: Token = {accessToken: "testToken", refreshToken: "testToken"};
         tokenRepository.setToken(token);
         return token;
     },
 
     logout: async () => {
-        // await api().get("logout");
+        await api().get("logout");
 
         tokenRepository.dropToken();
     },
