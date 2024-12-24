@@ -2,10 +2,12 @@ import Authorization from "../types/Authorization.ts";
 import {create} from "zustand/react";
 import authRepository from "../repositories/AuthRepository.ts";
 import {Token} from "../types/Token.ts";
+import {viewModelStatus, ViewModelStatus} from "../constant/ViewModelStatus.ts";
 
-type AuthViewModel = {
+export type AuthViewModel = {
     authorization: Authorization;
-    isLoading: boolean;
+    status: ViewModelStatus;
+    error: Error | null;
 
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -18,21 +20,24 @@ const useAuthViewModel = create<AuthViewModel>(
             isAuthorized: false,
             userInfo: null,
         },
-        isLoading: true,
+        status: viewModelStatus.loading,
+        error: null,
 
         login: async (username, password) => {
-            set({isLoading: true})
+            set({status: viewModelStatus.loading})
 
-            const token: Token = await authRepository.login(username, password);
-
-            if (token.accessToken && token.refreshToken) {
+            try {
+                const token: Token = await authRepository.login(username, password);
+                if (token.accessToken && token.refreshToken) {
+                    set({
+                        status: viewModelStatus.done,
+                        authorization: {isAuthorized: true, userInfo: null},
+                    })
+                }
+            } catch (e) {
                 set({
-                    isLoading: false,
-                    authorization: {isAuthorized: true, userInfo: null},
-                })
-            } else {
-                set({
-                    isLoading: false,
+                    status: viewModelStatus.error,
+                    error: Error("unAuthorized"),
                     authorization: {isAuthorized: false, userInfo: null}
                 })
             }
@@ -43,7 +48,7 @@ const useAuthViewModel = create<AuthViewModel>(
             await authRepository.logout();
 
             set({
-                isLoading: false,
+                status: viewModelStatus.done,
                 authorization: {
                     isAuthorized: false,
                     userInfo: null
@@ -52,7 +57,7 @@ const useAuthViewModel = create<AuthViewModel>(
         },
 
         init: async () => {
-            set({isLoading: false, authorization: await authRepository.getAuthorization()})
+            set({status: viewModelStatus.done, authorization: await authRepository.getAuthorization()})
         }
     })
 )
