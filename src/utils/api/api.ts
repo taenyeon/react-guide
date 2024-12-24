@@ -1,5 +1,7 @@
 import axios, {AxiosInstance} from 'axios'
 import tokenRepository from "../../repositories/TokenRepository.ts";
+import ApiError from "../error/ApiError.ts";
+import {apiErrorCode} from "../error/constant/ApiErrorCode.ts";
 
 export const api: () => AxiosInstance =
     () => {
@@ -15,10 +17,10 @@ export const api: () => AxiosInstance =
                 if (accessToken != null) config.headers["authorization"] = accessToken;
                 console.log(
                     `\n[\x1B[34mREQUEST\x1B[0m]\n\n` +
-                    `url : ${config.baseURL}/ ${config.url}\n` +
+                    `url : ${config.baseURL}/${config.url}\n` +
                     `method : ${config.method}\n\n` +
-                    `headers : \n${JSON.stringify(config.headers, null, 2)}\n` +
-                    `data  ${JSON.stringify(config.data, null, 2)}\n` +
+                    `headers : ${JSON.stringify(config.headers, null, 2)}\n` +
+                    `body : ${JSON.stringify(config.data, null, 2)}\n` +
                     `queryParams : ${config.params}\n\n`
                 );
 
@@ -37,14 +39,20 @@ export const api: () => AxiosInstance =
                     `\n[\x1B[31mRESPONSE\x1B[0m]\n\n` +
                     `url : ${response.config.baseURL}/${response.config.url}\n` +
                     `method : ${response.config.method}\n\n` +
-                    `headers :\n${JSON.stringify(response.headers, null, 2)}\n` +
+                    `headers :${JSON.stringify(response.headers, null, 2)}\n` +
                     `body : ${JSON.stringify(response.data, null, 2)}\n\n`);
 
                 return response
             },
             (error) => {
-                // todo 401 accessToken 만료 시, retry 정책 필요.
-                return Promise.reject(error)
+                if (!axios.isAxiosError(error)) return Promise.reject(error)
+
+                switch (error.response?.status) {
+                    case 401 :
+                        return Promise.reject(new ApiError(apiErrorCode.AUTH_ERROR, error))
+                    default :
+                        return Promise.reject(new ApiError(apiErrorCode.UNKNOWN_ERROR, error))
+                }
             }
         );
         return instance;

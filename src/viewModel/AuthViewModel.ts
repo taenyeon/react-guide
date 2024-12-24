@@ -3,11 +3,13 @@ import {create} from "zustand/react";
 import authRepository from "../repositories/AuthRepository.ts";
 import {Token} from "../types/Token.ts";
 import {viewModelStatus, ViewModelStatus} from "../constant/ViewModelStatus.ts";
+import {parseError} from "../utils/error/ErrorParser.ts";
+import ApiError from "../utils/error/ApiError.ts";
 
 export type AuthViewModel = {
     authorization: Authorization;
     status: ViewModelStatus;
-    error: Error | null;
+    error: ApiError | Error | null;
 
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -35,9 +37,11 @@ const useAuthViewModel = create<AuthViewModel>(
                     })
                 }
             } catch (e) {
+                console.log(e)
+                const error = parseError(e);
                 set({
                     status: viewModelStatus.error,
-                    error: Error("unAuthorized"),
+                    error: error,
                     authorization: {isAuthorized: false, userInfo: null}
                 })
             }
