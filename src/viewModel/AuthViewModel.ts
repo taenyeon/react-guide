@@ -5,6 +5,8 @@ import {Token} from "../types/Token.ts";
 import {viewModelStatus, ViewModelStatus} from "../constant/ViewModelStatus.ts";
 import {parseError} from "../utils/error/ErrorParser.ts";
 import ApiError from "../utils/error/ApiError.ts";
+import snackbarViewModel from "./SnackbarViewModel.ts";
+import {apiErrorCode} from "../utils/error/constant/ApiErrorCode.ts";
 
 export type AuthViewModel = {
     authorization: Authorization;
@@ -16,7 +18,7 @@ export type AuthViewModel = {
     init: () => Promise<void>;
 }
 
-const useAuthViewModel = create<AuthViewModel>(
+const authViewModel = create<AuthViewModel>(
     (set) => ({
         authorization: {
             isAuthorized: false,
@@ -37,13 +39,16 @@ const useAuthViewModel = create<AuthViewModel>(
                     })
                 }
             } catch (e) {
-                console.log(e)
-                const error = parseError(e);
+                let error;
+                if (e instanceof ApiError && e.code == apiErrorCode.AUTH_ERROR){
+                    error = new ApiError(apiErrorCode.LOGIN_FAILURE)
+                }
                 set({
                     status: viewModelStatus.error,
                     error: error,
                     authorization: {isAuthorized: false, userInfo: null}
                 })
+                snackbarViewModel.getState().add(error);
             }
 
         },
@@ -66,4 +71,4 @@ const useAuthViewModel = create<AuthViewModel>(
     })
 )
 
-export default useAuthViewModel;
+export default authViewModel;

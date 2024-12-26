@@ -8,7 +8,8 @@ export const apiErrorCode = {
 
     // authorization
     AUTH_ERROR: "AUTH_ERROR",
-    ACCESS_DENIED_ERROR: "ACCESS_DENIED_ERROR"
+    ACCESS_DENIED_ERROR: "ACCESS_DENIED_ERROR",
+    LOGIN_FAILURE: "LOGIN_FAILURE"
 
 } as const;
 
