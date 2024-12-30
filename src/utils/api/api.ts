@@ -1,7 +1,7 @@
 import axios, {AxiosInstance} from 'axios'
 import tokenRepository from "../../repositories/TokenRepository.ts";
 import ApiError from "../error/ApiError.ts";
-import {apiErrorCode} from "../error/constant/ApiErrorCode.ts";
+import {apiCode} from "../error/constant/ApiCode.ts";
 
 export const api: () => AxiosInstance =
     () => {
@@ -49,9 +49,9 @@ export const api: () => AxiosInstance =
 
                 switch (error.response?.status) {
                     case 401 :
-                        return Promise.reject(new ApiError(apiErrorCode.AUTH_ERROR, error))
+                        return Promise.reject(new ApiError(apiCode.AUTH_ERROR, error))
                     default :
-                        return Promise.reject(new ApiError(apiErrorCode.UNKNOWN_ERROR, error))
+                        return Promise.reject(new ApiError(apiCode.UNKNOWN_ERROR, error))
                 }
             }
         );

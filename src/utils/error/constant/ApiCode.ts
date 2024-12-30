@@ -1,8 +1,9 @@
-export const apiErrorCode = {
+export const apiCode = {
 
+    SUCCESS: "SUCCESS",
     // default
     NOT_FOUND_ERROR: "NOT_FOUND_ERROR",
-    INVALID_REQUEST_PARAM:"INVALID_REQUEST_PARAM",
+    INVALID_REQUEST_PARAM: "INVALID_REQUEST_PARAM",
     UNKNOWN_ERROR: "UNKNOWN_ERROR",
     MANUAL_ERROR: "MANUAL_ERROR",
 
@@ -13,5 +14,5 @@ export const apiErrorCode = {
 
 } as const;
 
-export type ApiErrorCode = typeof apiErrorCode[keyof typeof apiErrorCode]
+export type ApiCode = typeof apiCode[keyof typeof apiCode];
 

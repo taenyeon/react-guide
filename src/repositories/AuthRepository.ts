@@ -3,6 +3,8 @@ import Authorization from "../types/Authorization.ts";
 import tokenRepository from "./TokenRepository.ts";
 import api from "../utils/api/api.ts";
 import UserInfo from "../types/UserInfo.ts";
+import {ApiResponse} from "../utils/api/models/ApiResponse.ts";
+import ApiError from "../utils/error/ApiError.ts";
 
 type AuthRepository = {
     login: (username: string, password: string) => Promise<Token>;
@@ -21,10 +23,12 @@ const authRepository: AuthRepository = {
                 password: password,
             });
 
-        const token: Token = response.data;
-
-        tokenRepository.setToken(token);
-        return token;
+        const apiResponse: ApiResponse<Token> = new ApiResponse<Token>().parseData(response);
+        if (apiResponse.isFailure) {
+            throw new ApiError(apiResponse.code)
+        }
+        tokenRepository.setToken(apiResponse.body!);
+        return apiResponse.body!;
     },
 
     logout: async () => {
@@ -44,8 +48,13 @@ const authRepository: AuthRepository = {
     },
 
     getUserInfo: async () => {
-        const response = await api().get('user');
-        return response.data as UserInfo;
+        const apiResponse = new ApiResponse<UserInfo>().parseData(
+            await api().get('user')
+        );
+
+        if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
+
+        return apiResponse.body!;
     },
 }
 

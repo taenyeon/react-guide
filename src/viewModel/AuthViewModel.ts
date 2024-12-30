@@ -5,8 +5,7 @@ import {Token} from "../types/Token.ts";
 import {viewModelStatus, ViewModelStatus} from "../constant/ViewModelStatus.ts";
 import ApiError from "../utils/error/ApiError.ts";
 import snackbarViewModel from "./SnackbarViewModel.ts";
-import {apiErrorCode} from "../utils/error/constant/ApiErrorCode.ts";
-import tokenRepository from "../repositories/TokenRepository.ts";
+import {apiCode} from "../utils/error/constant/ApiCode.ts";
 
 export type AuthViewModel = {
     authorization: Authorization;
@@ -40,16 +39,18 @@ const authViewModel = create<AuthViewModel>(
                     })
                 }
             } catch (e) {
-                let error;
-                if (e.code == apiErrorCode.AUTH_ERROR) {
-                    error = new ApiError(apiErrorCode.LOGIN_FAILURE)
+                if (e instanceof Error) {
+                    let error = e;
+                    if (e.name == apiCode.AUTH_ERROR) {
+                        error = new ApiError(apiCode.LOGIN_FAILURE)
+                    }
+                    set({
+                        status: viewModelStatus.error,
+                        error: error,
+                        authorization: {isAuthorized: false, userInfo: null}
+                    })
+                    await snackbarViewModel.getState().add(error);
                 }
-                set({
-                    status: viewModelStatus.error,
-                    error: error,
-                    authorization: {isAuthorized: false, userInfo: null}
-                })
-                await snackbarViewModel.getState().add(error);
             }
 
         },
@@ -73,7 +74,7 @@ const authViewModel = create<AuthViewModel>(
                 status: viewModelStatus.done,
                 authorization: {
                     ...authorization,
-                    userInfo: authorization.isAuthorized && await authRepository.getUserInfo()
+                    userInfo: authorization.isAuthorized ? await authRepository.getUserInfo() : null
                 }
             })
         }
