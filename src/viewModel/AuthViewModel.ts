@@ -39,18 +39,19 @@ const authViewModel = create<AuthViewModel>(
                     })
                 }
             } catch (e) {
-                if (e instanceof Error) {
-                    let error = e;
-                    if (e.name == apiCode.AUTH_ERROR) {
-                        error = new ApiError(apiCode.LOGIN_FAILURE)
-                    }
-                    set({
-                        status: viewModelStatus.error,
-                        error: error,
-                        authorization: {isAuthorized: false, userInfo: null}
-                    })
-                    await snackbarViewModel.getState().add(error);
-                }
+                if (!(e instanceof ApiError)) throw e;
+
+                let error = e;
+
+                if (e.name == apiCode.AUTH_ERROR) error = new ApiError(apiCode.LOGIN_FAILURE)
+
+                set({
+                    status: viewModelStatus.error,
+                    error: error,
+                    authorization: {isAuthorized: false, userInfo: null}
+                })
+
+                await snackbarViewModel.getState().add(error);
             }
 
         },
