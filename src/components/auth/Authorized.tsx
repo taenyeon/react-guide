@@ -5,7 +5,7 @@ import CardForm from "../layouts/CardForm.ts";
 
 
 const Authorized: React.FC = () => {
-    const {logout} = authViewModel();
+    const {authorization,logout} = authViewModel();
 
     const handleLogout = async () => {
         await logout();
@@ -16,6 +16,14 @@ const Authorized: React.FC = () => {
             <Typography component={"h1"} variant={"h4"}>
                 Authorized
             </Typography>
+
+            <Typography component={"h1"} variant={"h6"}>
+                username: {authorization.userInfo?.username}
+            </Typography>
+            <Typography component={"h1"} variant={"h6"}>
+                name: {authorization.userInfo?.name}
+            </Typography>
+
             <Button variant="contained" onClick={handleLogout}>Logout</Button>
         </CardForm>
     </div>

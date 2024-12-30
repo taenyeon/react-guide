@@ -3,10 +3,10 @@ import {create} from "zustand/react";
 import authRepository from "../repositories/AuthRepository.ts";
 import {Token} from "../types/Token.ts";
 import {viewModelStatus, ViewModelStatus} from "../constant/ViewModelStatus.ts";
-import {parseError} from "../utils/error/ErrorParser.ts";
 import ApiError from "../utils/error/ApiError.ts";
 import snackbarViewModel from "./SnackbarViewModel.ts";
 import {apiErrorCode} from "../utils/error/constant/ApiErrorCode.ts";
+import tokenRepository from "../repositories/TokenRepository.ts";
 
 export type AuthViewModel = {
     authorization: Authorization;
@@ -33,14 +33,15 @@ const authViewModel = create<AuthViewModel>(
             try {
                 const token: Token = await authRepository.login(username, password);
                 if (token.accessToken && token.refreshToken) {
+                    const userInfo = await authRepository.getUserInfo();
                     set({
                         status: viewModelStatus.done,
-                        authorization: {isAuthorized: true, userInfo: null},
+                        authorization: {isAuthorized: true, userInfo: userInfo},
                     })
                 }
             } catch (e) {
                 let error;
-                if (e instanceof ApiError && e.code == apiErrorCode.AUTH_ERROR){
+                if (e.code == apiErrorCode.AUTH_ERROR) {
                     error = new ApiError(apiErrorCode.LOGIN_FAILURE)
                 }
                 set({
@@ -48,7 +49,7 @@ const authViewModel = create<AuthViewModel>(
                     error: error,
                     authorization: {isAuthorized: false, userInfo: null}
                 })
-                snackbarViewModel.getState().add(error);
+                await snackbarViewModel.getState().add(error);
             }
 
         },
@@ -63,10 +64,18 @@ const authViewModel = create<AuthViewModel>(
                     userInfo: null
                 },
             })
+
         },
 
         init: async () => {
-            set({status: viewModelStatus.done, authorization: await authRepository.getAuthorization()})
+            const authorization: Authorization = await authRepository.getAuthorization();
+            set({
+                status: viewModelStatus.done,
+                authorization: {
+                    ...authorization,
+                    userInfo: authorization.isAuthorized && await authRepository.getUserInfo()
+                }
+            })
         }
     })
 )

@@ -2,11 +2,13 @@ import {Token} from "../types/Token.ts";
 import Authorization from "../types/Authorization.ts";
 import tokenRepository from "./TokenRepository.ts";
 import api from "../utils/api/api.ts";
+import UserInfo from "../types/UserInfo.ts";
 
 type AuthRepository = {
     login: (username: string, password: string) => Promise<Token>;
     logout: () => Promise<void>;
     getAuthorization: () => Promise<Authorization>
+    getUserInfo: () => Promise<UserInfo>;
 }
 
 const authRepository: AuthRepository = {
@@ -33,13 +35,18 @@ const authRepository: AuthRepository = {
 
     getAuthorization: async () => {
         const token = tokenRepository.getToken();
-        // const token = null;
         if (!token) return {isAuthorized: false, userInfo: null};
+
         return {
             isAuthorized: true,
-            userInfo: null
+            userInfo: null,
         };
-    }
+    },
+
+    getUserInfo: async () => {
+        const response = await api().get('user');
+        return response.data as UserInfo;
+    },
 }
 
 export default authRepository
