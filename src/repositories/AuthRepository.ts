@@ -16,45 +16,44 @@ type AuthRepository = {
 const authRepository: AuthRepository = {
 
     login: async (username: string, password: string) => {
-
-        const response = await api().post("login",
-            {
+        const apiResponse: ApiResponse<Token> = new ApiResponse<Token>().parseData(
+            await api().post("login", {
                 username: username,
                 password: password,
-            });
+            }))
 
-        const apiResponse: ApiResponse<Token> = new ApiResponse<Token>().parseData(response);
-        if (apiResponse.isFailure) {
-            throw new ApiError(apiResponse.code)
-        }
-        tokenRepository.setToken(apiResponse.body!);
-        return apiResponse.body!;
+        if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
+
+        tokenRepository.setToken(apiResponse.body!)
+
+        return apiResponse.body!
     },
 
     logout: async () => {
-        await api().get("logout");
+        await api().get("logout")
 
-        tokenRepository.dropToken();
+        tokenRepository.dropToken()
     },
 
     getAuthorization: async () => {
-        const token = tokenRepository.getToken();
-        if (!token) return {isAuthorized: false, userInfo: null};
+        const token = tokenRepository.getToken()
+
+        if (!token) return {isAuthorized: false, userInfo: null}
 
         return {
             isAuthorized: true,
             userInfo: null,
-        };
+        }
     },
 
     getUserInfo: async () => {
         const apiResponse = new ApiResponse<UserInfo>().parseData(
             await api().get('user')
-        );
+        )
 
         if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
 
-        return apiResponse.body!;
+        return apiResponse.body!
     },
 }
 

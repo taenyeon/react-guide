@@ -8,13 +8,13 @@ import snackbarViewModel from "./SnackbarViewModel.ts";
 import {apiCode} from "../utils/error/constant/ApiCode.ts";
 
 export type AuthViewModel = {
-    authorization: Authorization;
-    status: ViewModelStatus;
-    error: ApiError | Error | null;
+    authorization: Authorization
+    status: ViewModelStatus
+    error: ApiError | Error | null
 
-    login: (username: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
-    init: () => Promise<void>;
+    login: (username: string, password: string) => Promise<void>
+    logout: () => Promise<void>
+    init: () => Promise<void>
 }
 
 const authViewModel = create<AuthViewModel>(
@@ -30,18 +30,20 @@ const authViewModel = create<AuthViewModel>(
             set({status: viewModelStatus.loading})
 
             try {
-                const token: Token = await authRepository.login(username, password);
+
+                const token: Token = await authRepository.login(username, password)
+
                 if (token.accessToken && token.refreshToken) {
-                    const userInfo = await authRepository.getUserInfo();
+                    const userInfo = await authRepository.getUserInfo()
                     set({
                         status: viewModelStatus.done,
                         authorization: {isAuthorized: true, userInfo: userInfo},
                     })
                 }
             } catch (e) {
-                if (!(e instanceof ApiError)) throw e;
+                if (!(e instanceof ApiError)) throw e
 
-                let error = e;
+                let error = e
 
                 if (e.name == apiCode.AUTH_ERROR) error = new ApiError(apiCode.LOGIN_FAILURE)
 
@@ -51,13 +53,13 @@ const authViewModel = create<AuthViewModel>(
                     authorization: {isAuthorized: false, userInfo: null}
                 })
 
-                await snackbarViewModel.getState().add(error);
+                await snackbarViewModel.getState().add(error)
             }
 
         },
 
         logout: async () => {
-            await authRepository.logout();
+            await authRepository.logout()
 
             set({
                 status: viewModelStatus.done,
@@ -66,11 +68,10 @@ const authViewModel = create<AuthViewModel>(
                     userInfo: null
                 },
             })
-
         },
 
         init: async () => {
-            const authorization: Authorization = await authRepository.getAuthorization();
+            const authorization: Authorization = await authRepository.getAuthorization()
             set({
                 status: viewModelStatus.done,
                 authorization: {
@@ -82,4 +83,4 @@ const authViewModel = create<AuthViewModel>(
     })
 )
 
-export default authViewModel;
+export default authViewModel

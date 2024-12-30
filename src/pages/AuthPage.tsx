@@ -7,13 +7,13 @@ import Authorized from "../components/auth/Authorized.tsx";
 import {Box} from "@mui/material";
 
 const AuthPage: React.FC = () => {
-    const {authorization, status, error, init} = authViewModel();
+    const {authorization, status, init} = authViewModel()
 
     useEffect(() => {
         init()
     }, [init])
 
-    if (isLoading(status)) return <h1>loading...</h1>;
+    if (isLoading(status)) return <h1>loading...</h1>
 
     return (
         <>
@@ -28,7 +28,7 @@ const AuthPage: React.FC = () => {
                 {authorization.isAuthorized ? <Authorized/> : <Login/>}
             </Box>
         </>
-    );
+    )
 }
 
 export default AuthPage;
