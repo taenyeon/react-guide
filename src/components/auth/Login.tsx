@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import authViewModel from "../../viewModel/AuthViewModel.ts";
 import {Box, Button, FormControl, FormLabel, TextField, Typography} from "@mui/material";
 import CardForm from "../layouts/CardForm.ts";
+import useAuthViewModel from "../../viewModel/useAuthViewModel.ts";
 
 const Login: React.FC = () => {
-    const {login} = authViewModel();
+    const {login} =useAuthViewModel();
 
     const [username, setUsername] = useState({value: '', error: ''});
     const [password, setPassword] = useState({value: '', error: ''});
@@ -29,13 +29,13 @@ const Login: React.FC = () => {
         let isValid = true;
         if (!username.value) {
             setUsername((prevState) => {
-                return {...prevState, error: 'enter username'}
+                return {...prevState, ERROR: 'enter username'}
             });
             isValid = false;
         }
         if (!password.value) {
             setPassword((prevState) => {
-                return {...prevState, error: 'enter password'}
+                return {...prevState, ERROR: 'enter password'}
             })
             isValid = false;
         }

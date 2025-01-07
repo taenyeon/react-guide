@@ -1,19 +1,19 @@
 import * as React from "react";
-import authViewModel from "../viewModel/AuthViewModel.ts";
 import {useEffect} from "react";
-import {isLoading} from "../constant/ViewModelStatus.ts";
 import Login from "../components/auth/Login.tsx";
 import Authorized from "../components/auth/Authorized.tsx";
 import {Box} from "@mui/material";
+import useAuthViewModel from "../viewModel/useAuthViewModel.ts";
 
 const AuthPage: React.FC = () => {
-    const {authorization, status, init} = authViewModel()
+    // const {authorization, status, init} = authViewModel()
+    const {authorization, isLoading, init} = useAuthViewModel()
 
     useEffect(() => {
         init()
-    }, [init])
+    }, [])
 
-    if (isLoading(status)) return <h1>loading...</h1>
+    if (isLoading) return <h1>loading...</h1>
 
     return (
         <>
@@ -25,7 +25,7 @@ const AuthPage: React.FC = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                {authorization.isAuthorized ? <Authorized/> : <Login/>}
+                {authorization?.isAuthorized ? <Authorized/> : <Login/>}
             </Box>
         </>
     )

@@ -1,8 +1,8 @@
 import {Alert, Snackbar, SnackbarCloseReason} from "@mui/material";
-import snackbarViewModel from "../../viewModel/SnackbarViewModel.ts";
+import snackbarStore from "../../store/SnackbarStore.ts";
 
 const SnackbarList = () => {
-    const {errors, drop} = snackbarViewModel();
+    const {errors, drop} = snackbarStore();
 
     const handleClose = async (index: number, reason: SnackbarCloseReason) => {
         if (reason == 'clickaway') return;
@@ -22,7 +22,7 @@ const SnackbarList = () => {
                             horizontal: 'right',
                         }}
                         style={{
-                            marginBottom: `${index * 60}px`, // 최신 메시지가 아래로 밀리지 않도록 오프셋 조정
+                            marginBottom: `${index * 60}px`,
                         }}
                     >
                         <Alert severity={"error"} onClose={() => drop(index)}>

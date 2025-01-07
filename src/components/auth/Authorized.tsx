@@ -1,11 +1,11 @@
 import React from "react";
-import authViewModel from "../../viewModel/AuthViewModel.ts";
 import {Button, Typography} from "@mui/material";
 import CardForm from "../layouts/CardForm.ts";
+import useAuthViewModel from "../../viewModel/useAuthViewModel.ts";
 
 
 const Authorized: React.FC = () => {
-    const {authorization,logout} = authViewModel();
+    const {authorization, logout} = useAuthViewModel()
 
     const handleLogout = async () => {
         await logout();
@@ -18,10 +18,10 @@ const Authorized: React.FC = () => {
             </Typography>
 
             <Typography component={"h1"} variant={"h6"}>
-                username: {authorization.userInfo?.username}
+                username: {authorization?.userInfo?.username}
             </Typography>
             <Typography component={"h1"} variant={"h6"}>
-                name: {authorization.userInfo?.name}
+                name: {authorization?.userInfo?.name}
             </Typography>
 
             <Button variant="contained" onClick={handleLogout}>Logout</Button>
