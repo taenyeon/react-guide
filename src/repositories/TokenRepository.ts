@@ -1,5 +1,5 @@
-import { Token } from '../types/Token.ts'
-import secureStorage from '../utils/storage/secureStorage.ts'
+import { Token } from '@typings/Token'
+import secureStorage from '@utils/storage/secureStorage'
 
 type TokenRepository = {
   getAccessToken: () => string | null

@@ -1,67 +1,61 @@
-import {delay, http, HttpResponse, StrictResponse} from "msw";
-import {Token} from "../src/types/Token";
-import UserInfo from "../src/types/UserInfo.ts";
-import {ApiResponse} from "../src/utils/api/models/ApiResponse.ts";
-import {apiCode} from "../src/utils/error/constant/ApiCode.ts";
+import { delay, http, HttpResponse, StrictResponse } from 'msw'
+import { Token } from '../src/typings/Token'
+import UserInfo from '../src/typings/UserInfo.ts'
+import { ApiResponse } from '../src/utils/api/models/ApiResponse.ts'
+import { apiCode } from '../src/utils/error/constant/ApiCode.ts'
 
-const unAuthorized: () => StrictResponse<null> = () => HttpResponse.json(null, {status: 401});
+const unAuthorized: () => StrictResponse<null> = () => HttpResponse.json(null, { status: 401 })
 
 const requiredAuthorization = (targetUrl: string) => {
-    return unAuthorizedUrls.find((url) => url.includes(targetUrl)) != null;
+  return unAuthorizedUrls.find(url => url.includes(targetUrl)) != null
 }
 
-const unAuthorizedUrls = ['/login', "/src"]
+const unAuthorizedUrls = ['/login', '/src']
 
 const handlers = [
-    http.all('*', async ({request}) => {
-        await delay(300)
+  http.all('*', async ({ request }) => {
+    await delay(300)
 
-        if (requiredAuthorization(request.url)) {
-            console.error("url", request.url)
-            if (request.headers.get("authorization") != 'testToken') return unAuthorized();
+    if (requiredAuthorization(request.url)) {
+      console.error('url', request.url)
+      if (request.headers.get('authorization') != 'testToken') return unAuthorized()
+    }
+  }),
+
+  http.post<never, { username: string; password: string }, null | ApiResponse<Token>>('/login', async ({ request }) => {
+    const { username, password } = await request.json()
+
+    if (username != 'test' || password != 'test')
+      return HttpResponse.json(null, {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json'
         }
+      })
 
-    }),
+    return HttpResponse.json(
+      new ApiResponse<Token>().build(apiCode.SUCCESS, {
+        accessToken: 'testToken',
+        refreshToken: 'testToken'
+      })
+    )
+  }),
 
-    http.post<never, { username: string, password: string }, null | ApiResponse<Token>>
-    ('/login', async ({request}) => {
-        const {username, password} = await request.json();
+  http.get<never, never, ApiResponse<null>>('/logout', async () => {
+    return HttpResponse.json(new ApiResponse<null>().build(apiCode.SUCCESS, null))
+  }),
 
-        if (username != 'test' || password != 'test')
-            return HttpResponse.json(null, {
-                status: 401,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-
-        return HttpResponse.json(new ApiResponse<Token>().build(apiCode.SUCCESS, {
-                accessToken: "testToken",
-                refreshToken: "testToken"
-            }),
-        )
-    }),
-
-    http.get<never, never, ApiResponse<null>>('/logout', async () => {
-        return HttpResponse.json(new ApiResponse<null>()
-            .build(apiCode.SUCCESS, null)
-        );
-    }),
-
-    http.get<never, never, ApiResponse<UserInfo>>('/user', async ({request}) => {
-        if (request.headers.get("authorization") != 'testToken') {
-            return HttpResponse.json(new ApiResponse<UserInfo>()
-                .build(apiCode.NOT_FOUND_ERROR, null)
-            )
-        }
-        return HttpResponse.json(new ApiResponse<UserInfo>().build(apiCode.SUCCESS, {
-                    name: 'test',
-                    username: 'test',
-                }
-            )
-        );
-    }),
-
+  http.get<never, never, ApiResponse<UserInfo>>('/user', async ({ request }) => {
+    if (request.headers.get('authorization') != 'testToken') {
+      return HttpResponse.json(new ApiResponse<UserInfo>().build(apiCode.NOT_FOUND_ERROR, null))
+    }
+    return HttpResponse.json(
+      new ApiResponse<UserInfo>().build(apiCode.SUCCESS, {
+        name: 'test',
+        username: 'test'
+      })
+    )
+  })
 ]
 
 export default handlers

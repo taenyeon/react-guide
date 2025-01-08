@@ -1,4 +1,4 @@
-import { ApiCode, apiCode } from '../../error/constant/ApiCode.ts'
+import { ApiCode, apiCode } from '@utils/error/constant/ApiCode'
 import { AxiosResponse } from 'axios'
 
 export class ApiResponse<T> {

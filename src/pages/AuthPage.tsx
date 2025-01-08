@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import Login from '../components/auth/Login.tsx'
-import Authorized from '../components/auth/Authorized.tsx'
+import Login from '@components/auth/Login'
+import Authorized from '@components/auth/Authorized'
 import { Box } from '@mui/material'
-import useAuthViewModel from '../viewModel/useAuthViewModel.ts'
+import useAuthViewModel from '../viewModels/useAuthViewModel'
 
 const AuthPage: React.FC = () => {
   // const {authorization, status, init} = authViewModel()
@@ -25,8 +25,7 @@ const AuthPage: React.FC = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center'
-        }}
-      >
+        }}>
         {authorization?.isAuthorized ? <Authorized /> : <Login />}
       </Box>
     </>

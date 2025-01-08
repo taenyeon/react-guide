@@ -1,4 +1,4 @@
-import UserInfo from './UserInfo.ts'
+import UserInfo from '@typings/UserInfo'
 
 export type Authorization = {
   isAuthorized: boolean

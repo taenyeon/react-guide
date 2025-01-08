@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, FormLabel, TextField, Typography } from '@mui/material'
-import CardForm from '../layouts/CardForm.ts'
-import useAuthViewModel from '../../viewModel/useAuthViewModel.ts'
+import CardForm from '@components/layouts/CardForm'
+import useAuthViewModel from '@viewModels/useAuthViewModel'
 
 const Login: React.FC = () => {
   const { login } = useAuthViewModel()

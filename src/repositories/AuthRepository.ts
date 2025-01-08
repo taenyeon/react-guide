@@ -1,9 +1,9 @@
-import { Token } from '../types/Token.ts'
-import tokenRepository from './TokenRepository.ts'
-import api from '../utils/api/api.ts'
-import UserInfo from '../types/UserInfo.ts'
-import { ApiResponse } from '../utils/api/models/ApiResponse.ts'
-import ApiError from '../utils/error/ApiError.ts'
+import { Token } from '@typings/Token'
+import tokenRepository from '@repositories/TokenRepository'
+import api from '@utils/api/api'
+import UserInfo from '@typings/UserInfo'
+import { ApiResponse } from '@utils/api/models/ApiResponse'
+import ApiError from '@utils/error/ApiError'
 
 type AuthRepository = {
   login: (username: string, password: string) => Promise<Token>

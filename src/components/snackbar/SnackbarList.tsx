@@ -1,5 +1,6 @@
 import { Alert, Snackbar, SnackbarCloseReason } from '@mui/material'
-import snackbarStore from '../../store/SnackbarStore.ts'
+import snackbarStore from '@stores/SnackbarStore'
+import React from 'react'
 
 const SnackbarList = () => {
   const { errors, drop } = snackbarStore()

@@ -1,5 +1,5 @@
-import Authorization from '../types/Authorization.ts'
-import ApiError from '../utils/error/ApiError.ts'
+import Authorization from '@typings/Authorization'
+import ApiError from '@utils/error/ApiError'
 import { create } from 'zustand/react'
 
 interface AuthStore {
@@ -13,14 +13,14 @@ interface AuthStore {
   reset: () => void
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
+const useAuthStore = create<AuthStore>(set => ({
   authorization: { isAuthorized: false, userInfo: null },
   isLoading: false,
   error: null,
 
-  setAuthorization: (authorization) => set({ authorization }),
-  setLoading: (isLoading) => set({ isLoading }),
-  setError: (error) => set({ error }),
+  setAuthorization: authorization => set({ authorization }),
+  setLoading: isLoading => set({ isLoading }),
+  setError: error => set({ error }),
   reset: () => set({ authorization: { isAuthorized: false, userInfo: null }, isLoading: false, error: null })
 }))
 

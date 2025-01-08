@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
-import tokenRepository from '../../repositories/TokenRepository.ts'
-import ApiError from '../error/ApiError.ts'
-import { apiCode } from '../error/constant/ApiCode.ts'
+import tokenRepository from '@repositories/TokenRepository'
+import ApiError from '@utils/error/ApiError'
+import { apiCode } from '@utils/error/constant/ApiCode'
 
 export const api: () => AxiosInstance = () => {
   const { getAccessToken } = tokenRepository
@@ -11,7 +11,7 @@ export const api: () => AxiosInstance = () => {
   })
 
   instance.interceptors.request.use(
-    (config) => {
+    config => {
       const accessToken = getAccessToken()
       if (accessToken != null) config.headers['authorization'] = accessToken
       console.log(
@@ -26,13 +26,13 @@ export const api: () => AxiosInstance = () => {
       return config
     },
 
-    (error) => {
+    error => {
       return Promise.reject(error)
     }
   )
 
   instance.interceptors.response.use(
-    (response) => {
+    response => {
       console.log(
         `\n[\x1B[31mRESPONSE\x1B[0m]\n\n` +
           `url : ${response.config.baseURL}/${response.config.url}\n` +
@@ -43,7 +43,7 @@ export const api: () => AxiosInstance = () => {
 
       return response
     },
-    (error) => {
+    error => {
       if (!axios.isAxiosError(error)) return Promise.reject(error)
 
       switch (error.response?.status) {

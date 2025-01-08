@@ -1,4 +1,4 @@
-import ApiError from './ApiError.ts'
+import ApiError from '@utils/error/ApiError'
 
 export const parseError: (error: unknown) => ApiError | Error = (error: unknown) => {
   if (error instanceof ApiError) return error as ApiError

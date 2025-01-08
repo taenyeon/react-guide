@@ -1,4 +1,4 @@
-import { ApiCode } from './constant/ApiCode.ts'
+import { ApiCode } from '@utils/error/constant/ApiCode'
 
 class ApiError extends Error {
   public apiCode: ApiCode
