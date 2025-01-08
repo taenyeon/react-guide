@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import Login from '@components/auth/Login'
-import Authorized from '@components/auth/Authorized'
+import Login from '@pages/auth/components/login/Login'
+import Authorized from '@pages/auth/components/authorized/Authorized'
 import { Box } from '@mui/material'
-import useAuthViewModel from '../viewModels/useAuthViewModel'
+import useAuthViewModel from '@pages/auth/useAuthViewModel'
 
 const AuthPage: React.FC = () => {
-  // const {authorization, status, init} = authViewModel()
   const { authorization, isLoading, init } = useAuthViewModel()
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const AuthPage: React.FC = () => {
           bgcolor: 'text.disabled',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}>
         {authorization?.isAuthorized ? <Authorized /> : <Login />}
       </Box>

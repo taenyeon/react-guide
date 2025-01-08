@@ -1,7 +1,7 @@
-import { queryClient } from './utils/api/queryClient.ts';
-import { QueryClientProvider } from 'react-query';
-import AuthPage from './pages/AuthPage.tsx';
-import SnackbarList from './components/snackbar/SnackbarList.tsx';
+import { queryClient } from './utils/api/queryClient.ts'
+import { QueryClientProvider } from 'react-query'
+import AuthPage from '@pages/auth/AuthPage.tsx'
+import SnackbarList from './components/snackbar/SnackbarList.tsx'
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         {/*<ReactQueryDevtools/>*/}
       </QueryClientProvider>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

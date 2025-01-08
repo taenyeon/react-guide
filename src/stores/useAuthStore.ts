@@ -21,7 +21,8 @@ const useAuthStore = create<AuthStore>(set => ({
   setAuthorization: authorization => set({ authorization }),
   setLoading: isLoading => set({ isLoading }),
   setError: error => set({ error }),
-  reset: () => set({ authorization: { isAuthorized: false, userInfo: null }, isLoading: false, error: null })
+  reset: () =>
+    set({ authorization: { isAuthorized: false, userInfo: null }, isLoading: false, error: null }),
 }))
 
 export default useAuthStore

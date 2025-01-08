@@ -1,14 +1,10 @@
 import React from 'react'
 import { Button, Typography } from '@mui/material'
 import CardForm from '@components/layouts/CardForm'
-import useAuthViewModel from '@viewModels/useAuthViewModel'
+import useAuthorizedViewModel from '@pages/auth/components/authorized/useAuthorizedViewModel'
 
 const Authorized: React.FC = () => {
-  const { authorization, logout } = useAuthViewModel()
-
-  const handleLogout = async () => {
-    await logout()
-  }
+  const { authorization, logout } = useAuthorizedViewModel()
 
   return (
     <div>
@@ -24,7 +20,7 @@ const Authorized: React.FC = () => {
           name: {authorization?.userInfo?.name}
         </Typography>
 
-        <Button variant="contained" onClick={handleLogout}>
+        <Button variant="contained" onClick={logout}>
           Logout
         </Button>
       </CardForm>

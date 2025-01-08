@@ -5,11 +5,11 @@
   "embeddedLanguageFormatting": "auto",
   "endOfLine": "lf",
   "jsxBracketSameLine": false,
-  "printWidth": 200,
+  "printWidth": 100,
   "quoteProps": "as-needed",
   "semi": false,
   "singleQuote": true,
   "tabWidth": 2,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "useTabs": false
 }

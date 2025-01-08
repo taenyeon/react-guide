@@ -1,8 +1,8 @@
 import { delay, http, HttpResponse, StrictResponse } from 'msw'
-import { Token } from '../src/typings/Token'
-import UserInfo from '../src/typings/UserInfo.ts'
-import { ApiResponse } from '../src/utils/api/models/ApiResponse.ts'
-import { apiCode } from '../src/utils/error/constant/ApiCode.ts'
+import { Token } from '@typings/Token'
+import UserInfo from '@typings/UserInfo'
+import { ApiResponse } from '@utils/api/models/ApiResponse'
+import { apiCode } from '@utils/error/constant/ApiCode'
 
 const unAuthorized: () => StrictResponse<null> = () => HttpResponse.json(null, { status: 401 })
 
@@ -29,15 +29,15 @@ const handlers = [
       return HttpResponse.json(null, {
         status: 401,
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
 
     return HttpResponse.json(
       new ApiResponse<Token>().build(apiCode.SUCCESS, {
         accessToken: 'testToken',
-        refreshToken: 'testToken'
-      })
+        refreshToken: 'testToken',
+      }),
     )
   }),
 
@@ -52,10 +52,10 @@ const handlers = [
     return HttpResponse.json(
       new ApiResponse<UserInfo>().build(apiCode.SUCCESS, {
         name: 'test',
-        username: 'test'
-      })
+        username: 'test',
+      }),
     )
-  })
+  }),
 ]
 
 export default handlers
