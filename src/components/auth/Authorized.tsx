@@ -1,32 +1,35 @@
-import React from "react";
-import {Button, Typography} from "@mui/material";
-import CardForm from "../layouts/CardForm.ts";
-import useAuthViewModel from "../../viewModel/useAuthViewModel.ts";
-
+import React from 'react'
+import { Button, Typography } from '@mui/material'
+import CardForm from '../layouts/CardForm.ts'
+import useAuthViewModel from '../../viewModel/useAuthViewModel.ts'
 
 const Authorized: React.FC = () => {
-    const {authorization, logout} = useAuthViewModel()
+  const { authorization, logout } = useAuthViewModel()
 
-    const handleLogout = async () => {
-        await logout();
-    }
+  const handleLogout = async () => {
+    await logout()
+  }
 
-    return <div>
-        <CardForm variant={"outlined"}>
-            <Typography component={"h1"} variant={"h4"}>
-                Authorized
-            </Typography>
+  return (
+    <div>
+      <CardForm variant={'outlined'}>
+        <Typography component={'h1'} variant={'h4'}>
+          Authorized
+        </Typography>
 
-            <Typography component={"h1"} variant={"h6"}>
-                username: {authorization?.userInfo?.username}
-            </Typography>
-            <Typography component={"h1"} variant={"h6"}>
-                name: {authorization?.userInfo?.name}
-            </Typography>
+        <Typography component={'h1'} variant={'h6'}>
+          username: {authorization?.userInfo?.username}
+        </Typography>
+        <Typography component={'h1'} variant={'h6'}>
+          name: {authorization?.userInfo?.name}
+        </Typography>
 
-            <Button variant="contained" onClick={handleLogout}>Logout</Button>
-        </CardForm>
+        <Button variant="contained" onClick={handleLogout}>
+          Logout
+        </Button>
+      </CardForm>
     </div>
+  )
 }
 
 export default Authorized

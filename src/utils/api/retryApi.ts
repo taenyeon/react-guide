@@ -1,21 +1,16 @@
-import axios, {AxiosInstance} from "axios";
+import axios, { AxiosInstance } from 'axios'
 
-const retryApi: () => AxiosInstance =
-    () => {
-        const instance: AxiosInstance = axios.create({
-            baseURL: '',
-            timeout: 5000,
-        })
+const retryApi: () => AxiosInstance = () => {
+  const instance: AxiosInstance = axios.create({
+    baseURL: '',
+    timeout: 5000
+  })
 
-        instance.interceptors.request.use(
+  instance.interceptors.request.use()
 
-        )
+  instance.interceptors.response.use()
 
-        instance.interceptors.response.use(
-
-        )
-
-        return instance;
-    };
+  return instance
+}
 
 export default retryApi

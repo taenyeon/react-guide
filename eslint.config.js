@@ -19,10 +19,20 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    },
+    settings: {
+      react: {
+        // Tells eslint-plugin-react to automatically detect the version of React to use.
+        version: 'detect',
+      },
+      // Tells eslint how to resolve imports
+      'import/resolver': {
+        node: {
+          paths: ['src'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+      },
     },
   },
 )

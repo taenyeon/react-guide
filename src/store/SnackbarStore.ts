@@ -1,28 +1,23 @@
-import {create} from "zustand/react";
+import { create } from 'zustand/react'
 
 export type SnackbarStore = {
-    errors: Error[];
+  errors: Error[]
 
-    add: (error: Error) => Promise<void>;
-    drop: (index: number) => Promise<void>;
+  add: (error: Error) => Promise<void>
+  drop: (index: number) => Promise<void>
 }
 
-const snackbarStore = create<SnackbarStore>((set) =>
-    ({
-        errors: [],
-        currentIndex: 0,
+const snackbarStore = create<SnackbarStore>((set) => ({
+  errors: [],
+  currentIndex: 0,
 
-        add: async (error: Error) => {
-            set((state) =>
-                ({errors: [...state.errors, error]}))
-        },
+  add: async (error: Error) => {
+    set((state) => ({ errors: [...state.errors, error] }))
+  },
 
-        drop: async (index: number) => {
-            set(state =>
-                ({errors: state.errors.filter((_, listIndex) => index != listIndex)}))
-        }
+  drop: async (index: number) => {
+    set((state) => ({ errors: state.errors.filter((_, listIndex) => index != listIndex) }))
+  }
+}))
 
-    })
-)
-
-export default snackbarStore;
+export default snackbarStore
