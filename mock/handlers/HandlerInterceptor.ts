@@ -1,19 +1,21 @@
 import { delay, http, HttpResponse, StrictResponse } from 'msw'
 
-const unAuthorized: () => StrictResponse<null> = () => HttpResponse.json(null, { status: 401 })
+const unauthorized: () => StrictResponse<null> = () => HttpResponse.json(null, { status: 401 })
 
-const requiredAuthorization = (targetUrl: string) => {
-  return unAuthorizedUrls.find(url => url.includes(targetUrl)) != null
+const isAuthorizationRequired = (targetUrl: string) => {
+  return unauthorizedUrls.find(url => url.includes(targetUrl)) != null
 }
 
-const unAuthorizedUrls = ['/login', '/src']
+const unauthorizedUrls = ['/login', '/src']
 
 const HandlerInterceptor = http.all('*', async ({ request }) => {
+  // delay
   await delay(300)
 
-  if (requiredAuthorization(request.url)) {
+  // authorization interceptor
+  if (isAuthorizationRequired(request.url)) {
     console.error('url', request.url)
-    if (request.headers.get('authorization') != 'testToken') return unAuthorized()
+    if (request.headers.get('authorization') != 'testToken') return unauthorized()
   }
 })
 
