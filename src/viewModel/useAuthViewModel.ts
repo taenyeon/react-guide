@@ -3,7 +3,8 @@ import authRepository from '../repositories/AuthRepository.ts'
 import { Token } from '../types/Token.ts'
 import ApiError from '../utils/error/ApiError.ts'
 import { apiCode } from '../utils/error/constant/ApiCode.ts'
-import snackbarStore from '../store/SnackbarStore.ts'
+// import snackbarStore from '../store/SnackbarStore.ts'
+import snackbarStore from '@stores/SnackbarStore.ts'
 
 const useAuthViewModel = () => {
   const { authorization, isLoading, error, reset, setAuthorization, setLoading, setError } = useAuthStore()
