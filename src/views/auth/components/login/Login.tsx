@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Button, FormControl, FormLabel, TextField, Typography } from '@mui/material'
 import CardForm from '@components/layouts/CardForm'
-import useLoginViewModel from '@pages/auth/components/login/useLoginViewModel'
+import useLoginViewModel from '../../../auth/components/login/useLoginViewModel'
 
 const Login: React.FC = () => {
   const { username, password, login, inputUsername, inputPassword } = useLoginViewModel()

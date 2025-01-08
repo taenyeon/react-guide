@@ -20,8 +20,8 @@
       "@components/*": [
         "components/*"
       ],
-      "@pages/*": [
-        "pages/*"
+      "@views/*": [
+        "views/*"
       ],
       "@repositories/*": [
         "repositories/*"

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import Login from '@pages/auth/components/login/Login'
-import Authorized from '@pages/auth/components/authorized/Authorized'
+import Login from '../auth/components/login/Login'
+import Authorized from '../auth/components/authorized/Authorized'
 import { Box } from '@mui/material'
-import useAuthViewModel from '@pages/auth/useAuthViewModel'
+import useAuthViewModel from '../auth/useAuthViewModel'
 
 const AuthPage: React.FC = () => {
   const { authorization, isLoading, init } = useAuthViewModel()

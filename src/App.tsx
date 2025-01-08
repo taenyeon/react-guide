@@ -1,7 +1,8 @@
-import { queryClient } from './utils/api/queryClient.ts'
+import { queryClient } from '@utils/api/queryClient'
 import { QueryClientProvider } from 'react-query'
-import AuthPage from '@pages/auth/AuthPage.tsx'
-import SnackbarList from './components/snackbar/SnackbarList.tsx'
+import AuthPage from '@views/auth/AuthPage'
+import SnackbarList from '@components/snackbar/SnackbarList'
+import React from 'react'
 
 function App() {
   return (

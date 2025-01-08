@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Typography } from '@mui/material'
 import CardForm from '@components/layouts/CardForm'
-import useAuthorizedViewModel from '@pages/auth/components/authorized/useAuthorizedViewModel'
+import useAuthorizedViewModel from '../../../auth/components/authorized/useAuthorizedViewModel'
 
 const Authorized: React.FC = () => {
   const { authorization, logout } = useAuthorizedViewModel()
