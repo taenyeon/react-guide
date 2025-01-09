@@ -21,7 +21,7 @@
   }
 
   &__logout-button {
-    background-color: #4caf50;
+    background-color: #007bff;
     color: white;
     margin-top: 10px;
     padding: 10px 20px;
@@ -34,25 +34,27 @@
     }
 
     &:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
   }
 
   &__login-button {
-    background-color: #4caf50;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 
-    a {
-      text-decoration: none;
+    &:hover {
+      background-color: #0056b3;
     }
 
-    &:hover {
-      background-color: #45a049;
+    a {
+      text-decoration: none;
+      color: white;
     }
+
 
   }
 
