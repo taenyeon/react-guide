@@ -5,9 +5,11 @@ import { apiCode } from '@utils/error/constant/ApiCode'
 import snackbarStore from '@stores/SnackbarStore'
 import useAuthStore from '@stores/useAuthStore'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const useLoginViewModel = () => {
   const { setLoading, setAuthorization, setError } = useAuthStore()
+  const navigate = useNavigate()
 
   const [username, setUsername] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
@@ -30,6 +32,7 @@ const useLoginViewModel = () => {
 
       if (token.accessToken && token.refreshToken) {
         setAuthorization({ isAuthorized: true, userInfo: await authRepository.getUserInfo() })
+        navigate('/')
       }
     } catch (e) {
       if (!(e instanceof Error) || !(e instanceof ApiError)) return // todo 정의 필요

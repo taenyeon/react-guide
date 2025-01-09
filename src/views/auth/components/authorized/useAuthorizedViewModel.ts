@@ -8,6 +8,7 @@ const useAuthorizedViewModel = () => {
     await authRepository.logout()
     reset()
   }
+
   return {
     authorization,
     logout,

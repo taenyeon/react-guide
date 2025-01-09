@@ -1,0 +1,13 @@
+.menu {
+  padding: 10px;
+  text-align: center;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  &:hover {
+    background-color: blue;
+  }
+}
