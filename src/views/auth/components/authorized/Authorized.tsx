@@ -1,29 +1,16 @@
 import React from 'react'
-import { Button, Typography } from '@mui/material'
-import CardForm from '@components/CardForm'
 import useAuthorizedViewModel from '../../../auth/components/authorized/useAuthorizedViewModel'
+import './authorized.scss'
 
 const Authorized: React.FC = () => {
   const { authorization, logout } = useAuthorizedViewModel()
-
   return (
-    <div>
-      <CardForm variant={'outlined'}>
-        <Typography component={'h1'} variant={'h4'}>
-          Authorized
-        </Typography>
-
-        <Typography component={'h1'} variant={'h6'}>
-          username: {authorization?.userInfo?.username}
-        </Typography>
-        <Typography component={'h1'} variant={'h6'}>
-          name: {authorization?.userInfo?.name}
-        </Typography>
-
-        <Button variant="contained" onClick={logout}>
-          Logout
-        </Button>
-      </CardForm>
+    <div className="authorized">
+      <p className="authorized__title">Authorized</p>
+      <p className="authorized__title">name : {authorization.userInfo.name}</p>
+      <button className="authorized__button" onClick={logout}>
+        Logout
+      </button>
     </div>
   )
 }

@@ -32,7 +32,7 @@ const useLoginViewModel = () => {
 
       if (token.accessToken && token.refreshToken) {
         setAuthorization({ isAuthorized: true, userInfo: await authRepository.getUserInfo() })
-        navigate('/')
+        navigate('/', { replace: true })
       }
     } catch (e) {
       if (!(e instanceof Error) || !(e instanceof ApiError)) return // todo 정의 필요
@@ -51,16 +51,17 @@ const useLoginViewModel = () => {
     let isValid = true
     if (!username.value) {
       setUsername(prevState => {
-        return { ...prevState, ERROR: 'enter username' }
+        return { ...prevState, error: 'enter username' }
       })
       isValid = false
     }
     if (!password.value) {
       setPassword(prevState => {
-        return { ...prevState, ERROR: 'enter password' }
+        return { ...prevState, error: 'enter password' }
       })
       isValid = false
     }
+    console.log('username.error : ', username.error)
     return isValid
   }
 

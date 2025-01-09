@@ -1,68 +1,32 @@
 import React from 'react'
-import { Box, Button, FormControl, FormLabel, TextField, Typography } from '@mui/material'
-import CardForm from '@components/CardForm'
 import useLoginViewModel from '../../../auth/components/login/useLoginViewModel'
+import './login.scss'
 
 const Login: React.FC = () => {
   const { username, password, login, inputUsername, inputPassword } = useLoginViewModel()
-
   return (
-    <CardForm>
-      <Typography component={'h1'} variant={'h4'}>
-        Login
-      </Typography>
-      <Box
-        component="form"
-        noValidate
-        sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}>
-        <FormControl>
-          <FormLabel htmlFor="username" sx={{ textAlign: 'left' }}>
-            Username
-          </FormLabel>
-          <TextField
-            error={username.error != ''}
-            helperText={username.error}
-            id="username"
-            type="text"
-            placeholder="username"
-            autoFocus
-            required
-            fullWidth
-            variant="outlined"
-            color={username.error ? 'error' : 'primary'}
-            value={username.value}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              inputUsername(event.target.value)
-            }
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password" sx={{ textAlign: 'left' }}>
-            Password
-          </FormLabel>
-          <TextField
-            error={password.error != ''}
-            helperText={password.error}
-            id="password"
-            type="password"
-            name="password"
-            placeholder="password"
-            autoFocus
-            required
-            fullWidth
-            variant="outlined"
-            color={password.error ? 'error' : 'primary'}
-            value={password.value}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              inputPassword(event.target.value)
-            }
-          />
-        </FormControl>
-        <Button type="button" fullWidth variant="contained" onClick={login}>
-          log in
-        </Button>
-      </Box>
-    </CardForm>
+    <div className="login">
+      <p className="login__title">Login</p>
+      <div className="login__form">
+        <input
+          className={`login__input ${username.error ? 'login__input--error' : ''}`}
+          placeholder="username"
+          value={username.value}
+          onChange={event => inputUsername(event.target.value)}
+        />
+        {username.error && <p className="login__input-error">{username.error}</p>}
+        <input
+          className={`login__input ${password.error ? 'login__input--error' : ''}`}
+          placeholder="password"
+          value={password.value}
+          onChange={event => inputPassword(event.target.value)}
+        />
+        {password.error && <p className="login__input-error">{password.error}</p>}
+        <button className="login__button" onClick={login}>
+          Login
+        </button>
+      </div>
+    </div>
   )
 }
 
