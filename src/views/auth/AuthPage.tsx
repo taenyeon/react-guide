@@ -7,7 +7,12 @@ import './authPage.scss'
 const AuthPage: React.FC = () => {
   const { authorization, isLoading } = useAuthViewModel()
 
-  if (isLoading) return <h1>loading...</h1>
+  if (isLoading)
+    return (
+      <div className="auth-page">
+        <h1>loading...</h1>
+      </div>
+    )
 
   return (
     <>

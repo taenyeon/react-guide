@@ -9,14 +9,16 @@ function App() {
   return (
     <>
       <Router>
-        <Sidebar />
-        <div className={'content'}>
-          <Routes>
-            <Route path={'/'} element={<MainPage />} />
-            <Route path={'/auth'} element={<AuthPage />}></Route>
-          </Routes>
+        <div className={'main'}>
+          <Sidebar />
+          <div className={'content'}>
+            <Routes>
+              <Route path={'/'} element={<MainPage />} />
+              <Route path={'/auth'} element={<AuthPage />} />
+            </Routes>
+          </div>
+          <SnackbarList />
         </div>
-        <SnackbarList />
       </Router>
     </>
   )

@@ -1,10 +1,9 @@
 import './userInfo.scss'
 import React, { useEffect } from 'react'
 import useUserInfoViewModel from '@views/layouts/sidebar/components/userInfo/useUserInfoViewModel'
-import { Link } from 'react-router-dom'
 
 const UserInfo: React.FC = () => {
-  const { authorization, init, logout } = useUserInfoViewModel()
+  const { authorization, init, logout, routeLoginPage } = useUserInfoViewModel()
 
   useEffect(() => {
     init()
@@ -20,8 +19,8 @@ const UserInfo: React.FC = () => {
           </button>
         </div>
       ) : (
-        <button className="user-info__login-button">
-          <Link to="/auth">Login</Link>
+        <button className="user-info__login-button" onClick={routeLoginPage}>
+          Login
         </button>
       )}
     </div>

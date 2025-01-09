@@ -7,17 +7,17 @@ export type SnackbarStore = {
   drop: (index: number) => Promise<void>
 }
 
-const snackbarStore = create<SnackbarStore>((set) => ({
+const useSnackbarStore = create<SnackbarStore>(set => ({
   errors: [],
   currentIndex: 0,
 
   add: async (error: Error) => {
-    set((state) => ({ errors: [...state.errors, error] }))
+    set(state => ({ errors: [...state.errors, error] }))
   },
 
   drop: async (index: number) => {
-    set((state) => ({ errors: state.errors.filter((_, listIndex) => index != listIndex) }))
-  }
+    set(state => ({ errors: state.errors.filter((_, listIndex) => index != listIndex) }))
+  },
 }))
 
-export default snackbarStore
+export default useSnackbarStore

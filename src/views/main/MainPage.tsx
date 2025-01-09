@@ -4,7 +4,7 @@ import './mainPage.scss'
 const MainPage: React.FC = () => {
   return (
     <div className="main-page">
-      <p className="main-page__title">Main!</p>
+      <h1 className="main-page__title">Main!</h1>
     </div>
   )
 }

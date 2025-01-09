@@ -1,9 +1,9 @@
 import { Alert, Snackbar, SnackbarCloseReason } from '@mui/material'
-import snackbarStore from '@stores/SnackbarStore'
+import useSnackbarStore from '@stores/useSnackbarStore'
 import React from 'react'
 
 const SnackbarList = () => {
-  const { errors, drop } = snackbarStore()
+  const { errors, drop } = useSnackbarStore()
 
   const handleClose = async (index: number, reason: SnackbarCloseReason) => {
     if (reason == 'clickaway') return
@@ -21,10 +21,10 @@ const SnackbarList = () => {
               onClose={(event, reason) => handleClose(index, reason)}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               style={{
-                marginBottom: `${index * 60}px`
+                marginBottom: `${index * 60}px`,
               }}>
               <Alert severity={'error'} onClose={() => drop(index)}>
                 {error.message}

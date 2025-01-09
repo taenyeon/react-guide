@@ -2,7 +2,7 @@ import { Token } from '@typings/Token'
 import authRepository from '@repositories/AuthRepository'
 import ApiError from '@utils/error/ApiError'
 import { apiCode } from '@utils/error/constant/ApiCode'
-import snackbarStore from '@stores/SnackbarStore'
+import useSnackbarStore from '@stores/useSnackbarStore'
 import useAuthStore from '@stores/useAuthStore'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -42,7 +42,7 @@ const useLoginViewModel = () => {
       if (e.name == apiCode.AUTH_ERROR) error = new ApiError(apiCode.LOGIN_FAILURE)
       setError(error)
 
-      await snackbarStore.getState().add(error) // 분리 필요?
+      await useSnackbarStore.getState().add(error) // 분리 필요?
     }
     setLoading(false)
   }
