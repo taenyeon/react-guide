@@ -54,14 +54,21 @@ const useLoginViewModel = () => {
         return { ...prevState, error: 'enter username' }
       })
       isValid = false
+    } else {
+      setUsername(prevState => {
+        return { ...prevState, error: '' }
+      })
     }
     if (!password.value) {
       setPassword(prevState => {
         return { ...prevState, error: 'enter password' }
       })
       isValid = false
+    } else {
+      setPassword(prevState => {
+        return { ...prevState, error: '' }
+      })
     }
-    console.log('username.error : ', username.error)
     return isValid
   }
 

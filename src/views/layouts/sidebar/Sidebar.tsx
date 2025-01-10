@@ -8,6 +8,7 @@ const Sidebar: React.FC = () => {
     <div className="sidebar">
       <div className="sidebar__menu-list">
         <Menu to={'/'} label={'MAIN'} />
+        <Menu to={'/calendar'} label={'CALENDAR'} />
       </div>
       <div className="sidebar__user-info">
         <UserInfo />
