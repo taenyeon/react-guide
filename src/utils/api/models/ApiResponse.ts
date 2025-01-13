@@ -15,6 +15,20 @@ export class ApiResponse<T> {
     return this
   }
 
+  parseClass = (response: AxiosResponse, body: T) => {
+    this.code = response.data['code']
+    this.message = response.data['message']
+    this.body = body
+    return this
+  }
+
+  // parseClass(type: { new (args: unknown): T }, response) {
+  //   this.code = response.data['code']
+  //   this.message = response.data['message']
+  //   this.body = new type(response.data.body)
+  //   return this
+  // }
+
   build = (apiCode: ApiCode, data: T | null) => {
     this.code = apiCode
     this.message = apiCode

@@ -1,14 +1,18 @@
 import { getWeekdayByCode, weekday, Weekday } from '@typings/constants/Weekday'
 import dayjs from 'dayjs'
+import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 
 export class DateOfCalendar {
   year: number
   month: number
   day: number
-  weekday: Weekday = weekday.SUNDAY
+  weekday: Weekday
+  schedules: ScheduleOfDate[]
 
-  constructor(date: { year?: number; month?: number; day?: number } = {}) {
-    const { year = 1, month = 1, day = 1 } = date
+  constructor(
+    date: { year?: number; month?: number; day?: number; schedules?: ScheduleOfDate[] } = {},
+  ) {
+    const { year = 1, month = 1, day = 1, schedules = [] } = date
 
     const now = date ? dayjs(`${year}-${month}-${day}`) : dayjs()
 
@@ -16,6 +20,7 @@ export class DateOfCalendar {
     this.month = now.month() + 1
     this.day = now.date()
     this.weekday = getWeekdayByCode(now.day())
+    this.schedules = schedules
   }
 
   get isSaturday() {
