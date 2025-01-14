@@ -1,10 +1,11 @@
 import calendarRepository from '@repositories/CalendarRepository'
 import { useState } from 'react'
-import { getDate } from '@utils/date/dayJsFormat'
 import { Calendar } from '@typings/Calendar'
+import dateFormatUtil from '@utils/date/dateFormatUtil'
 
 const useMonthlyCalendarViewModel = () => {
   const [calendar, setCalendar] = useState<Calendar | null>(null)
+  const { getDate } = dateFormatUtil
 
   const setMonthlyCalendar = async (year?: number, month?: number) => {
     const monthlyCalendar = await calendarRepository.getMonthlyCalendar({

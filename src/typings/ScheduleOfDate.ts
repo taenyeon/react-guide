@@ -13,6 +13,12 @@ export class ScheduleOfDate {
   title: string
   contents: string
 
+  order: number = 0
+  isMultiple: boolean
+
+  isStart: boolean = false
+  isEnd: boolean = false
+
   createdAt: string
   updatedAt: string
 
@@ -27,8 +33,12 @@ export class ScheduleOfDate {
     endMinute: number,
     title: string,
     contents: string,
+    isMultiple: boolean,
     createdAt: string,
     updatedAt: string,
+    order?: number,
+    isStart?: boolean,
+    isEnd?: boolean,
   ) {
     this.id = id
     this.year = year
@@ -40,8 +50,12 @@ export class ScheduleOfDate {
     this.endMinute = endMinute
     this.title = title
     this.contents = contents
+    this.isMultiple = isMultiple
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    if (order) this.order = order
+    if (isStart) this.isStart = isStart
+    if (isEnd) this.isEnd = isEnd
   }
 
   get startPercentage() {

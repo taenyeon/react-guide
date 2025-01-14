@@ -7,10 +7,15 @@ export class DateOfCalendar {
   month: number
   day: number
   weekday: Weekday
-  schedules: ScheduleOfDate[]
+  schedules: Array<ScheduleOfDate | null>
 
   constructor(
-    date: { year?: number; month?: number; day?: number; schedules?: ScheduleOfDate[] } = {},
+    date: {
+      year?: number
+      month?: number
+      day?: number
+      schedules?: Array<ScheduleOfDate | null>
+    } = {},
   ) {
     const { year = 1, month = 1, day = 1, schedules = [] } = date
 

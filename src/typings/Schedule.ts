@@ -1,7 +1,7 @@
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
-import { getStringToDate } from '@utils/date/dayJsFormat'
+import dateFormatUtil from '@utils/date/dateFormatUtil'
 
-// if date format dayJsFormat.ts -> use DayJsFormat
+// if date format DateFormat.ts -> use DateFormat
 export class Schedule {
   id: number
   startedAt: string
@@ -30,8 +30,9 @@ export class Schedule {
     this.updatedAt = schedule.updatedAt
   }
 
-  getScheduleOfDateList() {
+  getScheduleOfDateList(index: number) {
     if (this._isOneDaySchedule()) {
+      const { getStringToDate } = dateFormatUtil
       const startedAt = getStringToDate(this.startedAt)
       const endedAt = getStringToDate(this.endedAt)
       return [
@@ -46,36 +47,40 @@ export class Schedule {
           endedAt.minute(),
           this.title,
           this.contents,
+          false,
           this.createdAt,
           this.updatedAt,
         ),
       ] as ScheduleOfDate[]
     }
-    return this._calculateSchedule()
+    return this._calculateSchedule(index)
   }
 
-  private _isOneDaySchedule: () => boolean = () =>
-    getStringToDate(this.startedAt).isSame(getStringToDate(this.endedAt), 'date')
+  private _isOneDaySchedule: () => boolean = () => {
+    const { getStringToDate } = dateFormatUtil
+    return getStringToDate(this.startedAt).isSame(getStringToDate(this.endedAt), 'date')
+  }
 
-  private _calculateSchedule: () => ScheduleOfDate[] = () => {
+  private _calculateSchedule: (index: number) => ScheduleOfDate[] = index => {
     const scheduleOfDateList: ScheduleOfDate[] = []
-
+    const { getStringToDate } = dateFormatUtil
     const startedAt = getStringToDate(this.startedAt)
     const endedAt = getStringToDate(this.endedAt)
 
-    let datetime = startedAt.clone()
+    let start = startedAt.clone()
+    const end = endedAt.clone().add(1, 'day')
 
-    while (!datetime.isSame(endedAt, 'date')) {
+    while (!start.isSame(end, 'date')) {
       let startHour: number
       let startMinute: number
       let endHour: number
       let endMinute: number
-      if (startedAt.isSame(startedAt, 'date')) {
+      if (start.isSame(endedAt, 'date')) {
         startHour = 0
         startMinute = 0
         endHour = endedAt.hour()
         endMinute = endedAt.minute()
-      } else if (datetime.isSame(endedAt, 'date')) {
+      } else if (start.isSame(startedAt, 'date')) {
         startHour = startedAt.hour()
         startMinute = startedAt.minute()
         endHour = 23
@@ -90,22 +95,29 @@ export class Schedule {
       scheduleOfDateList.push(
         new ScheduleOfDate(
           this.id,
-          datetime.year(),
-          datetime.month() + 1,
-          datetime.date(),
+          start.year(),
+          start.month() + 1,
+          start.date(),
           startHour,
           startMinute,
           endHour,
           endMinute,
           this.title,
           this.contents,
+          true,
           this.createdAt,
           this.updatedAt,
+          index,
         ),
       )
-      datetime = datetime.add(1, 'day')
+
+      start = start.add(1, 'day')
     }
 
+    if (scheduleOfDateList.length) {
+      scheduleOfDateList[0].isStart = true
+      scheduleOfDateList[scheduleOfDateList.length - 1].isEnd = true
+    }
     return scheduleOfDateList
   }
 }

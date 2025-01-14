@@ -10,12 +10,12 @@ type ScheduleRepository = {
 const scheduleRepository: ScheduleRepository = {
   findAll: async () => {
     const response = await api().get('schedule')
-    const body = response.data.body.map(schedule => new Schedule(schedule))
 
+    const body = response.data.body.map(schedule => new Schedule(schedule))
     const apiResponse = new ApiResponse<Schedule[]>().parseClass(response, body)
-    console.log('apiResponse : ', apiResponse)
-    console.log('apiResponse.type : ', apiResponse.body[0] instanceof Schedule)
+
     if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
+
     return apiResponse.body
   },
 }
