@@ -12,11 +12,7 @@ const colorUtil = {
       '#A7F3D0', // 파스텔 민트
       '#F8C8DC', // 파스텔 코랄 (부드럽고 따뜻한 느낌)
     ]
-    if (index == 0) {
-      const random = colors[Math.floor(Math.random() * colors.length)]
-      console.log('color random = ', random)
-      return random
-    }
+    if (index == 0) return colors[Math.floor(Math.random() * colors.length)]
     if (index > 10) return colors[Math.floor(Math.random() * colors.length)]
     return colors[index]
   },

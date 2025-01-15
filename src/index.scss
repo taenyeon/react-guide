@@ -4,4 +4,30 @@
   overflow-y: scroll;
   background-color: #fff;
   color: #1a1a1a;
+
+  input {
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      border: 1px solid #007bff;
+    }
+
+    &:invalid {
+      border-color: #f44336; // 유효하지 않은 경우 (HTML5 validation)
+    }
+  }
+
+  textarea {
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      border: 1px solid #007bff;
+    }
+
+    &:invalid {
+      border-color: #f44336; // 유효하지 않은 경우 (HTML5 validation)
+    }
+  }
 }

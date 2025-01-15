@@ -31,6 +31,7 @@ const dateFormatUtil = {
     if (second) time += `:${formatNumber(second)}`
     return time
   },
+  formatNumber: (num: number): string => (num < 10 ? `0${num}` : `${num}`),
 }
 
 export default dateFormatUtil

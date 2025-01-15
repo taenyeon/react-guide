@@ -13,7 +13,7 @@ export class Schedule {
   updatedAt: string
 
   constructor(schedule: {
-    id: number
+    id: number | null
     startedAt: string
     endedAt: string
     title: string

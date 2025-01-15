@@ -2,7 +2,7 @@ export class ScheduleOfDate {
   id: number
   year: number
   month: number
-  date: number
+  day: number
 
   startHour: number
   startMinute: number
@@ -26,7 +26,7 @@ export class ScheduleOfDate {
     id: number,
     year: number,
     month: number,
-    date: number,
+    day: number,
     startHour: number,
     startMinute: number,
     endHour: number,
@@ -43,7 +43,7 @@ export class ScheduleOfDate {
     this.id = id
     this.year = year
     this.month = month
-    this.date = date
+    this.day = day
     this.startHour = startHour
     this.startMinute = startMinute
     this.endHour = endHour

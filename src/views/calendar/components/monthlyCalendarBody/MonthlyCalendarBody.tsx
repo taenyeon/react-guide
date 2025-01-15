@@ -15,7 +15,10 @@ const MonthlyCalendarBody: React.FC<MonthlyCalendarBodyProps> = ({ calendar }) =
     <>
       <div className="monthly-calendar__header">
         {weekDays.map((weekday, index) => (
-          <div key={index} className="monthly-calendar__day">
+          <div
+            key={index}
+            className="monthly-calendar__day"
+            style={{ color: weekday == 'SUN' ? 'red' : '' }}>
             {weekday}
           </div>
         ))}
@@ -27,7 +30,7 @@ const MonthlyCalendarBody: React.FC<MonthlyCalendarBodyProps> = ({ calendar }) =
               key={index}
               date={date}
               now={now}
-              isOtherMonth={date.month != now.month() + 1}
+              isOtherMonth={date.month != calendar.month}
             />
           )
         })}
