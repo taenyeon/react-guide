@@ -1,0 +1,107 @@
+.date-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__content {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+
+  &__schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  &__schedule {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  &__schedule-header {
+    display: flex;
+    justify-content: space-between; /* 제목과 "종일, 날짜"를 양 끝에 배치 */
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+
+  &__schedule-title {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &__schedule-details {
+    display: flex;
+    gap: 8px; /* "종일"과 날짜 사이의 여백 */
+    justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
+  }
+
+  &__schedule-multi {
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  &__schedule-date {
+    color: #555;
+    font-size: 0.875rem;
+  }
+
+  &__schedule-content {
+    font-size: 0.875rem;
+    color: #555;
+  }
+
+  &__button {
+    margin-top: 16px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+}

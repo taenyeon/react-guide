@@ -1,5 +1,5 @@
 import React from 'react'
-import useMonthlyCalendarAddPopupViewModel from '@views/calendar/components/monthlyCalendarAddPopup/UseMonthlyCalendarAddPopupViewModel'
+import useMonthlyCalendarAddPopupViewModel from '@views/calendar/components/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
 import './monthlyCalendarAddPopup.scss'
 
 interface MonthlyCalendarAddPopupProps {
@@ -24,15 +24,16 @@ const MonthlyCalendarAddPopup: React.FC<MonthlyCalendarAddPopupProps> = ({ isOpe
     inputContents,
     inputStartedAt,
     inputEndedAt,
+    addSchedule,
   } = useMonthlyCalendarAddPopupViewModel()
 
   if (!isOpen) return null
 
   return (
     <div className="popup">
-      <div className="popup__overlay" onClick={onClose}></div>
+      <div className="popup__overlay" onClick={() => onClose()}></div>
       <div className="popup__content">
-        <h2 className="popup__title">Event Form</h2>
+        <h2 className="popup__title">Add Schedule</h2>
         <form className="popup__form">
           <label className="popup__label">
             Title:
@@ -81,7 +82,13 @@ const MonthlyCalendarAddPopup: React.FC<MonthlyCalendarAddPopupProps> = ({ isOpe
               ))}
             </div>
           </fieldset>
-          <button type="submit" className="popup__button">
+          <button
+            type="button"
+            className="popup__button"
+            onClick={async () => {
+              await addSchedule()
+              onClose()
+            }}>
             Submit
           </button>
         </form>

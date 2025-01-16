@@ -4,24 +4,38 @@ import { Calendar } from '@typings/Calendar'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import scheduleRepository from '@repositories/ScheduleRepository'
+import useCalendarStore from '@stores/useCalendarStore'
+import useScheduleStore from '@stores/useScheduleStore'
 
 const useMonthlyCalendarViewModel = () => {
-  const [calendar, setCalendar] = useState<Calendar | null>(null)
+  const { calendar, setCalendar } = useCalendarStore()
+  const { schedules, setSchedules } = useScheduleStore()
 
-  const [schedules, setSchedules] = useState<ScheduleOfDate[]>([])
   const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  const { getDate, getStringToDate } = dateFormatUtil
 
   const calculatedMonthlyCalendar: Calendar | null = useMemo(() => {
     if (!calendar) return null
+
     const copy: Calendar = Object.assign(calendar)
+
+    let schedulesOfDate = schedules
+      .sort((a, b) => (getStringToDate(a.startedAt).isAfter(getStringToDate(b.startedAt)) ? 1 : -1))
+      .map((schedule, index) => schedule.getScheduleOfDateList(index + 1))
+      .flatMap(schedules => schedules)
+
     let prevSchedules: ScheduleOfDate[] = []
+
     copy.dates.forEach(date => {
       const resultSchedules = []
-      const targetSchedules: ScheduleOfDate[] = schedules.filter(
+      const targetSchedules: ScheduleOfDate[] = schedulesOfDate.filter(
         schedule =>
           schedule.year == date.year && schedule.month == date.month && schedule.day == date.day,
       )
+
       let prevIndex = 0
+
       targetSchedules.forEach(schedule => {
         const prevScheduleIndex = prevSchedules.findIndex(
           targetSchedule => targetSchedule != null && targetSchedule.id == schedule.id,
@@ -36,7 +50,6 @@ const useMonthlyCalendarViewModel = () => {
     })
     return copy
   }, [calendar, schedules])
-  const { getDate, getStringToDate } = dateFormatUtil
 
   const setMonthlyCalendar = async (year?: number, month?: number) => {
     const monthlyCalendar = await calendarRepository.getMonthlyCalendar({
@@ -46,18 +59,17 @@ const useMonthlyCalendarViewModel = () => {
 
     const scheduleList = await scheduleRepository.findAll()
 
-    const schedulesOfDate = scheduleList
-      .sort((a, b) => (getStringToDate(a.startedAt).isAfter(getStringToDate(b.startedAt)) ? 1 : -1))
-      .map((schedule, index) => schedule.getScheduleOfDateList(index + 1))
-      .flatMap(schedules => schedules)
+    setCalendar(monthlyCalendar)
 
-    setCalendar(() => monthlyCalendar)
-
-    setSchedules(() => schedulesOfDate)
+    setSchedules(scheduleList)
   }
 
   const init = async () => {
     await setMonthlyCalendar()
+  }
+
+  const refresh = async () => {
+    await setMonthlyCalendar(calendar.year, calendar.month)
   }
 
   const next = async () => {
@@ -79,9 +91,19 @@ const useMonthlyCalendarViewModel = () => {
   }
 
   const openPopup = () => setIsPopupOpen(() => true)
+
   const closePopup = () => setIsPopupOpen(() => false)
 
-  return { calculatedMonthlyCalendar, init, next, prev, isPopupOpen, openPopup, closePopup }
+  return {
+    calculatedMonthlyCalendar,
+    init,
+    refresh,
+    next,
+    prev,
+    isPopupOpen,
+    openPopup,
+    closePopup,
+  }
 }
 
 export default useMonthlyCalendarViewModel

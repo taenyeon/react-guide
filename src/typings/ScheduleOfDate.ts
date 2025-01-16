@@ -65,4 +65,10 @@ export class ScheduleOfDate {
   get endPercentage() {
     return ((this.endHour * 60 + this.endMinute) / 1440) * 100
   }
+
+  get isAllDay() {
+    return (
+      this.startHour == 0 && this.startMinute == 0 && this.endHour == 23 && this.endMinute == 59
+    )
+  }
 }
