@@ -7,6 +7,7 @@ type ScheduleRepository = {
   findAll: () => Promise<Schedule[]>
   add: (schedule: Schedule) => Promise<null | number>
   delete: (id: number) => Promise<void>
+  modify: (id: number, schedule: Schedule) => Promise<void>
 }
 
 const scheduleRepository: ScheduleRepository = {
@@ -30,6 +31,12 @@ const scheduleRepository: ScheduleRepository = {
   delete: async id => {
     const apiResponse: ApiResponse<null> = new ApiResponse<null>().parseData(
       await api().delete(`schedule/${id}`),
+    )
+    if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
+  },
+  modify: async (id, schedule) => {
+    const apiResponse: ApiResponse<null> = new ApiResponse<null>().parseData(
+      await api().put(`schedule/${id}`, schedule),
     )
     if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
   },

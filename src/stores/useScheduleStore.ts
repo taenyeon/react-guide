@@ -6,6 +6,7 @@ interface ScheduleStore {
   setSchedules: (schedules: Schedule[]) => void
   addSchedules: (schedule: Schedule) => void
   deleteSchedules: (id: number) => void
+  modifySchedules: (id: number, schedule: Schedule) => void
 }
 
 const useScheduleStore = create<ScheduleStore>(set => ({
@@ -14,6 +15,13 @@ const useScheduleStore = create<ScheduleStore>(set => ({
   addSchedules: schedule => set(state => ({ schedules: [...state.schedules, schedule] })),
   deleteSchedules: id =>
     set(state => ({ schedules: [...state.schedules.filter(schedule => schedule.id != id)] })),
+  modifySchedules: (id, schedule) => {
+    set(state => ({
+      schedules: state.schedules.map(stateSchedule =>
+        stateSchedule.id == id ? schedule : stateSchedule,
+      ),
+    }))
+  },
 }))
 
 export default useScheduleStore

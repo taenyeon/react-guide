@@ -3,7 +3,7 @@ import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import { DateOfCalendar } from '@typings/DateOfCalendar'
 import dayjs from 'dayjs'
 import MonthlyCalendarSchedule from '@views/calendar/components/monthlyCalendarSchedule/MonthlyCalendarSchedule'
-import useSelectedDateStore from '@stores/useSelectedDateStore'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 
 interface MonthlyCalendarDateProps {
   date: DateOfCalendar
@@ -12,7 +12,7 @@ interface MonthlyCalendarDateProps {
 }
 
 const MonthlyCalendarDate: React.FC<MonthlyCalendarDateProps> = ({ date, now, isOtherMonth }) => {
-  const { selectDate } = useSelectedDateStore()
+  const { selectDate } = useCalendarSelectStore()
   let colorClass = ''
   if (date.isHoliday) colorClass = 'monthly-calendar__cell--holiday'
   if (date.isSaturday) colorClass = 'monthly-calendar__cell--saturday'

@@ -14,6 +14,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
     handleMove,
     handleEnd,
     deleteSchedule,
+    openScheduleModifyPopup,
   } = useMonthlyCalendarDatePopupViewModel()
 
   const { getTime } = dateFormatUtil
@@ -84,7 +85,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
                   <div className="date-popup__schedule-actions">
                     <button
                       className="date-popup__actions__button date-popup__actions__button--edit"
-                      onClick={() => console.log('수정 버튼 클릭:', swipedSchedule)}>
+                      onClick={() => openScheduleModifyPopup(schedule.id)}>
                       수정
                     </button>
                     <button

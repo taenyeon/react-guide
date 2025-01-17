@@ -1,17 +1,17 @@
 import { KeyboardEvent, useState } from 'react'
-import useSelectedDateStore from '@stores/useSelectedDateStore'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import useScheduleStore from '@stores/useScheduleStore'
 import scheduleRepository from '@repositories/ScheduleRepository'
 
 const useMonthlyCalendarDatePopupViewModel = () => {
-  const { selectedDate, unselectDate } = useSelectedDateStore()
-  const { deleteSchedules } = useScheduleStore()
+  const { selectedDate, unselectDate, selectSchedule } = useCalendarSelectStore()
+  const { schedules, deleteSchedules } = useScheduleStore()
   const [swipedSchedule, setSwipedSchedule] = useState<number | null>(null)
   const [startX, setStartX] = useState(0)
   const [endX, setEndX] = useState(0)
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key == 'Escape') unselectDate()
+    if (event.key == 'Escape') onClose()
   }
 
   const handleStart = (clientX: number) => {
@@ -49,6 +49,9 @@ const useMonthlyCalendarDatePopupViewModel = () => {
     deleteSchedules(id)
   }
 
+  const openScheduleModifyPopup = (id: number) =>
+    selectSchedule(schedules.find(schedule => schedule.id == id))
+
   return {
     selectedDate,
     swipedSchedule,
@@ -59,6 +62,7 @@ const useMonthlyCalendarDatePopupViewModel = () => {
     handleMove,
     handleEnd,
     deleteSchedule,
+    openScheduleModifyPopup,
   }
 }
 

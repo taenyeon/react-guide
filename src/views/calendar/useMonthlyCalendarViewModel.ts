@@ -6,10 +6,12 @@ import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import scheduleRepository from '@repositories/ScheduleRepository'
 import useCalendarStore from '@stores/useCalendarStore'
 import useScheduleStore from '@stores/useScheduleStore'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 
 const useMonthlyCalendarViewModel = () => {
   const { calendar, setCalendar } = useCalendarStore()
   const { schedules, setSchedules } = useScheduleStore()
+  const { selectedDate, selectedSchedule } = useCalendarSelectStore()
 
   const [isPopupOpen, setIsPopupOpen] = useState(false)
 
@@ -96,11 +98,13 @@ const useMonthlyCalendarViewModel = () => {
 
   return {
     calculatedMonthlyCalendar,
+    selectedDate,
+    selectedSchedule,
+    isPopupOpen,
     init,
     refresh,
     next,
     prev,
-    isPopupOpen,
     openPopup,
     closePopup,
   }

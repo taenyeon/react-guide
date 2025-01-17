@@ -4,14 +4,17 @@ import './monthlyCalendarPage.scss'
 import MonthlyCalendarBody from '@views/calendar/components/monthlyCalendarBody/MonthlyCalendarBody'
 import MonthlyCalendarAddPopup from '@views/calendar/components/monthlyCalendarAddPopup/MonthlyCalendarAddPopup'
 import MonthlyCalendarDatePopup from '@views/calendar/components/monthlyCalendarDatePopup/MonthlyCalendarDatePopup'
+import MonthlyCalendarModifyPopup from '@views/calendar/components/monthlyCalendarModifyPopup/MonthlyCalendarModifyPopup'
 
 const MonthlyCalendarPage: React.FC = () => {
   const {
     calculatedMonthlyCalendar: calendar,
+    selectedDate,
+    selectedSchedule,
+    isPopupOpen,
     init,
     next,
     prev,
-    isPopupOpen,
     openPopup,
     closePopup,
   } = useMonthlyCalendarViewModel()
@@ -43,7 +46,8 @@ const MonthlyCalendarPage: React.FC = () => {
         </div>
         <MonthlyCalendarBody calendar={calendar} />
         <MonthlyCalendarAddPopup isOpen={isPopupOpen} onClose={closePopup} />
-        <MonthlyCalendarDatePopup />
+        {selectedDate && <MonthlyCalendarDatePopup />}
+        {selectedSchedule && <MonthlyCalendarModifyPopup />}
       </div>
     </>
   )

@@ -105,12 +105,24 @@ const ScheduleHandlers = [
     return HttpResponse.json(new ApiResponse<number>().build(apiCode.SUCCESS, id))
   }),
 
-  http.delete<{ id: string }, null, null>('/schedule/:id', async ({ params }) => {
+  http.delete<{ id: string }, null, null>('/schedule/:id', ({ params }) => {
     const id = Number(params.id)
     if (!id)
       return HttpResponse.json(new ApiResponse<null>().build(apiCode.INVALID_REQUEST_PARAM, null))
     schedules = schedules.filter(schedule => schedule.id != id)
     return HttpResponse.json(new ApiResponse<number>().build(apiCode.SUCCESS, id))
+  }),
+
+  http.put<{ id: string }, Schedule, null>('/schedule/:id', async ({ params, request }) => {
+    const id = Number(params.id)
+    const schedule = await request.json()
+    if (!id || !schedule)
+      return HttpResponse.json(new ApiResponse<null>().build(apiCode.INVALID_REQUEST_PARAM, null))
+
+    schedules = schedules.map(stateSchedules =>
+      stateSchedules.id == id ? schedule : stateSchedules,
+    )
+    return HttpResponse.json(new ApiResponse<null>().build(apiCode.SUCCESS, null))
   }),
 ]
 
