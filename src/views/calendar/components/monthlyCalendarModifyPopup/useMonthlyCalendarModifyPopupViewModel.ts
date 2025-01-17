@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { KeyboardEvent, useState } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { Schedule } from '@typings/Schedule'
 import useScheduleStore from '@stores/useScheduleStore'
@@ -41,6 +41,16 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
       error: '',
     }
   })
+
+  const handleKeyDown = (evt: KeyboardEvent) => {
+    if (evt.key == 'Escape') unselectSchedule()
+  }
+
+  const setEvent = () =>
+    window.addEventListener('keydown', handleKeyDown as unknown as EventListener)
+
+  const removeEvent = () =>
+    window.removeEventListener('keydown', handleKeyDown as unknown as EventListener)
 
   const inputTitle = (state: string) =>
     setTitle(prevState => {
@@ -148,6 +158,8 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
     startedAt,
     endedAt,
     selectedSchedule,
+    setEvent,
+    removeEvent,
     inputTitle,
     inputContents,
     inputStartedAt,

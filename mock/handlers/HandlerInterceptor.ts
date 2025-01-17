@@ -10,7 +10,7 @@ const unauthorizedUrls = ['/login', '/src']
 
 const HandlerInterceptor = http.all('*', async ({ request }) => {
   // delay
-  await delay(300)
+  await delay(100)
 
   // authorization interceptor
   if (isAuthorizationRequired(request.url)) {

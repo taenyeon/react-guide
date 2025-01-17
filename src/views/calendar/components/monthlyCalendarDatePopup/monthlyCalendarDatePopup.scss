@@ -157,4 +157,45 @@
     font-size: 1.25rem;
     cursor: pointer;
   }
+
+  &__empty {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(
+                    90deg,
+                    red,
+                    orange,
+                    yellow,
+                    white, /* 밝은 색 추가 */
+                    green,
+                    white, /* 밝은 색 추가 */
+                    blue,
+                    indigo,
+                    violet
+    );
+    background-size: 400% 100%; /* 배경 크기를 더 확장 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow-sparkle 3s ease-in-out infinite;
+  }
+}
+
+
+@keyframes rainbow-sparkle {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

@@ -33,9 +33,11 @@ const useMonthlyCalendarDatePopupViewModel = () => {
     }
   }
 
-  const setEvent = () => window.addEventListener('keydown', handleKeyDown)
+  const setEvent = () =>
+    window.addEventListener('keydown', handleKeyDown as unknown as EventListener)
 
-  const removeEvent = () => window.removeEventListener('keydown', handleKeyDown)
+  const removeEvent = () =>
+    window.removeEventListener('keydown', handleKeyDown as unknown as EventListener)
 
   const onClose = () => {
     unselectDate()

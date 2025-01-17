@@ -48,6 +48,10 @@ const MonthlyCalendarDatePopup: React.FC = () => {
           {selectedDate.year}/{selectedDate.month}/{selectedDate.day}
         </h2>
 
+        {!selectedDate.schedules.length && (
+          <p className="date-popup__empty">Let's Add a schedule!</p>
+        )}
+
         <div className="date-popup__schedule-container">
           {selectedDate.schedules
             .filter(schedule => schedule != null)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './monthlyCalendarModifyPopup.scss'
 import useMonthlyCalendarModifyPopupViewModel from '@views/calendar/components/monthlyCalendarModifyPopup/useMonthlyCalendarModifyPopupViewModel'
 
@@ -16,6 +16,8 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
     contents,
     startedAt,
     endedAt,
+    setEvent,
+    removeEvent,
     inputTitle,
     inputContents,
     inputStartedAt,
@@ -23,6 +25,11 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
     modifySchedule,
     unselectSchedule,
   } = useMonthlyCalendarModifyPopupViewModel()
+
+  useEffect(() => {
+    setEvent()
+    return () => removeEvent()
+  }, [])
 
   return (
     <div className="modify-popup">
@@ -77,10 +84,10 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
               ))}
             </div>
           </fieldset>
-          <div>
+          <div className="modify-popup__button-container">
             <button
               type="button"
-              className="modify-popup__button"
+              className="modify-popup__button modify-popup__button--modify"
               onClick={async () => {
                 await modifySchedule()
                 unselectSchedule()
@@ -89,7 +96,7 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
             </button>
             <button
               type="button"
-              className="modify-popup__button"
+              className="modify-popup__button modify-popup__button--cancel"
               onClick={() => unselectSchedule()}>
               Cancel
             </button>
