@@ -1,40 +1,69 @@
-import React, { KeyboardEvent, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import './monthlyCalendarDatePopup.scss'
-import useCalendarStore from '@stores/useCalendarStore'
+import useMonthlyCalendarDatePopupViewModel from '@views/calendar/components/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
 
 const MonthlyCalendarDatePopup: React.FC = () => {
-  const { selectedDate, unselectDate } = useCalendarStore()
+  const {
+    selectedDate,
+    swipedSchedule,
+    onClose,
+    setEvent,
+    removeEvent,
+    handleStart,
+    handleMove,
+    handleEnd,
+    deleteSchedule,
+  } = useMonthlyCalendarDatePopupViewModel()
+
   const { getTime } = dateFormatUtil
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key == 'Escape') unselectDate()
-    }
-    window.addEventListener('keydown', handleKeyDown)
+    setEvent()
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
+      removeEvent()
     }
   }, [])
 
+  const formatContent = (content: string) => {
+    return content.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ))
+  }
+
   if (!selectedDate) return null
+
   return (
     <div className="date-popup">
-      <div className="date-popup__overlay" onClick={unselectDate}></div>
+      <div className="date-popup__overlay" onClick={onClose}></div>
       <div className="date-popup__content">
-        <button className="date-popup__close" onClick={unselectDate}>
+        <button className="date-popup__close" onClick={onClose}>
           &times;
         </button>
         <h2 className="date-popup__title">
           {selectedDate.year}/{selectedDate.month}/{selectedDate.day}
         </h2>
 
-        {selectedDate.schedules.length > 0 ? (
-          <div className="date-popup__schedule-container">
-            {selectedDate.schedules
-              .filter(schedule => schedule != null)
-              .map(schedule => (
-                <div className="date-popup__schedule" key={schedule.id}>
+        <div className="date-popup__schedule-container">
+          {selectedDate.schedules
+            .filter(schedule => schedule != null)
+            .map(schedule => (
+              <div className="date-popup__shedule-wrapper" key={schedule.id}>
+                <div
+                  className={`date-popup__schedule ${
+                    swipedSchedule === schedule.id ? 'date-popup__schedule--swiped' : ''
+                  }`}
+                  onTouchStart={event => handleStart(event.touches[0].clientX)}
+                  onTouchMove={event => handleMove(event.touches[0].clientX)}
+                  onTouchEnd={() => handleEnd(schedule.id)}
+                  onMouseDown={event => handleStart(event.clientX)}
+                  onMouseMove={event => {
+                    if (event.buttons === 1) handleMove(event.clientX) // 버튼을 누른 상태에서만
+                  }}
+                  onMouseUp={() => handleEnd(schedule.id)}>
                   <div className="date-popup__schedule-header">
                     <div className="date-popup__schedule-title">{schedule.title}</div>
                     <div className="date-popup__schedule-details">
@@ -47,13 +76,27 @@ const MonthlyCalendarDatePopup: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="date-popup__schedule-content">{schedule.contents}</div>
+                  <div className="date-popup__schedule-content">
+                    {formatContent(schedule.contents)}
+                  </div>
                 </div>
-              ))}
-          </div>
-        ) : (
-          <p>No schedules available</p>
-        )}
+                {swipedSchedule === schedule.id && (
+                  <div className="date-popup__schedule-actions">
+                    <button
+                      className="date-popup__actions__button date-popup__actions__button--edit"
+                      onClick={() => console.log('수정 버튼 클릭:', swipedSchedule)}>
+                      수정
+                    </button>
+                    <button
+                      className="date-popup__actions__button date-popup__actions__button--delete"
+                      onClick={() => deleteSchedule(schedule.id)}>
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   )

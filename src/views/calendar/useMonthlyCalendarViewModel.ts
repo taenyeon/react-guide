@@ -20,7 +20,7 @@ const useMonthlyCalendarViewModel = () => {
 
     const copy: Calendar = Object.assign(calendar)
 
-    let schedulesOfDate = schedules
+    const schedulesOfDate = schedules
       .sort((a, b) => (getStringToDate(a.startedAt).isAfter(getStringToDate(b.startedAt)) ? 1 : -1))
       .map((schedule, index) => schedule.getScheduleOfDateList(index + 1))
       .flatMap(schedules => schedules)

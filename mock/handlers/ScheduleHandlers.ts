@@ -3,7 +3,7 @@ import { ApiResponse } from '@utils/api/models/ApiResponse'
 import { Schedule } from '@typings/Schedule'
 import { apiCode } from '@utils/error/constant/ApiCode'
 
-const schedules = [
+let schedules = [
   new Schedule({
     id: 1,
     startedAt: '2025/01/06 00:00',
@@ -92,16 +92,25 @@ const ScheduleHandlers = [
     return HttpResponse.json(new ApiResponse<Schedule[]>().build(apiCode.SUCCESS, schedules))
   }),
 
-  http.post<never, Schedule, ApiResponse<null>>('/schedule', async ({ request }) => {
+  http.post<never, Schedule, ApiResponse<number | null>>('/schedule', async ({ request }) => {
     const schedule: Schedule = await request.json()
-    
+
     if (!schedule)
       return HttpResponse.json(new ApiResponse<null>().build(apiCode.INVALID_REQUEST_PARAM, null))
 
-    schedule.id = schedules.length + 1
+    const id = schedules.length + 1
+    schedule.id = id
     schedules.push(schedule)
 
-    return HttpResponse.json(new ApiResponse<null>().build(apiCode.SUCCESS, null))
+    return HttpResponse.json(new ApiResponse<number>().build(apiCode.SUCCESS, id))
+  }),
+
+  http.delete<{ id: string }, null, null>('/schedule/:id', async ({ params }) => {
+    const id = Number(params.id)
+    if (!id)
+      return HttpResponse.json(new ApiResponse<null>().build(apiCode.INVALID_REQUEST_PARAM, null))
+    schedules = schedules.filter(schedule => schedule.id != id)
+    return HttpResponse.json(new ApiResponse<number>().build(apiCode.SUCCESS, id))
   }),
 ]
 

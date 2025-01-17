@@ -181,8 +181,10 @@ const useMonthlyCalendarAddPopupViewModel = () => {
       updatedAt: getDateToString(now),
     })
     // add request
-    await scheduleRepository.add(schedule)
+    const id = await scheduleRepository.add(schedule)
     //
+    if (!id) return false
+    schedule.id = id
     addSchedules(schedule)
     init()
 
