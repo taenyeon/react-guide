@@ -1,62 +1,87 @@
-import { useState } from 'react'
+import { KeyboardEvent, useState } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { Schedule } from '@typings/Schedule'
 import scheduleRepository from '@repositories/ScheduleRepository'
 import useScheduleStore from '@stores/useScheduleStore'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
+import { useShallow } from 'zustand/react/shallow'
+
+interface AddScheduleTitle {
+  value: string
+  error: string
+}
+
+interface AddScheduleContent {
+  value: string
+  error: string
+}
+
+interface AddScheduleStartedAt {
+  value: {
+    year: number
+    month: number
+    day: number
+    hour: number
+    minute: number
+  }
+  error: string
+}
+
+interface AddScheduleEndedAt {
+  value: {
+    year: number
+    month: number
+    day: number
+    hour: number
+    minute: number
+  }
+  error: string
+}
 
 const useMonthlyCalendarAddPopupViewModel = () => {
   const { getDate, getDateToString } = dateFormatUtil
-  const { addSchedules } = useScheduleStore()
-  const [title, setTitle] = useState({ value: '', error: '' })
-  const [contents, setContents] = useState({ value: '', error: '' })
-  const [startedAt, setStartedAt] = useState(
-    (): {
-      value: {
-        year: number
-        month: number
-        day: number
-        hour: number
-        minute: number
-      }
-      error: string
-    } => {
-      const now = getDate()
-      return {
-        value: {
-          year: now.year(),
-          month: now.month() + 1,
-          day: now.date(),
-          hour: now.hour(),
-          minute: 0,
-        },
-        error: '',
-      }
-    },
+
+  const { isOpenAddPopup, closeAddPopup } = useCalendarSelectStore(
+    useShallow(state => ({
+      isOpenAddPopup: state.isOpenAddPopup,
+      openAddPopup: state.openAddPopup,
+      closeAddPopup: state.closeAddPopup,
+    })),
   )
-  const [endedAt, setEndedAt] = useState(
-    (): {
+
+  const addSchedules = useScheduleStore(state => state.addSchedules)
+
+  const [title, setTitle] = useState<AddScheduleTitle>({ value: '', error: '' })
+
+  const [contents, setContents] = useState<AddScheduleContent>({ value: '', error: '' })
+
+  const [startedAt, setStartedAt] = useState<AddScheduleStartedAt>(() => {
+    const now = getDate()
+    return {
       value: {
-        year: number
-        month: number
-        day: number
-        hour: number
-        minute: number
-      }
-      error: string
-    } => {
-      const now = getDate().add(1, 'hour')
-      return {
-        value: {
-          year: now.year(),
-          month: now.month() + 1,
-          day: now.date(),
-          hour: now.hour(),
-          minute: 0,
-        },
-        error: '',
-      }
-    },
-  )
+        year: now.year(),
+        month: now.month() + 1,
+        day: now.date(),
+        hour: now.hour(),
+        minute: 0,
+      },
+      error: '',
+    }
+  })
+
+  const [endedAt, setEndedAt] = useState<AddScheduleEndedAt>(() => {
+    const now = getDate().add(1, 'hour')
+    return {
+      value: {
+        year: now.year(),
+        month: now.month() + 1,
+        day: now.date(),
+        hour: now.hour(),
+        minute: 0,
+      },
+      error: '',
+    }
+  })
 
   const init = () => {
     const start = getDate()
@@ -191,17 +216,31 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     return true
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key == 'Escape') closeAddPopup()
+  }
+
+  const setEvent = () =>
+    window.addEventListener('keydown', handleKeyDown as unknown as EventListener)
+
+  const removeEvent = () =>
+    window.removeEventListener('keydown', handleKeyDown as unknown as EventListener)
+
   return {
+    isOpenAddPopup,
     title,
     contents,
     startedAt,
     endedAt,
     init,
+    closeAddPopup,
     inputTitle,
     inputContents,
     inputStartedAt,
     inputEndedAt,
     addSchedule,
+    setEvent,
+    removeEvent,
   }
 }
 

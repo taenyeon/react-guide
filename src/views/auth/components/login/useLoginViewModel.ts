@@ -8,8 +8,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const useLoginViewModel = () => {
-  const { setLoading, setAuthorization, setError } = useAuthStore()
   const navigate = useNavigate()
+
+  const { setLoading, setAuthorization, setError } = useAuthStore(state => ({
+    setLoading: state.setLoading,
+    setAuthorization: state.setAuthorization,
+    setError: state.setError,
+  }))
 
   const [username, setUsername] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })

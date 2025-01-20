@@ -2,21 +2,15 @@ import React, { useEffect } from 'react'
 import useMonthlyCalendarViewModel from '@views/calendar/useMonthlyCalendarViewModel'
 import './monthlyCalendarPage.scss'
 import MonthlyCalendarBody from '@views/calendar/components/monthlyCalendarBody/MonthlyCalendarBody'
-import MonthlyCalendarAddPopup from '@views/calendar/components/monthlyCalendarAddPopup/MonthlyCalendarAddPopup'
-import MonthlyCalendarDatePopup from '@views/calendar/components/monthlyCalendarDatePopup/MonthlyCalendarDatePopup'
-import MonthlyCalendarModifyPopup from '@views/calendar/components/monthlyCalendarModifyPopup/MonthlyCalendarModifyPopup'
+import MonthlyCalendarPopups from '@views/calendar/components/popup/MonthlyCalendarPopups'
 
 const MonthlyCalendarPage: React.FC = () => {
   const {
     calculatedMonthlyCalendar: calendar,
-    selectedDate,
-    selectedSchedule,
-    isPopupOpen,
     init,
     next,
     prev,
-    openPopup,
-    closePopup,
+    openAddPopup,
   } = useMonthlyCalendarViewModel()
 
   useEffect(() => {
@@ -40,14 +34,12 @@ const MonthlyCalendarPage: React.FC = () => {
           </button>
         </div>
         <div className="monthly-calendar__add">
-          <button className="monthly-calendar__button" onClick={openPopup}>
+          <button className="monthly-calendar__button" onClick={openAddPopup}>
             add Schedule
           </button>
         </div>
         <MonthlyCalendarBody calendar={calendar} />
-        <MonthlyCalendarAddPopup isOpen={isPopupOpen} onClose={closePopup} />
-        {selectedDate && <MonthlyCalendarDatePopup />}
-        {selectedSchedule && <MonthlyCalendarModifyPopup />}
+        <MonthlyCalendarPopups />
       </div>
     </>
   )

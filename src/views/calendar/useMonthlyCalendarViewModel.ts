@@ -1,19 +1,30 @@
 import calendarRepository from '@repositories/CalendarRepository'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Calendar } from '@typings/Calendar'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import scheduleRepository from '@repositories/ScheduleRepository'
 import useCalendarStore from '@stores/useCalendarStore'
 import useScheduleStore from '@stores/useScheduleStore'
+import { useShallow } from 'zustand/react/shallow'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 
 const useMonthlyCalendarViewModel = () => {
-  const { calendar, setCalendar } = useCalendarStore()
-  const { schedules, setSchedules } = useScheduleStore()
-  const { selectedDate, selectedSchedule } = useCalendarSelectStore()
+  const { calendar, setCalendar } = useCalendarStore(
+    useShallow(state => ({
+      calendar: state.calendar,
+      setCalendar: state.setCalendar,
+    })),
+  )
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const { schedules, setSchedules } = useScheduleStore(
+    useShallow(state => ({
+      schedules: state.schedules,
+      setSchedules: state.setSchedules,
+    })),
+  )
+
+  const openAddPopup = useCalendarSelectStore(state => state.openAddPopup)
 
   const { getDate, getStringToDate } = dateFormatUtil
 
@@ -30,7 +41,7 @@ const useMonthlyCalendarViewModel = () => {
     let prevSchedules: ScheduleOfDate[] = []
 
     copy.dates.forEach(date => {
-      const resultSchedules = []
+      const resultSchedules: ScheduleOfDate[] = []
       const targetSchedules: ScheduleOfDate[] = schedulesOfDate.filter(
         schedule =>
           schedule.year == date.year && schedule.month == date.month && schedule.day == date.day,
@@ -38,18 +49,37 @@ const useMonthlyCalendarViewModel = () => {
 
       let prevIndex = 0
 
+      // 빈 요소 채우기 (null) => 화면에서 사용 할 경우, null 값에 대한 대응 필요.
       targetSchedules.forEach(schedule => {
         const prevScheduleIndex = prevSchedules.findIndex(
           targetSchedule => targetSchedule != null && targetSchedule.id == schedule.id,
         )
         for (let i = prevIndex; i < prevScheduleIndex; i++) resultSchedules.push(null)
 
-        resultSchedules.push(schedule)
         prevIndex = prevScheduleIndex + 1
       })
+
+      // 일정 세팅
+      targetSchedules.forEach(schedule => {
+        const prevScheduleIndex = prevSchedules.findIndex(
+          targetSchedule => targetSchedule != null && targetSchedule.id == schedule.id,
+        )
+        if (prevScheduleIndex != -1) {
+          resultSchedules[prevScheduleIndex] = schedule
+        } else {
+          const nullIndex = resultSchedules.findIndex(targetSchedule => targetSchedule == null)
+          if (nullIndex != -1) {
+            resultSchedules[nullIndex] = schedule
+          } else {
+            resultSchedules.push(schedule)
+          }
+        }
+      })
+
       prevSchedules = resultSchedules
       date.schedules = resultSchedules
     })
+
     return copy
   }, [calendar, schedules])
 
@@ -92,21 +122,13 @@ const useMonthlyCalendarViewModel = () => {
     await setMonthlyCalendar(prevMonth.year(), prevMonth.month() + 1)
   }
 
-  const openPopup = () => setIsPopupOpen(() => true)
-
-  const closePopup = () => setIsPopupOpen(() => false)
-
   return {
     calculatedMonthlyCalendar,
-    selectedDate,
-    selectedSchedule,
-    isPopupOpen,
     init,
     refresh,
     next,
     prev,
-    openPopup,
-    closePopup,
+    openAddPopup,
   }
 }
 

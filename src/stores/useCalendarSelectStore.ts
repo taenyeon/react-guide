@@ -5,6 +5,9 @@ import { Schedule } from '@typings/Schedule'
 interface SelectedDateStore {
   selectedDate: null | DateOfCalendar
   selectedSchedule: null | Schedule
+  isOpenAddPopup: boolean
+  openAddPopup: () => void
+  closeAddPopup: () => void
   selectDate: (selectedDate: DateOfCalendar) => void
   unselectDate: () => void
   selectSchedule: (selectedSchedule: Schedule) => void
@@ -15,6 +18,9 @@ interface SelectedDateStore {
 const useCalendarSelectStore = create<SelectedDateStore>(set => ({
   selectedDate: null,
   selectedSchedule: null,
+  isOpenAddPopup: false,
+  openAddPopup: () => set({ isOpenAddPopup: true }),
+  closeAddPopup: () => set({ isOpenAddPopup: false }),
   selectDate: selectedDate => set({ selectedDate }),
   unselectDate: () => set({ selectedDate: null }),
   selectSchedule: selectedSchedule => set({ selectedSchedule }),

@@ -18,6 +18,14 @@
   &__day {
     padding: 10px;
     border: 1px solid #ddd;
+
+    &--holiday {
+      color: red;
+    }
+
+    &--saturday {
+      color: blue;
+    }
   }
 
   &__body {
@@ -30,7 +38,6 @@
     min-height: 15vh;
     display: flex;
     padding-top: 15px;
-    padding-bottom: 15px;
     background-color: #fff;
     border: 1px solid #ddd;
     flex-direction: column;
@@ -60,6 +67,14 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    position: relative;
+  }
+
+  &__more-dots {
+    font-size: 0.85rem;
+    color: #007bff;
+    text-align: center;
+    padding-bottom: 5px;
   }
 
   &__schedule-empty {

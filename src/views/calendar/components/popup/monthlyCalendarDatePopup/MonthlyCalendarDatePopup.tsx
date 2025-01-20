@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import './monthlyCalendarDatePopup.scss'
-import useMonthlyCalendarDatePopupViewModel from '@views/calendar/components/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
+import useMonthlyCalendarDatePopupViewModel from '@views/calendar/components/popup/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
 
 const MonthlyCalendarDatePopup: React.FC = () => {
   const {

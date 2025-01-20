@@ -19,6 +19,9 @@ export class ScheduleOfDate {
   isStart: boolean = false
   isEnd: boolean = false
 
+  startedAt: string
+  endedAt: string
+
   createdAt: string
   updatedAt: string
 
@@ -36,6 +39,8 @@ export class ScheduleOfDate {
     isMultiple: boolean,
     createdAt: string,
     updatedAt: string,
+    startedAt: string,
+    endedAt: string,
     order?: number,
     isStart?: boolean,
     isEnd?: boolean,
@@ -53,6 +58,8 @@ export class ScheduleOfDate {
     this.isMultiple = isMultiple
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.startedAt = startedAt
+    this.endedAt = endedAt
     if (order) this.order = order
     if (isStart) this.isStart = isStart
     if (isEnd) this.isEnd = isEnd

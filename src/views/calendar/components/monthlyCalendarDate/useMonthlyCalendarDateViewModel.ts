@@ -5,7 +5,7 @@ const useMonthlyCalendarDateViewModel = () => {
 
   const openPopup = () => setIsPopupOpen(() => true)
 
-  const closePopup = () => setIsPopupOpen(prevState => false)
+  const closePopup = () => setIsPopupOpen(() => false)
 
   return {
     isPopupOpen,

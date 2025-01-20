@@ -4,11 +4,19 @@ import { Schedule } from '@typings/Schedule'
 import useScheduleStore from '@stores/useScheduleStore'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import scheduleRepository from '@repositories/ScheduleRepository'
+import { useShallow } from 'zustand/react/shallow'
 
 const useMonthlyCalendarModifyPopupViewModel = () => {
   const { getDate, getDateToString, getStringToDate } = dateFormatUtil
-  const { modifySchedules } = useScheduleStore()
-  const { selectedSchedule, unselectSchedule } = useCalendarSelectStore()
+
+  const modifySchedules = useScheduleStore(state => state.modifySchedules)
+
+  const { selectedSchedule, unselectSchedule } = useCalendarSelectStore(
+    useShallow(state => ({
+      selectedSchedule: state.selectedSchedule,
+      unselectSchedule: state.unselectSchedule,
+    })),
+  )
 
   const [title, setTitle] = useState({ value: selectedSchedule.title || '', error: '' })
 

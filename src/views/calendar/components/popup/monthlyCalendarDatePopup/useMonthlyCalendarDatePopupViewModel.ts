@@ -2,12 +2,28 @@ import { KeyboardEvent, useState } from 'react'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import useScheduleStore from '@stores/useScheduleStore'
 import scheduleRepository from '@repositories/ScheduleRepository'
+import { useShallow } from 'zustand/react/shallow'
 
 const useMonthlyCalendarDatePopupViewModel = () => {
-  const { selectedDate, unselectDate, selectSchedule } = useCalendarSelectStore()
-  const { schedules, deleteSchedules } = useScheduleStore()
+  const { selectedDate, unselectDate, selectSchedule } = useCalendarSelectStore(
+    useShallow(state => ({
+      selectedDate: state.selectedDate,
+      unselectDate: state.unselectDate,
+      selectSchedule: state.selectSchedule,
+    })),
+  )
+
+  const { schedules, deleteSchedules } = useScheduleStore(
+    useShallow(state => ({
+      schedules: state.schedules,
+      deleteSchedules: state.deleteSchedules,
+    })),
+  )
+
   const [swipedSchedule, setSwipedSchedule] = useState<number | null>(null)
+
   const [startX, setStartX] = useState(0)
+
   const [endX, setEndX] = useState(0)
 
   const handleKeyDown = (event: KeyboardEvent) => {

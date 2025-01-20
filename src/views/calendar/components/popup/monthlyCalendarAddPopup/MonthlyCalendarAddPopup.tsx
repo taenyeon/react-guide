@@ -1,13 +1,8 @@
-import React from 'react'
-import useMonthlyCalendarAddPopupViewModel from '@views/calendar/components/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
+import React, { useEffect } from 'react'
+import useMonthlyCalendarAddPopupViewModel from '@views/calendar/components/popup/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
 import './monthlyCalendarAddPopup.scss'
 
-interface MonthlyCalendarAddPopupProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-const MonthlyCalendarAddPopup: React.FC<MonthlyCalendarAddPopupProps> = ({ isOpen, onClose }) => {
+const MonthlyCalendarAddPopup: React.FC = () => {
   const dateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [
     'year',
     'month',
@@ -16,22 +11,31 @@ const MonthlyCalendarAddPopup: React.FC<MonthlyCalendarAddPopupProps> = ({ isOpe
     'minute',
   ]
   const {
+    isOpenAddPopup,
     title,
     contents,
     startedAt,
     endedAt,
+    closeAddPopup,
     inputTitle,
     inputContents,
     inputStartedAt,
     inputEndedAt,
     addSchedule,
+    setEvent,
+    removeEvent,
   } = useMonthlyCalendarAddPopupViewModel()
 
-  if (!isOpen) return null
+  useEffect(() => {
+    setEvent()
+    return () => removeEvent()
+  }, [])
+
+  if (!isOpenAddPopup) return null
 
   return (
     <div className="popup">
-      <div className="popup__overlay" onClick={() => onClose()}></div>
+      <div className="popup__overlay" onClick={closeAddPopup}></div>
       <div className="popup__content">
         <h2 className="popup__title">Add Schedule</h2>
         <form className="popup__form">
@@ -87,12 +91,12 @@ const MonthlyCalendarAddPopup: React.FC<MonthlyCalendarAddPopupProps> = ({ isOpe
             className="popup__button"
             onClick={async () => {
               await addSchedule()
-              onClose()
+              closeAddPopup()
             }}>
             Submit
           </button>
         </form>
-        <button className="popup__close" onClick={onClose}>
+        <button className="popup__close" onClick={closeAddPopup}>
           ×
         </button>
       </div>

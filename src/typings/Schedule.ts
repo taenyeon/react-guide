@@ -50,6 +50,8 @@ export class Schedule {
           false,
           this.createdAt,
           this.updatedAt,
+          this.startedAt,
+          this.endedAt,
         ),
       ] as ScheduleOfDate[]
     }
@@ -107,6 +109,8 @@ export class Schedule {
           true,
           this.createdAt,
           this.updatedAt,
+          this.startedAt,
+          this.endedAt,
           index,
         ),
       )

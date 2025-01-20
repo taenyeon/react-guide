@@ -11,14 +11,19 @@ interface MonthlyCalendarBodyProps {
 const MonthlyCalendarBody: React.FC<MonthlyCalendarBodyProps> = ({ calendar }) => {
   const weekDays = Object.values(weekday).map(value => value.desc)
   const now = dateFormatUtil.getDate()
+  const getColorClass = (weekday: string) => {
+    if (weekday == 'SUN') return 'monthly-calendar__day--holiday'
+    if (weekday == 'SAT') return 'monthly-calendar__day--saturday'
+    return ''
+  }
   return (
     <>
       <div className="monthly-calendar__header">
         {weekDays.map((weekday, index) => (
           <div
             key={index}
-            className="monthly-calendar__day"
-            style={{ color: weekday == 'SUN' ? 'red' : '' }}>
+            className={`monthly-calendar__day ${getColorClass(weekday)}`}
+            style={{ color: getColorClass(weekday) }}>
             {weekday}
           </div>
         ))}

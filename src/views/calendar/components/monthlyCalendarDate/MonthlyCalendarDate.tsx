@@ -12,11 +12,15 @@ interface MonthlyCalendarDateProps {
 }
 
 const MonthlyCalendarDate: React.FC<MonthlyCalendarDateProps> = ({ date, now, isOtherMonth }) => {
-  const { selectDate } = useCalendarSelectStore()
+  const selectDate = useCalendarSelectStore(state => state.selectDate)
   let colorClass = ''
   if (date.isHoliday) colorClass = 'monthly-calendar__cell--holiday'
   if (date.isSaturday) colorClass = 'monthly-calendar__cell--saturday'
   if (isOtherMonth) colorClass = 'monthly-calendar__cell--other-month'
+  const schedules = date.schedules.filter(schedule => schedule != null)
+  const hasMoreSchedules = schedules.length > 3
+
+  const maxSchedules = date.schedules.slice(0, 3)
 
   return (
     <>
@@ -29,9 +33,10 @@ const MonthlyCalendarDate: React.FC<MonthlyCalendarDateProps> = ({ date, now, is
           )}
         </div>
         <div className={'monthly-calendar__cell-schedules'}>
-          {date.schedules.map((schedule: ScheduleOfDate | null, index) => {
+          {maxSchedules.map((schedule: ScheduleOfDate | null, index) => {
             return <MonthlyCalendarSchedule key={index} schedule={schedule} />
           })}
+          {hasMoreSchedules && <div className="monthly-calendar__more-dots">•••</div>}
         </div>
       </div>
     </>

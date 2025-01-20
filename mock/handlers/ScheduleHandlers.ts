@@ -34,7 +34,7 @@ let schedules = [
   new Schedule({
     id: 4,
     startedAt: '2025/01/05 04:00',
-    endedAt: '2025/01/10 23:00',
+    endedAt: '2025/01/05 23:00',
     title: 'test4',
     contents: 'test4',
     createdAt: '2025/01/06 15:00:00',
