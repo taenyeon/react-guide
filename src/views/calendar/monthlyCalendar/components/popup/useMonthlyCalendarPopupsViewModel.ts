@@ -2,16 +2,16 @@ import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import { useShallow } from 'zustand/react/shallow'
 
 const useMonthlyCalendarPopupsViewModel = () => {
-  const { selectedDate, selectedSchedule, isOpenAddPopup } = useCalendarSelectStore(
+  const { selectedDateIndex, selectedSchedule, isOpenAddPopup } = useCalendarSelectStore(
     useShallow(state => ({
-      selectedDate: state.selectedDate,
+      selectedDateIndex: state.selectedDateIndex,
       selectedSchedule: state.selectedSchedule,
       isOpenAddPopup: state.isOpenAddPopup,
     })),
   )
 
   return {
-    selectedDate,
+    selectedDateIndex,
     selectedSchedule,
     isOpenAddPopup,
   }

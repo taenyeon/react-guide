@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import useMonthlyCalendarAddPopupViewModel from '@views/calendar/components/popup/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
 import './monthlyCalendarAddPopup.scss'
+import useMonthlyCalendarAddPopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
 
 const MonthlyCalendarAddPopup: React.FC = () => {
   const dateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [
@@ -17,6 +17,8 @@ const MonthlyCalendarAddPopup: React.FC = () => {
     startedAt,
     endedAt,
     closeAddPopup,
+    currentDate,
+    init,
     inputTitle,
     inputContents,
     inputStartedAt,
@@ -28,8 +30,9 @@ const MonthlyCalendarAddPopup: React.FC = () => {
 
   useEffect(() => {
     setEvent()
+    init()
     return () => removeEvent()
-  }, [])
+  }, [currentDate])
 
   if (!isOpenAddPopup) return null
 

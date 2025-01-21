@@ -5,7 +5,7 @@ export class Calendar {
   year: number
   month: number | null
   day: number | null
-  type: CalendarDateType = calendarDateType.YEARLY
+  type: CalendarDateType = calendarDateType.MONTHLY
   dates: DateOfCalendar[]
 
   constructor(date: { year: number; month?: number; day?: number }) {

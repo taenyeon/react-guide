@@ -41,10 +41,10 @@ interface AddScheduleEndedAt {
 const useMonthlyCalendarAddPopupViewModel = () => {
   const { getDate, getDateToString } = dateFormatUtil
 
-  const { isOpenAddPopup, closeAddPopup } = useCalendarSelectStore(
+  const { isOpenAddPopup, currentDate, closeAddPopup } = useCalendarSelectStore(
     useShallow(state => ({
       isOpenAddPopup: state.isOpenAddPopup,
-      openAddPopup: state.openAddPopup,
+      currentDate: state.currentDate,
       closeAddPopup: state.closeAddPopup,
     })),
   )
@@ -84,7 +84,11 @@ const useMonthlyCalendarAddPopupViewModel = () => {
   })
 
   const init = () => {
-    const start = getDate()
+    const start = getDate({
+      year: currentDate.year,
+      month: currentDate.month,
+      day: currentDate.day,
+    })
     const end = start.add(1, 'hour')
     setTitle({ value: '', error: '' })
     setContents({ value: '', error: '' })
@@ -232,8 +236,9 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     contents,
     startedAt,
     endedAt,
-    init,
     closeAddPopup,
+    currentDate,
+    init,
     inputTitle,
     inputContents,
     inputStartedAt,

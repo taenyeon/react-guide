@@ -10,6 +10,8 @@ import { useShallow } from 'zustand/react/shallow'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 
 const useMonthlyCalendarViewModel = () => {
+  const currentDate = useCalendarSelectStore(useShallow(state => state.currentDate))
+
   const { calendar, setCalendar } = useCalendarStore(
     useShallow(state => ({
       calendar: state.calendar,
@@ -24,9 +26,7 @@ const useMonthlyCalendarViewModel = () => {
     })),
   )
 
-  const openAddPopup = useCalendarSelectStore(state => state.openAddPopup)
-
-  const { getDate, getStringToDate } = dateFormatUtil
+  const { getStringToDate } = dateFormatUtil
 
   const calculatedMonthlyCalendar: Calendar | null = useMemo(() => {
     if (!calendar) return null
@@ -83,10 +83,10 @@ const useMonthlyCalendarViewModel = () => {
     return copy
   }, [calendar, schedules])
 
-  const setMonthlyCalendar = async (year?: number, month?: number) => {
+  const setMonthlyCalendar = async () => {
     const monthlyCalendar = await calendarRepository.getMonthlyCalendar({
-      year: year,
-      month: month,
+      year: currentDate.year,
+      month: currentDate.month,
     })
 
     const scheduleList = await scheduleRepository.findAll()
@@ -97,38 +97,14 @@ const useMonthlyCalendarViewModel = () => {
   }
 
   const init = async () => {
+    console.log('init!!')
     await setMonthlyCalendar()
-  }
-
-  const refresh = async () => {
-    await setMonthlyCalendar(calendar.year, calendar.month)
-  }
-
-  const next = async () => {
-    const nextMonth = getDate({
-      year: calendar.year,
-      month: calendar.month,
-      day: 1,
-    }).add(1, 'month')
-    await setMonthlyCalendar(nextMonth.year(), nextMonth.month() + 1)
-  }
-
-  const prev = async () => {
-    const prevMonth = getDate({
-      year: calendar.year,
-      month: calendar.month,
-      day: 1,
-    }).subtract(1, 'month')
-    await setMonthlyCalendar(prevMonth.year(), prevMonth.month() + 1)
   }
 
   return {
     calculatedMonthlyCalendar,
+    currentDate,
     init,
-    refresh,
-    next,
-    prev,
-    openAddPopup,
   }
 }
 

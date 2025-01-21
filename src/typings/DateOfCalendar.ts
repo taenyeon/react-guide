@@ -1,6 +1,7 @@
 import { getWeekdayByCode, weekday, Weekday } from '@typings/constants/Weekday'
 import dayjs from 'dayjs'
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
+import dateFormatUtil from '@utils/date/dateFormatUtil'
 
 export class DateOfCalendar {
   year: number
@@ -8,6 +9,7 @@ export class DateOfCalendar {
   day: number
   weekday: Weekday
   schedules: Array<ScheduleOfDate | null>
+  holiday: null | string = null
 
   constructor(
     date: {
@@ -15,25 +17,35 @@ export class DateOfCalendar {
       month?: number
       day?: number
       schedules?: Array<ScheduleOfDate | null>
+      holiday?: null | string
     } = {},
   ) {
-    const { year = 1, month = 1, day = 1, schedules = [] } = date
+    const now = dateFormatUtil.getDate()
 
-    const now = date ? dayjs(`${year}-${month}-${day}`) : dayjs()
+    const {
+      year = now.year(),
+      month = now.month() + 1,
+      day = now.date(),
+      schedules = [],
+      holiday = null,
+    } = date
 
-    this.year = now.year()
-    this.month = now.month() + 1
-    this.day = now.date()
-    this.weekday = getWeekdayByCode(now.day())
+    const targetDate = date ? dayjs(`${year}-${month}-${day}`) : now
+
+    this.year = targetDate.year()
+    this.month = targetDate.month() + 1
+    this.day = targetDate.date()
+    this.weekday = getWeekdayByCode(targetDate.day())
     this.schedules = schedules
+    this.holiday = holiday
   }
 
   get isSaturday() {
     return this.weekday.code == weekday.SATURDAY.code
   }
 
-  get isHoliday() {
-    return this.weekday.code == weekday.SUNDAY.code
+  get isSunday() {
+    return this.weekday.code == weekday.SUNDAY.code || this.holiday
   }
 
   isSameWeekday = (weekday: Weekday) => this.weekday.code == weekday.code

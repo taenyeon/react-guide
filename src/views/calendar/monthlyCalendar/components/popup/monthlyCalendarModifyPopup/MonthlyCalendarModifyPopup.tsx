@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import './monthlyCalendarModifyPopup.scss'
-import useMonthlyCalendarModifyPopupViewModel from '@views/calendar/components/popup/monthlyCalendarModifyPopup/useMonthlyCalendarModifyPopupViewModel'
+import useMonthlyCalendarModifyPopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarModifyPopup/useMonthlyCalendarModifyPopupViewModel'
 
 const MonthlyCalendarModifyPopup: React.FC = () => {
   const dateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [

@@ -3,13 +3,15 @@ import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import useScheduleStore from '@stores/useScheduleStore'
 import scheduleRepository from '@repositories/ScheduleRepository'
 import { useShallow } from 'zustand/react/shallow'
+import useCalendarStore from '@stores/useCalendarStore'
 
 const useMonthlyCalendarDatePopupViewModel = () => {
-  const { selectedDate, unselectDate, selectSchedule } = useCalendarSelectStore(
+  const { selectedDateIndex, unselectDate, selectSchedule, openAddPopup } = useCalendarSelectStore(
     useShallow(state => ({
-      selectedDate: state.selectedDate,
+      selectedDateIndex: state.selectedDateIndex,
       unselectDate: state.unselectDate,
       selectSchedule: state.selectSchedule,
+      openAddPopup: state.openAddPopup,
     })),
   )
 
@@ -18,6 +20,10 @@ const useMonthlyCalendarDatePopupViewModel = () => {
       schedules: state.schedules,
       deleteSchedules: state.deleteSchedules,
     })),
+  )
+
+  const selectedDate = useCalendarStore(
+    useShallow(state => state.calendar.dates[selectedDateIndex]),
   )
 
   const [swipedSchedule, setSwipedSchedule] = useState<number | null>(null)
@@ -70,6 +76,8 @@ const useMonthlyCalendarDatePopupViewModel = () => {
   const openScheduleModifyPopup = (id: number) =>
     selectSchedule(schedules.find(schedule => schedule.id == id))
 
+  const openScheduleAddPopup = () => openAddPopup()
+
   return {
     selectedDate,
     swipedSchedule,
@@ -81,6 +89,7 @@ const useMonthlyCalendarDatePopupViewModel = () => {
     handleEnd,
     deleteSchedule,
     openScheduleModifyPopup,
+    openScheduleAddPopup,
   }
 }
 

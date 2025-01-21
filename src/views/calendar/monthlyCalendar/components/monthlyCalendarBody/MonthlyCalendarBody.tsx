@@ -1,8 +1,8 @@
 import React from 'react'
 import { Calendar } from '@typings/Calendar'
 import { weekday } from '@typings/constants/Weekday'
-import MonthlyCalendarDate from '@views/calendar/components/monthlyCalendarDate/MonthlyCalendarDate'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
+import MonthlyCalendarDate from '@views/calendar/monthlyCalendar/components/monthlyCalendarDate/MonthlyCalendarDate'
 
 interface MonthlyCalendarBodyProps {
   calendar?: Calendar
@@ -33,6 +33,7 @@ const MonthlyCalendarBody: React.FC<MonthlyCalendarBodyProps> = ({ calendar }) =
           return (
             <MonthlyCalendarDate
               key={index}
+              index={index}
               date={date}
               now={now}
               isOtherMonth={date.month != calendar.month}

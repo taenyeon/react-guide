@@ -64,6 +64,29 @@
     }
   }
 
+  &__schedule-add {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &__btn {
+      padding: 12px 12px;
+      font-size: 1rem;
+      color: white;
+      background-color: #007bff;
+      word-break: break-word;
+      text-align: center;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+
   &__schedule-header {
     display: flex;
     justify-content: space-between;

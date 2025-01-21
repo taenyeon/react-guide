@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import './monthlyCalendarDatePopup.scss'
-import useMonthlyCalendarDatePopupViewModel from '@views/calendar/components/popup/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
+import useMonthlyCalendarDatePopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
 
 const MonthlyCalendarDatePopup: React.FC = () => {
   const {
@@ -15,6 +15,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
     handleEnd,
     deleteSchedule,
     openScheduleModifyPopup,
+    openScheduleAddPopup,
   } = useMonthlyCalendarDatePopupViewModel()
 
   const { getTime } = dateFormatUtil
@@ -53,6 +54,13 @@ const MonthlyCalendarDatePopup: React.FC = () => {
         )}
 
         <div className="date-popup__schedule-container">
+          <div className="date-popup__shedule-wrapper">
+            <div className="date-popup__schedule-add">
+              <div className="date-popup__schedule-add__btn" onClick={openScheduleAddPopup}>
+                Add Schedule
+              </div>
+            </div>
+          </div>
           {selectedDate.schedules
             .filter(schedule => schedule != null)
             .map(schedule => (

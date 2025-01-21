@@ -1,31 +1,50 @@
 import { DateOfCalendar } from '@typings/DateOfCalendar'
 import { create } from 'zustand/react'
 import { Schedule } from '@typings/Schedule'
+import { calendarDateType, CalendarDateType } from '@typings/constants/CalendarDateType'
 
 interface SelectedDateStore {
-  selectedDate: null | DateOfCalendar
+  selectedCalendarType: CalendarDateType
+  selectCalendarType: (selectedCalendarType: CalendarDateType) => void
+
+  currentDate: DateOfCalendar
+  setCurrentDate: (currentDate: DateOfCalendar) => void
+
+  selectedDateIndex: null | number
+  selectDate: (selectedDateIndex: number) => void
+  unselectDate: () => void
+
   selectedSchedule: null | Schedule
+  selectSchedule: (selectedSchedule: Schedule) => void
+  unselectSchedule: () => void
+
   isOpenAddPopup: boolean
   openAddPopup: () => void
   closeAddPopup: () => void
-  selectDate: (selectedDate: DateOfCalendar) => void
-  unselectDate: () => void
-  selectSchedule: (selectedSchedule: Schedule) => void
-  unselectSchedule: () => void
+
   clearSelected: () => void
 }
 
 const useCalendarSelectStore = create<SelectedDateStore>(set => ({
-  selectedDate: null,
+  selectedCalendarType: calendarDateType.MONTHLY,
+  selectCalendarType: selectedCalendarType => set({ selectedCalendarType }),
+
+  currentDate: new DateOfCalendar(),
+  setCurrentDate: currentDate => set({ currentDate }),
+
+  selectedDateIndex: null,
+  selectDate: selectedDateIndex => set({ selectedDateIndex }),
+  unselectDate: () => set({ selectedDateIndex: null }),
+
   selectedSchedule: null,
+  selectSchedule: selectedSchedule => set({ selectedSchedule }),
+  unselectSchedule: () => set({ selectedSchedule: null }),
+
   isOpenAddPopup: false,
   openAddPopup: () => set({ isOpenAddPopup: true }),
   closeAddPopup: () => set({ isOpenAddPopup: false }),
-  selectDate: selectedDate => set({ selectedDate }),
-  unselectDate: () => set({ selectedDate: null }),
-  selectSchedule: selectedSchedule => set({ selectedSchedule }),
-  unselectSchedule: () => set({ selectedSchedule: null }),
-  clearSelected: () => set({ selectedDate: null, selectSchedule: null }),
+
+  clearSelected: () => set({ selectedDateIndex: null, selectSchedule: null }),
 }))
 
 export default useCalendarSelectStore

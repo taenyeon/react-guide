@@ -57,11 +57,25 @@
     }
   }
 
-  &__cell-date {
-    text-align: right;
-    margin-right: 15px;
-    margin-bottom: 5px;
+  .monthly-calendar__cell-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 10px 5px;
   }
+
+  .monthly-calendar__cell-text {
+    font-size: 1rem;
+    font-weight: bold;
+    color: red;
+  }
+
+  .monthly-calendar__cell-day {
+    margin-left: auto; /* 텍스트가 없어도 날짜를 오른쪽으로 고정 */
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
 
   &__cell-schedules {
     display: flex;
@@ -164,8 +178,8 @@
     background: red;
     color: white;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    line-height: 22px;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
   }
 }
