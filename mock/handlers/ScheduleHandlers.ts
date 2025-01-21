@@ -85,6 +85,15 @@ let schedules = [
     createdAt: '2025/01/06 15:00:00',
     updatedAt: '2025/01/06 15:00:00',
   }),
+  new Schedule({
+    id: 10,
+    startedAt: '2025/02/09 11:00',
+    endedAt: '2025/02/11 17:00',
+    title: 'test9',
+    contents: 'test9',
+    createdAt: '2025/01/06 15:00:00',
+    updatedAt: '2025/01/06 15:00:00',
+  }),
 ]
 
 const ScheduleHandlers = [

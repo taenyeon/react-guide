@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import useScheduleListViewModel from '@views/calendar/scheduleList/useScheduleListViewModel'
 import './scheduleListPage.scss'
-import dateFormatUtil from '@utils/date/dateFormatUtil'
 
 const ScheduleListPage: React.FC = () => {
   const { calculatedSchedules, init } = useScheduleListViewModel()
-  const { getStringToDate } = dateFormatUtil
 
   useEffect(() => {
     init()

@@ -1,8 +1,8 @@
 export const calendarDateType = {
-  YEARLY: 'yearly',
-  MONTHLY: 'monthly',
-  DAILY: 'daily',
-  LIST: 'list',
+  MONTHLY: 'MONTHLY',
+  WEEKLY: 'WEEKLY',
+  DAILY: 'DAILY',
+  LIST: 'LIST',
 } as const
 
 export type CalendarDateType = (typeof calendarDateType)[keyof typeof calendarDateType]

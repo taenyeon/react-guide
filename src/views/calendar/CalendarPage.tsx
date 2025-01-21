@@ -21,6 +21,8 @@ const CalendarPage: React.FC = () => {
       </div>
       {selectedCalendarType == calendarDateType.MONTHLY && <MonthlyCalendarPage />}
       {selectedCalendarType == calendarDateType.LIST && <ScheduleListPage />}
+      {selectedCalendarType == calendarDateType.DAILY && <p>Not yet supported...</p>}
+      {selectedCalendarType == calendarDateType.WEEKLY && <p>Not yet supported...</p>}
     </div>
   )
 }
