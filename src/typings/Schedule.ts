@@ -32,9 +32,9 @@ export class Schedule {
 
   getScheduleOfDateList(index: number) {
     if (this._isOneDaySchedule()) {
-      const { getStringToDate } = dateFormatUtil
-      const startedAt = getStringToDate(this.startedAt)
-      const endedAt = getStringToDate(this.endedAt)
+      const { stringToDate } = dateFormatUtil
+      const startedAt = stringToDate(this.startedAt)
+      const endedAt = stringToDate(this.endedAt)
       return [
         new ScheduleOfDate(
           this.id,
@@ -59,15 +59,15 @@ export class Schedule {
   }
 
   private _isOneDaySchedule: () => boolean = () => {
-    const { getStringToDate } = dateFormatUtil
-    return getStringToDate(this.startedAt).isSame(getStringToDate(this.endedAt), 'date')
+    const { stringToDate } = dateFormatUtil
+    return stringToDate(this.startedAt).isSame(stringToDate(this.endedAt), 'date')
   }
 
   private _calculateSchedule: (index: number) => ScheduleOfDate[] = index => {
     const scheduleOfDateList: ScheduleOfDate[] = []
-    const { getStringToDate } = dateFormatUtil
-    const startedAt = getStringToDate(this.startedAt)
-    const endedAt = getStringToDate(this.endedAt)
+    const { stringToDate } = dateFormatUtil
+    const startedAt = stringToDate(this.startedAt)
+    const endedAt = stringToDate(this.endedAt)
 
     let start = startedAt.clone()
     const end = endedAt.clone().add(1, 'day')

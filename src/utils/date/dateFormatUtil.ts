@@ -21,9 +21,9 @@ const dateFormatUtil = {
     return dayjs(baseDate, 'YYYY/MM/DD HH:mm:ss')
   },
 
-  getStringToDate: (date: string) => dayjs(date, 'YYYY/MM/DD HH:mm:ss'),
+  stringToDate: (date: string) => dayjs(date, 'YYYY/MM/DD HH:mm:ss'),
 
-  getDateToString: (date: dayjs.Dayjs) => date.format('YYYY/MM/DD HH:mm:ss'),
+  dateToString: (date: dayjs.Dayjs) => date.format('YYYY/MM/DD HH:mm:ss'),
 
   getTime: (hour: number, minute: number, second?: number) => {
     const formatNumber = (num: number): string => (num < 10 ? `0${num}` : `${num}`)

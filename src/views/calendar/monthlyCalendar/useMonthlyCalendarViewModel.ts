@@ -26,21 +26,21 @@ const useMonthlyCalendarViewModel = () => {
     })),
   )
 
-  const { getStringToDate } = dateFormatUtil
+  const { stringToDate } = dateFormatUtil
 
-  const calculatedMonthlyCalendar: Calendar | null = useMemo(() => {
+  const calculatedMonthlyCalendar: null | Calendar = useMemo(() => {
     if (!calendar) return null
 
-    const copy: Calendar = Object.assign(calendar)
+    const copyCalendar: Calendar = Object.assign(calendar)
 
     const schedulesOfDate = schedules
-      .sort((a, b) => (getStringToDate(a.startedAt).isAfter(getStringToDate(b.startedAt)) ? 1 : -1))
+      .sort((a, b) => (stringToDate(a.startedAt).isAfter(stringToDate(b.startedAt)) ? 1 : -1))
       .map((schedule, index) => schedule.getScheduleOfDateList(index + 1))
       .flatMap(schedules => schedules)
 
     let prevSchedules: ScheduleOfDate[] = []
 
-    copy.dates.forEach(date => {
+    copyCalendar.dates.forEach(date => {
       const resultSchedules: ScheduleOfDate[] = []
       const targetSchedules: ScheduleOfDate[] = schedulesOfDate.filter(
         schedule =>
@@ -48,8 +48,7 @@ const useMonthlyCalendarViewModel = () => {
       )
 
       let prevIndex = 0
-
-      // 빈 요소 채우기 (null) => 화면에서 사용 할 경우, null 값에 대한 대응 필요.
+      // 빈 요소 null 세팅 => 화면에서 사용 할 경우, null 값에 대한 대응 필요.
       targetSchedules.forEach(schedule => {
         const prevScheduleIndex = prevSchedules.findIndex(
           targetSchedule => targetSchedule != null && targetSchedule.id == schedule.id,
@@ -80,7 +79,7 @@ const useMonthlyCalendarViewModel = () => {
       date.schedules = resultSchedules
     })
 
-    return copy
+    return copyCalendar
   }, [calendar, schedules])
 
   const setMonthlyCalendar = async () => {

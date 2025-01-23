@@ -39,7 +39,7 @@ interface AddScheduleEndedAt {
 }
 
 const useMonthlyCalendarAddPopupViewModel = () => {
-  const { getDate, getDateToString } = dateFormatUtil
+  const { getDate, dateToString } = dateFormatUtil
 
   const { isOpenAddPopup, currentDate, closeAddPopup } = useCalendarSelectStore(
     useShallow(state => ({
@@ -204,10 +204,10 @@ const useMonthlyCalendarAddPopupViewModel = () => {
       id: null,
       title: title.value,
       contents: contents.value,
-      startedAt: getDateToString(scheduleStartedAt),
-      endedAt: getDateToString(scheduleEndedAt),
-      createdAt: getDateToString(now),
-      updatedAt: getDateToString(now),
+      startedAt: dateToString(scheduleStartedAt),
+      endedAt: dateToString(scheduleEndedAt),
+      createdAt: dateToString(now),
+      updatedAt: dateToString(now),
     })
     // add request
     const id = await scheduleRepository.add(schedule)

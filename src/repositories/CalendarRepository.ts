@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 const calendarRepository = {
   getMonthlyCalendar: async (date: { year?: number; month?: number } = {}) => {
     const { year, month } = date
-    const { getDate, getStringToDate } = dateFormatUtil
+    const { getDate, stringToDate } = dateFormatUtil
     const now = getDate()
 
     const calendar = new Calendar({
@@ -24,7 +24,7 @@ const calendarRepository = {
 
     const holidays: { date: dayjs.Dayjs; holiday: Holiday }[] = (
       await HolidayRepository.findAll()
-    ).map(holiday => ({ date: getStringToDate(holiday.date), holiday: holiday }))
+    ).map(holiday => ({ date: stringToDate(holiday.date), holiday: holiday }))
     // 1일부터 세팅
     // 특정 month가 있을 경우, 해당 month로 변경 -> dayjs month는 0이 1월
     let startDate = getDate({ year: calendar.year, month: calendar.month, day: 1 })

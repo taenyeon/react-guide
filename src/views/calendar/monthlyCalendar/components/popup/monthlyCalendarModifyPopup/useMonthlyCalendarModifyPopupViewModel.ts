@@ -7,7 +7,7 @@ import scheduleRepository from '@repositories/ScheduleRepository'
 import { useShallow } from 'zustand/react/shallow'
 
 const useMonthlyCalendarModifyPopupViewModel = () => {
-  const { getDate, getDateToString, getStringToDate } = dateFormatUtil
+  const { getDate, dateToString, stringToDate } = dateFormatUtil
 
   const modifySchedules = useScheduleStore(state => state.modifySchedules)
 
@@ -23,7 +23,7 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
   const [contents, setContents] = useState({ value: selectedSchedule.contents || '', error: '' })
 
   const [startedAt, setStartedAt] = useState(() => {
-    const startedAt = getStringToDate(selectedSchedule.startedAt)
+    const startedAt = stringToDate(selectedSchedule.startedAt)
     return {
       value: {
         year: startedAt.year(),
@@ -37,7 +37,7 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
   })
 
   const [endedAt, setEndedAt] = useState(() => {
-    const endedAt = getStringToDate(selectedSchedule.endedAt)
+    const endedAt = stringToDate(selectedSchedule.endedAt)
     return {
       value: {
         year: endedAt.year(),
@@ -150,10 +150,10 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
       id: selectedSchedule.id,
       title: title.value,
       contents: contents.value,
-      startedAt: getDateToString(scheduleStartedAt),
-      endedAt: getDateToString(scheduleEndedAt),
-      createdAt: getDateToString(now),
-      updatedAt: getDateToString(now),
+      startedAt: dateToString(scheduleStartedAt),
+      endedAt: dateToString(scheduleEndedAt),
+      createdAt: dateToString(now),
+      updatedAt: dateToString(now),
     })
     // add request
     await scheduleRepository.modify(schedule.id, schedule)
