@@ -5,6 +5,7 @@ import scheduleRepository from '@repositories/ScheduleRepository'
 import useScheduleStore from '@stores/useScheduleStore'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import { useShallow } from 'zustand/react/shallow'
+import { ScheduleType, scheduleType } from '@typings/constants/ScheduleType'
 
 interface AddScheduleTitle {
   value: string
@@ -24,6 +25,7 @@ interface AddScheduleStartedAt {
     hour: number
     minute: number
   }
+  disabled: boolean
   error: string
 }
 
@@ -35,6 +37,7 @@ interface AddScheduleEndedAt {
     hour: number
     minute: number
   }
+  disabled: boolean
   error: string
 }
 
@@ -51,9 +54,13 @@ const useMonthlyCalendarAddPopupViewModel = () => {
 
   const addSchedules = useScheduleStore(state => state.addSchedules)
 
+  const [type, setType] = useState<ScheduleType>(scheduleType.TIME)
+
   const [title, setTitle] = useState<AddScheduleTitle>({ value: '', error: '' })
 
   const [contents, setContents] = useState<AddScheduleContent>({ value: '', error: '' })
+
+  const [isAllDay, setIsAllDay] = useState<boolean>(false)
 
   const [startedAt, setStartedAt] = useState<AddScheduleStartedAt>(() => {
     const now = getDate()
@@ -65,6 +72,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
         hour: now.hour(),
         minute: 0,
       },
+      disabled: false,
       error: '',
     }
   })
@@ -79,6 +87,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
         hour: now.hour(),
         minute: 0,
       },
+      disabled: false,
       error: '',
     }
   })
@@ -100,6 +109,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
         hour: start.hour(),
         minute: 0,
       },
+      disabled: false,
       error: '',
     })
     setEndedAt({
@@ -110,19 +120,53 @@ const useMonthlyCalendarAddPopupViewModel = () => {
         hour: end.hour(),
         minute: 0,
       },
+      disabled: false,
       error: '',
     })
   }
 
-  const inputTitle = (state: string) =>
-    setTitle(prevState => {
-      return { ...prevState, value: state }
-    })
+  const toggleType = (state: ScheduleType) => {
+    setType(state)
+    init()
+  }
+
+  const inputTitle = (state: string) => setTitle(prevState => ({ ...prevState, value: state }))
 
   const inputContents = (state: string) =>
-    setContents(prevState => {
-      return { ...prevState, value: state }
-    })
+    setContents(prevState => ({ ...prevState, value: state }))
+
+  const toggleAllDay = () => {
+    if (isAllDay) {
+      setIsAllDay(false)
+      setStartedAt(prevState => ({ ...prevState, disabled: false }))
+      setEndedAt(prevState => ({ ...prevState, disabled: false }))
+      return
+    }
+
+    setIsAllDay(true)
+    setStartedAt(prevState => ({
+      ...prevState,
+      value: {
+        year: currentDate.year,
+        month: currentDate.month,
+        day: currentDate.day,
+        hour: 0,
+        minute: 0,
+      },
+      disabled: true,
+    }))
+    setEndedAt(prevState => ({
+      ...prevState,
+      value: {
+        year: currentDate.year,
+        month: currentDate.month,
+        day: currentDate.day,
+        hour: 23,
+        minute: 59,
+      },
+      disabled: true,
+    }))
+  }
 
   const inputStartedAt = (date?: {
     type: 'year' | 'month' | 'day' | 'hour' | 'minute'
@@ -132,18 +176,16 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     if (!checkLange(date)) return
     const replaceValue = Number(date.value)
 
-    setStartedAt(prevState => {
-      return {
-        ...prevState,
-        value: {
-          year: date.type == 'year' ? replaceValue : prevState.value.year,
-          month: date.type == 'month' ? replaceValue : prevState.value.month,
-          day: date.type == 'day' ? replaceValue : prevState.value.day,
-          hour: date.type == 'hour' ? replaceValue : prevState.value.hour,
-          minute: date.type == 'minute' ? replaceValue : prevState.value.minute,
-        },
-      }
-    })
+    setStartedAt(prevState => ({
+      ...prevState,
+      value: {
+        year: date.type == 'year' ? replaceValue : prevState.value.year,
+        month: date.type == 'month' ? replaceValue : prevState.value.month,
+        day: date.type == 'day' ? replaceValue : prevState.value.day,
+        hour: date.type == 'hour' ? replaceValue : prevState.value.hour,
+        minute: date.type == 'minute' ? replaceValue : prevState.value.minute,
+      },
+    }))
   }
 
   const inputEndedAt = (date?: {
@@ -154,18 +196,16 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     if (!checkLange(date)) return
     const replaceValue = Number(date.value)
 
-    setEndedAt(prevState => {
-      return {
-        ...prevState,
-        value: {
-          year: date.type == 'year' ? replaceValue : prevState.value.year,
-          month: date.type == 'month' ? replaceValue : prevState.value.month,
-          day: date.type == 'day' ? replaceValue : prevState.value.day,
-          hour: date.type == 'hour' ? replaceValue : prevState.value.hour,
-          minute: date.type == 'minute' ? replaceValue : prevState.value.minute,
-        },
-      }
-    })
+    setEndedAt(prevState => ({
+      ...prevState,
+      value: {
+        year: date.type == 'year' ? replaceValue : prevState.value.year,
+        month: date.type == 'month' ? replaceValue : prevState.value.month,
+        day: date.type == 'day' ? replaceValue : prevState.value.day,
+        hour: date.type == 'hour' ? replaceValue : prevState.value.hour,
+        minute: date.type == 'minute' ? replaceValue : prevState.value.minute,
+      },
+    }))
   }
 
   const checkLange = (date?: {
@@ -189,19 +229,45 @@ const useMonthlyCalendarAddPopupViewModel = () => {
 
   const addSchedule = async () => {
     const now = getDate()
-    const scheduleStartedAt = getDate(startedAt.value)
-    const scheduleEndedAt = getDate(endedAt.value)
+
+    let copyStartedAt = { ...startedAt }
+    let copyEndedAt = { ...endedAt }
+
+    if (type == scheduleType.TASK) {
+      copyStartedAt = {
+        ...startedAt,
+        value: {
+          ...startedAt.value,
+          hour: 0,
+          minute: 0,
+        },
+      }
+
+      copyEndedAt = {
+        ...endedAt,
+        value: {
+          ...endedAt.value,
+          hour: 23,
+          minute: 59,
+        },
+      }
+    }
+
+    setStartedAt(copyStartedAt)
+    setEndedAt(copyEndedAt)
+
+    const scheduleStartedAt = getDate(copyStartedAt.value)
+    const scheduleEndedAt = getDate(copyEndedAt.value)
 
     if (scheduleStartedAt.isAfter(scheduleEndedAt)) {
-      setStartedAt(prevState => {
-        return { ...prevState, error: 'started is after then endedAt' }
-      })
+      setStartedAt(prevState => ({ ...prevState, error: 'started is after then endedAt' }))
       console.log('started is after then endedAt')
       return
     }
 
     const schedule = new Schedule({
       id: null,
+      type: type,
       title: title.value,
       contents: contents.value,
       startedAt: dateToString(scheduleStartedAt),
@@ -209,15 +275,13 @@ const useMonthlyCalendarAddPopupViewModel = () => {
       createdAt: dateToString(now),
       updatedAt: dateToString(now),
     })
-    // add request
-    const id = await scheduleRepository.add(schedule)
-    //
-    if (!id) return false
-    schedule.id = id
-    addSchedules(schedule)
-    init()
 
-    return true
+    // add request
+    schedule.id = await scheduleRepository.add(schedule)
+    addSchedules(schedule)
+
+    init()
+    closeAddPopup()
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -232,20 +296,24 @@ const useMonthlyCalendarAddPopupViewModel = () => {
 
   return {
     isOpenAddPopup,
+    type,
     title,
     contents,
+    isAllDay,
     startedAt,
     endedAt,
     closeAddPopup,
     currentDate,
     init,
+    setEvent,
+    removeEvent,
+    toggleType,
     inputTitle,
     inputContents,
+    toggleAllDay,
     inputStartedAt,
     inputEndedAt,
     addSchedule,
-    setEvent,
-    removeEvent,
   }
 }
 

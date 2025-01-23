@@ -1,5 +1,4 @@
 .modify-popup {
-  // 기존 스타일 유지
   position: fixed;
   top: 0;
   left: 0;
@@ -9,15 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-
-  &__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
+  z-index: 1002;
 
   &__content {
     position: relative;
@@ -32,6 +23,7 @@
   &__title {
     font-size: 1.5rem;
     margin-bottom: 16px;
+    text-align: center;
   }
 
   &__form {
@@ -42,10 +34,10 @@
   &__label {
     margin-bottom: 12px;
     font-size: 0.875rem;
+    font-weight: bold;
   }
 
-  &__input,
-  &__textarea {
+  &__input, &__textarea {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
@@ -72,19 +64,38 @@
     font-weight: bold;
   }
 
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+
   &__row {
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 5px;
     margin-bottom: 8px;
   }
 
+  &__label-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+  }
+
   &__input-inline {
-    width: 20%;
     padding: 4px 8px;
     font-size: 0.875rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 50px !important;
     box-sizing: border-box;
+
   }
 
   &__button {
@@ -127,5 +138,17 @@
     border: none;
     font-size: 1.25rem;
     cursor: pointer;
+  }
+
+  &__tag {
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: #007bff;
+    line-height: 1.5;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-right: 8px; /* 텍스트와 값 간의 여백 */
+    padding-bottom: 10px;
   }
 }

@@ -5,6 +5,7 @@ import useScheduleStore from '@stores/useScheduleStore'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import scheduleRepository from '@repositories/ScheduleRepository'
 import { useShallow } from 'zustand/react/shallow'
+import { scheduleType } from '@typings/constants/ScheduleType'
 
 const useMonthlyCalendarModifyPopupViewModel = () => {
   const { getDate, dateToString, stringToDate } = dateFormatUtil
@@ -21,6 +22,8 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
   const [title, setTitle] = useState({ value: selectedSchedule.title || '', error: '' })
 
   const [contents, setContents] = useState({ value: selectedSchedule.contents || '', error: '' })
+
+  const [type] = useState(selectedSchedule.type)
 
   const [startedAt, setStartedAt] = useState(() => {
     const startedAt = stringToDate(selectedSchedule.startedAt)
@@ -135,8 +138,30 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
 
   const modifySchedule = async () => {
     const now = getDate()
-    const scheduleStartedAt = getDate(startedAt.value)
-    const scheduleEndedAt = getDate(endedAt.value)
+    let copyStartedAt = { ...startedAt }
+    let copyEndedAt = { ...endedAt }
+
+    if (selectedSchedule.type == scheduleType.TASK) {
+      copyStartedAt = {
+        ...startedAt,
+        value: {
+          ...startedAt.value,
+          hour: 0,
+          minute: 0,
+        },
+      }
+
+      copyEndedAt = {
+        ...endedAt,
+        value: {
+          ...endedAt.value,
+          hour: 23,
+          minute: 59,
+        },
+      }
+    }
+    const scheduleStartedAt = getDate(copyStartedAt.value)
+    const scheduleEndedAt = getDate(copyEndedAt.value)
 
     if (scheduleStartedAt.isAfter(scheduleEndedAt)) {
       setStartedAt(prevState => {
@@ -148,11 +173,12 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
 
     const schedule = new Schedule({
       id: selectedSchedule.id,
+      type: selectedSchedule.type,
       title: title.value,
       contents: contents.value,
       startedAt: dateToString(scheduleStartedAt),
       endedAt: dateToString(scheduleEndedAt),
-      createdAt: dateToString(now),
+      createdAt: selectedSchedule.createdAt,
       updatedAt: dateToString(now),
     })
     // add request
@@ -162,6 +188,7 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
 
   return {
     title,
+    type,
     contents,
     startedAt,
     endedAt,

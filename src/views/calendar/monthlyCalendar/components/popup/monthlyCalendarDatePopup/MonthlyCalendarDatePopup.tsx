@@ -78,11 +78,12 @@ const MonthlyCalendarDatePopup: React.FC = () => {
                   }}
                   onMouseUp={() => handleEnd(schedule.id)}>
                   <div className="date-popup__schedule-header">
-                    <div className="date-popup__schedule-title">{schedule.title}</div>
+                    <div className="date-popup__schedule-info-wrapper">
+                      <span className="date-popup__schedule-title">{schedule.title}</span>
+                      <span className="date-popup__schedule-tag">#{schedule.type}</span>
+                      {schedule.isAllDay && <span className="date-popup__schedule-tag">#종일</span>}
+                    </div>
                     <div className="date-popup__schedule-details">
-                      {schedule.isAllDay && (
-                        <span className="date-popup__schedule-multi">종일</span>
-                      )}
                       <span className="date-popup__schedule-date">
                         {getTime(schedule.startHour, schedule.startMinute)} ~{' '}
                         {getTime(schedule.endHour, schedule.endMinute)}

@@ -8,6 +8,7 @@ import useCalendarStore from '@stores/useCalendarStore'
 import useScheduleStore from '@stores/useScheduleStore'
 import { useShallow } from 'zustand/react/shallow'
 import useCalendarSelectStore from '@stores/useCalendarSelectStore'
+import { scheduleType } from '@typings/constants/ScheduleType'
 
 const useMonthlyCalendarViewModel = () => {
   const currentDate = useCalendarSelectStore(useShallow(state => state.currentDate))
@@ -34,6 +35,7 @@ const useMonthlyCalendarViewModel = () => {
     const copyCalendar: Calendar = Object.assign(calendar)
 
     const schedulesOfDate = schedules
+      .sort(a => (a.type == scheduleType.TASK ? 1 : -1))
       .sort((a, b) => (stringToDate(a.startedAt).isAfter(stringToDate(b.startedAt)) ? 1 : -1))
       .map((schedule, index) => schedule.getScheduleOfDateList(index + 1))
       .flatMap(schedules => schedules)

@@ -86,41 +86,56 @@
     }
   }
 
-
   &__schedule-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 12px;
+    padding: 4px 12px 0;
     word-break: break-word;
     white-space: pre-wrap;
-  }
-
-  &__schedule-title {
-    flex: 1;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: left;
   }
 
   &__schedule-details {
     display: flex;
     gap: 8px;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     text-align: right;
     white-space: nowrap;
   }
 
-  &__schedule-multi {
-    font-size: 0.875rem;
-    color: #007bff;
+  &__schedule-info-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+  }
+
+  &__schedule-title {
+    font-size: 1rem;
     font-weight: bold;
+    line-height: 1.5;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  &__schedule-tag {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #007bff;
+    line-height: 1.5;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
   }
 
   &__schedule-date {
     color: #555;
     font-size: 0.875rem;
+    line-height: 1.5;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
   }
 
   &__schedule-content {

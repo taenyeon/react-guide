@@ -1,5 +1,8 @@
+import { ScheduleType } from '@typings/constants/ScheduleType'
+
 export class ScheduleOfDate {
   id: number
+  type: ScheduleType
   year: number
   month: number
   day: number
@@ -27,6 +30,7 @@ export class ScheduleOfDate {
 
   constructor(
     id: number,
+    type: ScheduleType,
     year: number,
     month: number,
     day: number,
@@ -46,6 +50,7 @@ export class ScheduleOfDate {
     isEnd?: boolean,
   ) {
     this.id = id
+    this.type = type
     this.year = year
     this.month = month
     this.day = day

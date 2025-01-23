@@ -2,6 +2,7 @@ import React from 'react'
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import colorUtil from '@utils/color/colorUtil'
+import { scheduleType } from '@typings/constants/ScheduleType'
 
 interface MonthlyCalendarScheduleProps {
   schedule?: ScheduleOfDate
@@ -24,17 +25,21 @@ const MonthlyCalendarSchedule: React.FC<MonthlyCalendarScheduleProps> = ({ sched
       {schedule.isStart && (
         <>
           <div className="monthly-calendar__schedule__title">{schedule.title}</div>
-          <div className="monthly-calendar__schedule__time">
-            {getTime(schedule.startHour, schedule.startMinute)}
-          </div>
+          {schedule.type == scheduleType.TIME && (
+            <div className="monthly-calendar__schedule__time">
+              {getTime(schedule.startHour, schedule.startMinute)}
+            </div>
+          )}
         </>
       )}
       {schedule.isEnd && (
         <>
           <div className="monthly-calendar__schedule__title"></div>
-          <div className="monthly-calendar__schedule__end-time">
-            ends {getTime(schedule.endHour, schedule.endMinute)}
-          </div>
+          {schedule.type == scheduleType.TIME && (
+            <div className="monthly-calendar__schedule__end-time">
+              ends {getTime(schedule.endHour, schedule.endMinute)}
+            </div>
+          )}
         </>
       )}
       <div

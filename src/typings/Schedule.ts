@@ -1,9 +1,11 @@
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
+import { scheduleType, ScheduleType } from '@typings/constants/ScheduleType'
 
 // if date format DateFormat.ts -> use DateFormat
 export class Schedule {
   id: number
+  type: ScheduleType
   startedAt: string
   endedAt: string
   title: string
@@ -14,6 +16,7 @@ export class Schedule {
 
   constructor(schedule: {
     id: number | null
+    type?: ScheduleType
     startedAt: string
     endedAt: string
     title: string
@@ -21,13 +24,29 @@ export class Schedule {
     createdAt: string
     updatedAt: string
   }) {
-    this.id = schedule.id
-    this.startedAt = schedule.startedAt
-    this.endedAt = schedule.endedAt
-    this.title = schedule.title
-    this.contents = schedule.contents
-    this.createdAt = schedule.createdAt
-    this.updatedAt = schedule.updatedAt
+    const { dateToString, getDate } = dateFormatUtil
+
+    const now = dateToString(getDate())
+
+    const {
+      id,
+      type = scheduleType.TIME,
+      startedAt,
+      endedAt,
+      title,
+      contents,
+      createdAt = now,
+      updatedAt = now,
+    } = schedule
+
+    this.id = id
+    this.type = type
+    this.startedAt = startedAt
+    this.endedAt = endedAt
+    this.title = title
+    this.contents = contents
+    this.createdAt = createdAt
+    this.updatedAt = updatedAt
   }
 
   getScheduleOfDateList(index: number) {
@@ -38,6 +57,7 @@ export class Schedule {
       return [
         new ScheduleOfDate(
           this.id,
+          this.type,
           startedAt.year(),
           startedAt.month() + 1,
           startedAt.date(),
@@ -97,6 +117,7 @@ export class Schedule {
       scheduleOfDateList.push(
         new ScheduleOfDate(
           this.id,
+          this.type,
           start.year(),
           start.month() + 1,
           start.date(),

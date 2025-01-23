@@ -1,31 +1,38 @@
 import React, { useEffect } from 'react'
 import './monthlyCalendarAddPopup.scss'
 import useMonthlyCalendarAddPopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarAddPopup/useMonthlyCalendarAddPopupViewModel'
+import { ScheduleType, scheduleType } from '@typings/constants/ScheduleType'
 
 const MonthlyCalendarAddPopup: React.FC = () => {
-  const dateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [
+  const timeDateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [
     'year',
     'month',
     'day',
     'hour',
     'minute',
   ]
+
+  const taskDateTypes: Array<'year' | 'month' | 'day'> = ['year', 'month', 'day']
   const {
     isOpenAddPopup,
+    type,
     title,
     contents,
+    isAllDay,
     startedAt,
     endedAt,
     closeAddPopup,
     currentDate,
     init,
+    setEvent,
+    removeEvent,
+    toggleType,
     inputTitle,
     inputContents,
+    toggleAllDay,
     inputStartedAt,
     inputEndedAt,
     addSchedule,
-    setEvent,
-    removeEvent,
   } = useMonthlyCalendarAddPopupViewModel()
 
   useEffect(() => {
@@ -37,69 +44,128 @@ const MonthlyCalendarAddPopup: React.FC = () => {
   if (!isOpenAddPopup) return null
 
   return (
-    <div className="popup">
-      <div className="popup__overlay" onClick={closeAddPopup}></div>
-      <div className="popup__content">
-        <h2 className="popup__title">Add Schedule</h2>
-        <form className="popup__form">
-          <label className="popup__label">
+    <div className="add-popup">
+      <div className="add-popup__overlay" onClick={closeAddPopup}></div>
+      <div className="add-popup__content">
+        <h2 className="add-popup__title">Add Schedule</h2>
+        <div className="add-popup__type-button-row">
+          {Object.keys(scheduleType).map((scheduleTypeValue: ScheduleType, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`add-popup__type-button ${type == scheduleTypeValue ? 'add-popup__type-button--selected' : ''}`}
+              onClick={() => toggleType(scheduleTypeValue)}>
+              {scheduleTypeValue}
+            </button>
+          ))}
+        </div>
+        <form className="add-popup__form">
+          <label className="add-popup__label">
             Title:
             <input
               type="text"
-              className="popup__input"
+              className="add-popup__input"
               value={title.value}
               onChange={e => inputTitle(e.target.value)}
             />
           </label>
-          <label className="popup__label">
+          <label className="add-popup__label">
             Description:
             <textarea
-              className="popup__textarea"
+              className="add-popup__textarea"
               value={contents.value}
               onChange={e => inputContents(e.target.value)}
             />
           </label>
-          <fieldset className="popup__fieldset">
-            <legend className="popup__legend">Start Date:</legend>
-            <div className="popup__row">
-              {dateTypes.map(field => (
-                <input
-                  key={field}
-                  type="text"
-                  className="popup__input-inline"
-                  placeholder={field}
-                  value={startedAt.value[field as keyof typeof startedAt.value]}
-                  onChange={e => inputStartedAt({ type: field, value: e.target.value })}
-                />
-              ))}
-            </div>
-          </fieldset>
-          <fieldset className="popup__fieldset">
-            <legend className="popup__legend">End Date:</legend>
-            <div className="popup__row">
-              {dateTypes.map(field => (
-                <input
-                  key={field}
-                  type="text"
-                  className="popup__input-inline"
-                  placeholder={field}
-                  value={endedAt.value[field as keyof typeof endedAt.value]}
-                  onChange={e => inputEndedAt({ type: field, value: e.target.value })}
-                />
-              ))}
-            </div>
-          </fieldset>
-          <button
-            type="button"
-            className="popup__button"
-            onClick={async () => {
-              await addSchedule()
-              closeAddPopup()
-            }}>
+          {type == scheduleType.TIME && (
+            <>
+              <label className="add-popup__checkbox">
+                <input type="checkbox" checked={isAllDay} onChange={toggleAllDay} />
+                All Day
+              </label>
+              <fieldset className="add-popup__fieldset">
+                <legend className="add-popup__legend">Start Date:</legend>
+                <div className="add-popup__row">
+                  {timeDateTypes.map(field => (
+                    <label key={field} className="add-popup__label-inline">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                      <input
+                        type="text"
+                        className="add-popup__input-inline"
+                        placeholder={field}
+                        value={startedAt.value[field as keyof typeof startedAt.value]}
+                        onChange={e => inputStartedAt({ type: field, value: e.target.value })}
+                        disabled={isAllDay}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset className="add-popup__fieldset">
+                <legend className="add-popup__legend">End Date:</legend>
+                <div className="add-popup__row">
+                  {timeDateTypes.map(field => (
+                    <label key={field} className="add-popup__label-inline">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                      <input
+                        type="text"
+                        className="add-popup__input-inline"
+                        placeholder={field}
+                        value={endedAt.value[field as keyof typeof endedAt.value]}
+                        onChange={e => inputEndedAt({ type: field, value: e.target.value })}
+                        disabled={isAllDay}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </>
+          )}
+          {type == scheduleType.TASK && (
+            <>
+              <fieldset className="add-popup__fieldset">
+                <legend className="add-popup__legend">Start Date:</legend>
+                <div className="add-popup__row">
+                  {taskDateTypes.map(field => (
+                    <label key={field} className="add-popup__label-inline">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                      <input
+                        type="text"
+                        className="add-popup__input-inline"
+                        placeholder={field}
+                        value={startedAt.value[field as keyof typeof startedAt.value]}
+                        onChange={e => inputStartedAt({ type: field, value: e.target.value })}
+                        disabled={isAllDay}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset className="add-popup__fieldset">
+                <legend className="add-popup__legend">End Date:</legend>
+                <div className="add-popup__row">
+                  {taskDateTypes.map(field => (
+                    <label key={field} className="add-popup__label-inline">
+                      {field.charAt(0).toUpperCase() + field.slice(1)}:
+                      <input
+                        type="text"
+                        className="add-popup__input-inline"
+                        placeholder={field}
+                        value={endedAt.value[field as keyof typeof endedAt.value]}
+                        onChange={e => inputEndedAt({ type: field, value: e.target.value })}
+                        disabled={isAllDay}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </>
+          )}
+          <button type="button" className="add-popup__button" onClick={() => addSchedule()}>
             Submit
           </button>
         </form>
-        <button className="popup__close" onClick={closeAddPopup}>
+        <button className="add-popup__close" onClick={closeAddPopup}>
           ×
         </button>
       </div>

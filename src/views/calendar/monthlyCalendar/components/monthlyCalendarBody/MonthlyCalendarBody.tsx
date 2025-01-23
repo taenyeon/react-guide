@@ -12,8 +12,8 @@ const MonthlyCalendarBody: React.FC<MonthlyCalendarBodyProps> = ({ calendar }) =
   const weekDays = Object.values(weekday).map(value => value.desc)
   const now = dateFormatUtil.getDate()
   const getColorClass = (weekday: string) => {
-    if (weekday == 'SUN') return 'monthly-calendar__day--holiday'
-    if (weekday == 'SAT') return 'monthly-calendar__day--saturday'
+    if (weekday == 'SUN') return 'monthly-calendar__cell--holiday'
+    if (weekday == 'SAT') return 'monthly-calendar__cell--saturday'
     return ''
   }
   return (
