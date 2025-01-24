@@ -81,6 +81,11 @@ const MonthlyCalendarDatePopup: React.FC = () => {
                     <div className="date-popup__schedule-info-wrapper">
                       <span className="date-popup__schedule-title">{schedule.title}</span>
                       <span className="date-popup__schedule-tag">#{schedule.type}</span>
+                      {schedule.isImportant && (
+                        <span className="date-popup__schedule-tag" style={{ color: 'red' }}>
+                          #중요
+                        </span>
+                      )}
                       {schedule.isAllDay && <span className="date-popup__schedule-tag">#종일</span>}
                     </div>
                     <div className="date-popup__schedule-details">

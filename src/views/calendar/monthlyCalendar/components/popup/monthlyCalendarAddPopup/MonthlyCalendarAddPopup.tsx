@@ -19,6 +19,7 @@ const MonthlyCalendarAddPopup: React.FC = () => {
     title,
     contents,
     isAllDay,
+    isImportant,
     startedAt,
     endedAt,
     closeAddPopup,
@@ -33,6 +34,7 @@ const MonthlyCalendarAddPopup: React.FC = () => {
     inputStartedAt,
     inputEndedAt,
     addSchedule,
+    toggleImportant,
   } = useMonthlyCalendarAddPopupViewModel()
 
   useEffect(() => {
@@ -76,6 +78,10 @@ const MonthlyCalendarAddPopup: React.FC = () => {
               value={contents.value}
               onChange={e => inputContents(e.target.value)}
             />
+          </label>
+          <label className="add-popup__checkbox">
+            <input type="checkbox" checked={isImportant} onChange={toggleImportant} />
+            Important
           </label>
           {type == scheduleType.TIME && (
             <>

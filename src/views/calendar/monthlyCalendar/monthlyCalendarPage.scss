@@ -118,6 +118,11 @@
       color: #1a1a1a;
     }
 
+    &__important {
+      color: red;
+      margin-right: 3px;
+    }
+
     &__time {
       position: absolute;
       bottom: 4px;

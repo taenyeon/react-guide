@@ -11,6 +11,8 @@ export class Schedule {
   title: string
   contents: string
 
+  isImportant: boolean
+
   createdAt: string
   updatedAt: string
 
@@ -21,6 +23,7 @@ export class Schedule {
     endedAt: string
     title: string
     contents: string
+    isImportant?: boolean
     createdAt: string
     updatedAt: string
   }) {
@@ -35,6 +38,7 @@ export class Schedule {
       endedAt,
       title,
       contents,
+      isImportant = false,
       createdAt = now,
       updatedAt = now,
     } = schedule
@@ -47,6 +51,7 @@ export class Schedule {
     this.contents = contents
     this.createdAt = createdAt
     this.updatedAt = updatedAt
+    this.isImportant = isImportant
   }
 
   getScheduleOfDateList(index: number) {
@@ -55,24 +60,26 @@ export class Schedule {
       const startedAt = stringToDate(this.startedAt)
       const endedAt = stringToDate(this.endedAt)
       return [
-        new ScheduleOfDate(
-          this.id,
-          this.type,
-          startedAt.year(),
-          startedAt.month() + 1,
-          startedAt.date(),
-          startedAt.hour(),
-          startedAt.minute(),
-          endedAt.hour(),
-          endedAt.minute(),
-          this.title,
-          this.contents,
-          false,
-          this.createdAt,
-          this.updatedAt,
-          this.startedAt,
-          this.endedAt,
-        ),
+        new ScheduleOfDate({
+          isMultiple: false,
+
+          id: this.id,
+          type: this.type,
+          year: startedAt.year(),
+          month: startedAt.month() + 1,
+          day: startedAt.date(),
+          startHour: startedAt.hour(),
+          startMinute: startedAt.minute(),
+          endHour: endedAt.hour(),
+          endMinute: endedAt.minute(),
+          title: this.title,
+          contents: this.contents,
+          createdAt: this.createdAt,
+          updatedAt: this.updatedAt,
+          startedAt: this.startedAt,
+          endedAt: this.endedAt,
+          isImportant: this.isImportant,
+        }),
       ] as ScheduleOfDate[]
     }
     return this._calculateSchedule(index)
@@ -115,25 +122,27 @@ export class Schedule {
       }
 
       scheduleOfDateList.push(
-        new ScheduleOfDate(
-          this.id,
-          this.type,
-          start.year(),
-          start.month() + 1,
-          start.date(),
-          startHour,
-          startMinute,
-          endHour,
-          endMinute,
-          this.title,
-          this.contents,
-          true,
-          this.createdAt,
-          this.updatedAt,
-          this.startedAt,
-          this.endedAt,
-          index,
-        ),
+        new ScheduleOfDate({
+          isMultiple: true,
+
+          id: this.id,
+          type: this.type,
+          year: start.year(),
+          month: start.month() + 1,
+          day: start.date(),
+          startHour: startHour,
+          startMinute: startMinute,
+          endHour: endHour,
+          endMinute: endMinute,
+          title: this.title,
+          contents: this.contents,
+          createdAt: this.createdAt,
+          updatedAt: this.updatedAt,
+          startedAt: this.startedAt,
+          endedAt: this.endedAt,
+          isImportant: this.isImportant,
+          order: index,
+        }),
       )
 
       start = start.add(1, 'day')

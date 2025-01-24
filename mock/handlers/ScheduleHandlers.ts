@@ -58,6 +58,7 @@ let schedules = [
   new Schedule({
     id: 6,
     type: scheduleType.TIME,
+    isImportant: true,
     startedAt: '2025/01/03 04:00',
     endedAt: '2025/01/07 23:59',
     title: 'schedule6',
@@ -118,6 +119,7 @@ let schedules = [
   new Schedule({
     id: 12,
     type: scheduleType.TASK,
+    isImportant: true,
     startedAt: '2025/01/01 00:00',
     endedAt: '2025/01/02 23:59',
     title: 'task2',

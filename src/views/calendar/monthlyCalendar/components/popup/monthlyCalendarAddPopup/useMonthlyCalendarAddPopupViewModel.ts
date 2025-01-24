@@ -62,6 +62,8 @@ const useMonthlyCalendarAddPopupViewModel = () => {
 
   const [isAllDay, setIsAllDay] = useState<boolean>(false)
 
+  const [isImportant, setIsImportant] = useState<boolean>(false)
+
   const [startedAt, setStartedAt] = useState<AddScheduleStartedAt>(() => {
     const now = getDate()
     return {
@@ -134,6 +136,8 @@ const useMonthlyCalendarAddPopupViewModel = () => {
 
   const inputContents = (state: string) =>
     setContents(prevState => ({ ...prevState, value: state }))
+
+  const toggleImportant = () => setIsImportant(prevState => !prevState)
 
   const toggleAllDay = () => {
     if (isAllDay) {
@@ -272,6 +276,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
       contents: contents.value,
       startedAt: dateToString(scheduleStartedAt),
       endedAt: dateToString(scheduleEndedAt),
+      isImportant: isImportant,
       createdAt: dateToString(now),
       updatedAt: dateToString(now),
     })
@@ -300,6 +305,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     title,
     contents,
     isAllDay,
+    isImportant,
     startedAt,
     endedAt,
     closeAddPopup,
@@ -311,6 +317,7 @@ const useMonthlyCalendarAddPopupViewModel = () => {
     inputTitle,
     inputContents,
     toggleAllDay,
+    toggleImportant,
     inputStartedAt,
     inputEndedAt,
     addSchedule,

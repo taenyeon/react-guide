@@ -22,52 +22,56 @@ export class ScheduleOfDate {
   isStart: boolean = false
   isEnd: boolean = false
 
+  isImportant: boolean = false
+
   startedAt: string
   endedAt: string
 
   createdAt: string
   updatedAt: string
 
-  constructor(
-    id: number,
-    type: ScheduleType,
-    year: number,
-    month: number,
-    day: number,
-    startHour: number,
-    startMinute: number,
-    endHour: number,
-    endMinute: number,
-    title: string,
-    contents: string,
-    isMultiple: boolean,
-    createdAt: string,
-    updatedAt: string,
-    startedAt: string,
-    endedAt: string,
-    order?: number,
-    isStart?: boolean,
-    isEnd?: boolean,
-  ) {
-    this.id = id
-    this.type = type
-    this.year = year
-    this.month = month
-    this.day = day
-    this.startHour = startHour
-    this.startMinute = startMinute
-    this.endHour = endHour
-    this.endMinute = endMinute
-    this.title = title
-    this.contents = contents
-    this.isMultiple = isMultiple
-    this.createdAt = createdAt
-    this.updatedAt = updatedAt
-    this.startedAt = startedAt
-    this.endedAt = endedAt
-    if (order) this.order = order
-    if (isStart) this.isStart = isStart
-    if (isEnd) this.isEnd = isEnd
+  constructor(schedule: {
+    id: number
+    type: ScheduleType
+    year: number
+    month: number
+    day: number
+    startHour: number
+    startMinute: number
+    endHour: number
+    endMinute: number
+    title: string
+    contents: string
+    isMultiple: boolean
+    createdAt: string
+    updatedAt: string
+    startedAt: string
+    endedAt: string
+    order?: number
+    isStart?: boolean
+    isEnd?: boolean
+    isImportant?: boolean
+  }) {
+    this.id = schedule.id
+    this.type = schedule.type
+    this.year = schedule.year
+    this.month = schedule.month
+    this.day = schedule.day
+    this.startHour = schedule.startHour
+    this.startMinute = schedule.startMinute
+    this.endHour = schedule.endHour
+    this.endMinute = schedule.endMinute
+    this.title = schedule.title
+    this.contents = schedule.contents
+    this.isMultiple = schedule.isMultiple
+    this.createdAt = schedule.createdAt
+    this.updatedAt = schedule.updatedAt
+    this.startedAt = schedule.startedAt
+    this.endedAt = schedule.endedAt
+    if (schedule.order) this.order = schedule.order
+    if (schedule.isStart) this.isStart = schedule.isStart
+    if (schedule.isEnd) this.isEnd = schedule.isEnd
+    if (schedule.isImportant) this.isImportant = schedule.isImportant
   }
 
   get startPercentage() {

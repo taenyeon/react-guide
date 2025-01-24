@@ -15,7 +15,10 @@ const MonthlyCalendarSchedule: React.FC<MonthlyCalendarScheduleProps> = ({ sched
     <div className="monthly-calendar__schedule">
       {!schedule.isMultiple && (
         <>
-          <div className="monthly-calendar__schedule__title">{schedule.title}</div>
+          <div className="monthly-calendar__schedule__title">
+            {schedule.isImportant && <span>!</span>}
+            {schedule.title}
+          </div>
           <div className="monthly-calendar__schedule__time">
             {getTime(schedule.startHour, schedule.startMinute)} ~{' '}
             {getTime(schedule.endHour, schedule.endMinute)}
@@ -24,7 +27,12 @@ const MonthlyCalendarSchedule: React.FC<MonthlyCalendarScheduleProps> = ({ sched
       )}
       {schedule.isStart && (
         <>
-          <div className="monthly-calendar__schedule__title">{schedule.title}</div>
+          <div className="monthly-calendar__schedule__title">
+            {schedule.isImportant && (
+              <span className="monthly-calendar__schedule__important">!</span>
+            )}
+            {schedule.title}
+          </div>
           {schedule.type == scheduleType.TIME && (
             <div className="monthly-calendar__schedule__time">
               {getTime(schedule.startHour, schedule.startMinute)}
