@@ -8,19 +8,17 @@ export class Calendar {
   type: CalendarDateType = calendarDateType.MONTHLY
   dates: DateOfCalendar[]
 
-  constructor(date: { year: number; month?: number; day?: number }) {
-    const { year, month = null, day = null } = date
-
-    const type: CalendarDateType = this.parseType(month, day)
+  constructor(date: { year: number; month?: number; day?: number; type?: CalendarDateType }) {
+    const { year, month = null, day = null, type } = date
 
     this.year = year
     this.month = month
     this.day = day
-    this.type = type
+    this.type = type ? type : this.parseType(month, day)
   }
 
   private parseType(month: number, day: number) {
-    if (month) return calendarDateType.MONTHLY
     if (day) return calendarDateType.DAILY
+    if (month) return calendarDateType.MONTHLY
   }
 }

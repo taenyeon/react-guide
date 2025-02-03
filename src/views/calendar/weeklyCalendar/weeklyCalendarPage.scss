@@ -1,0 +1,244 @@
+.weekly-calendar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__header,
+  &__body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &__day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-align: center;
+    min-height: 50px;
+    border: 1px solid #ddd;
+  }
+
+  &__body {
+    & > * {
+      border: 1px solid #ddd;
+    }
+  }
+
+  &__cell {
+    min-height: 50px; /* 고정된 높이를 설정하여 셀 크기를 고정 */
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    position: relative; /* 자식 요소가 크기 영향을 주지 않도록 */
+
+    &--holiday {
+      color: red;
+    }
+
+    &--saturday {
+      color: blue;
+    }
+
+    &--other-month {
+      color: #dddddd;
+      background-color: #f4f4f4;
+    }
+  }
+
+  &__cell-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 10px 5px;
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  }
+
+  &__cell-text {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: red;
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 텍스트가 넘치면 '...'으로 표시 */
+    flex-shrink: 0; /* 텍스트가 셀 크기를 변경하지 않도록 설정 */
+    max-width: 100%; /* 부모의 크기를 넘지 않도록 설정 */
+  }
+
+  &__cell-day {
+    margin-left: auto;
+    font-size: 1rem;
+    font-weight: bold;
+    flex-shrink: 0; /* 날짜 텍스트가 셀 크기를 변경하지 않도록 설정 */
+    white-space: nowrap;
+  }
+
+  &__cell-schedules {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    flex-shrink: 0; /* 스케줄이 셀 크기를 늘리지 않도록 설정 */
+    overflow: hidden; /* 넘치는 스케줄을 숨김 */
+  }
+
+  &__more-dots {
+    font-size: 0.85rem;
+    color: #007bff;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+
+  &__schedule-empty {
+    position: relative;
+    padding: 4px 8px;
+    min-height: 40px;
+  }
+
+  &__schedule {
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    min-height: 40px;
+
+    &__title {
+      font-size: 0.875rem;
+      font-weight: bold;
+      margin-bottom: 2px;
+      color: #1a1a1a;
+    }
+
+    &__important {
+      color: red;
+      margin-right: 3px;
+    }
+
+    &__time {
+      position: absolute;
+      bottom: 4px;
+      left: 8px;
+      font-size: 0.75rem;
+      color: #aaaaaa;
+    }
+
+    &__end-time {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-size: 0.75rem;
+      color: #aaaaaa;
+    }
+
+    &__line {
+      position: absolute;
+      height: 4px;
+      background-color: #007bff;
+      border-radius: 2px;
+      top: 0;
+    }
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  &__add {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding-bottom: 5px;
+  }
+
+  &__button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  &__reddot {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .daily-calendar {
+    &__header,
+    &__body {
+      grid-template-columns: repeat(7, 1fr); /* 여전히 7칸으로 유지 */
+    }
+
+    &__cell {
+      min-height: 10vh;
+      padding-top: 10px;
+    }
+
+    .daily-calendar__cell-text {
+      font-size: 0.75rem;
+      width: 40%; /* 화면이 작아지면 텍스트가 줄어들도록 */
+    }
+
+    .daily-calendar__cell-day {
+      font-size: 0.9rem;
+    }
+
+    .daily-calendar__cell-schedules {
+      gap: 3px;
+    }
+
+    .daily-calendar__more-dots {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .daily-calendar {
+    &__cell {
+      min-height: 8vh;
+      padding-top: 8px;
+    }
+
+    .daily-calendar__cell-text {
+      font-size: 0.7rem;
+      width: 35%; /* 더 작은 화면에서는 텍스트를 더 줄여줌 */
+    }
+
+    .daily-calendar__cell-day {
+      font-size: 0.85rem;
+    }
+
+    .daily-calendar__cell-schedules {
+      gap: 2px;
+    }
+
+    .daily-calendar__more-dots {
+      font-size: 0.7rem;
+    }
+  }
+}

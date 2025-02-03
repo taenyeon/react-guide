@@ -4,6 +4,8 @@ import './calendarPage.scss'
 import { calendarDateType } from '@typings/constants/CalendarDateType'
 import MonthlyCalendarPage from '@views/calendar/monthlyCalendar/MonthlyCalendarPage'
 import ScheduleListPage from '@views/calendar/scheduleList/ScheduleListPage'
+import DailyCalendarPage from '@views/calendar/dailyCalendar/DailyCalendarPage'
+import WeeklyCalendarPage from '@views/calendar/weeklyCalendar/WeeklyCalendarPage'
 
 const CalendarPage: React.FC = () => {
   const { calendarDateTypes, selectCalendarType, selectedCalendarType } = useCalendarPageViewModel()
@@ -21,8 +23,8 @@ const CalendarPage: React.FC = () => {
       </div>
       {selectedCalendarType == calendarDateType.MONTHLY && <MonthlyCalendarPage />}
       {selectedCalendarType == calendarDateType.LIST && <ScheduleListPage />}
-      {selectedCalendarType == calendarDateType.DAILY && <p>Not yet supported...</p>}
-      {selectedCalendarType == calendarDateType.WEEKLY && <p>Not yet supported...</p>}
+      {selectedCalendarType == calendarDateType.DAILY && <DailyCalendarPage />}
+      {selectedCalendarType == calendarDateType.WEEKLY && <WeeklyCalendarPage />}
     </div>
   )
 }

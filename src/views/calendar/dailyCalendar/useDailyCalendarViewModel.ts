@@ -1,16 +1,16 @@
-import calendarRepository from '@repositories/CalendarRepository'
-import { useMemo } from 'react'
-import { Calendar } from '@typings/Calendar'
-import dateFormatUtil from '@utils/date/dateFormatUtil'
-import { ScheduleOfDate } from '@typings/ScheduleOfDate'
-import scheduleRepository from '@repositories/ScheduleRepository'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
+import { useShallow } from 'zustand/react/shallow'
 import useCalendarStore from '@stores/useCalendarStore'
 import useScheduleStore from '@stores/useScheduleStore'
-import { useShallow } from 'zustand/react/shallow'
-import useCalendarSelectStore from '@stores/useCalendarSelectStore'
+import dateFormatUtil from '@utils/date/dateFormatUtil'
+import calendarRepository from '@repositories/CalendarRepository'
+import scheduleRepository from '@repositories/ScheduleRepository'
+import { Calendar } from '@typings/Calendar'
+import { useMemo } from 'react'
 import { scheduleType } from '@typings/constants/ScheduleType'
+import { ScheduleOfDate } from '@typings/ScheduleOfDate'
 
-const useMonthlyCalendarViewModel = () => {
+const useDailyCalendarViewModel = () => {
   const currentDate = useCalendarSelectStore(useShallow(state => state.currentDate))
 
   const { calendar, setCalendar } = useCalendarStore(
@@ -29,7 +29,7 @@ const useMonthlyCalendarViewModel = () => {
 
   const { stringToDate } = dateFormatUtil
 
-  const calculatedMonthlyCalendar: null | Calendar = useMemo(() => {
+  const calculatedDailyCalendar: null | Calendar = useMemo(() => {
     if (!calendar) return null
 
     const copyCalendar: Calendar = Object.assign(calendar)
@@ -84,32 +84,33 @@ const useMonthlyCalendarViewModel = () => {
     return copyCalendar
   }, [calendar, schedules])
 
-  const setMonthlyCalendar = async () => {
-    const monthlyCalendar = await calendarRepository.getMonthlyCalendar({
+  const setDailyCalendar = async () => {
+    const dailyCalendar = await calendarRepository.getDailyCalendar({
       year: currentDate.year,
       month: currentDate.month,
+      day: currentDate.day,
     })
 
     const scheduleList = await scheduleRepository.findByDate({
       year: currentDate.year,
       month: currentDate.month,
+      day: currentDate.day,
     })
 
-    setCalendar(monthlyCalendar)
+    setCalendar(dailyCalendar)
 
     setSchedules(scheduleList)
   }
 
   const init = async () => {
-    console.log('init!!')
-    await setMonthlyCalendar()
+    await setDailyCalendar()
   }
 
   return {
-    calculatedMonthlyCalendar,
     currentDate,
+    calculatedDailyCalendar,
     init,
   }
 }
 
-export default useMonthlyCalendarViewModel
+export default useDailyCalendarViewModel

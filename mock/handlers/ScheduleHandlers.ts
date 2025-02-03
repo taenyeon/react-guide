@@ -3,6 +3,7 @@ import { ApiResponse } from '@utils/api/models/ApiResponse'
 import { Schedule } from '@typings/Schedule'
 import { apiCode } from '@utils/error/constant/ApiCode'
 import { scheduleType } from '@typings/constants/ScheduleType'
+import dateFormatUtil from '@utils/date/dateFormatUtil'
 
 let schedules = [
   new Schedule({
@@ -130,7 +131,57 @@ let schedules = [
 ]
 
 const ScheduleHandlers = [
-  http.get<never, null, null | ApiResponse<Schedule[]>>('/schedule', () => {
+  http.get<
+    never,
+    | {
+        year?: number
+        month?: number
+        day?: number
+      }
+    | undefined,
+    null | ApiResponse<Schedule[]>
+  >('/schedule', ({ request }) => {
+    const { stringToDate } = dateFormatUtil
+    const date = new URL(request.url).searchParams
+    const year = Number(date.get('year'))
+    const month = Number(date.get('month'))
+    const day = Number(date.get('day'))
+
+    if (day) {
+      return HttpResponse.json(
+        new ApiResponse<Schedule[]>().build(
+          apiCode.SUCCESS,
+          schedules.filter(schedule => {
+            const targetDate = stringToDate(schedule.startedAt)
+            return (
+              targetDate.year() == year &&
+              targetDate.month() + 1 == month &&
+              targetDate.date() == day
+            )
+          }),
+        ),
+      )
+    }
+    if (month) {
+      return HttpResponse.json(
+        new ApiResponse<Schedule[]>().build(
+          apiCode.SUCCESS,
+          schedules.filter(schedule => {
+            const targetDate = stringToDate(schedule.startedAt)
+            return targetDate.year() == year && targetDate.month() + 1 == month
+          }),
+        ),
+      )
+    }
+    if (year) {
+      return HttpResponse.json(
+        new ApiResponse<Schedule[]>().build(
+          apiCode.SUCCESS,
+          schedules.filter(schedule => stringToDate(schedule.startedAt).year() == year),
+        ),
+      )
+    }
+
     return HttpResponse.json(new ApiResponse<Schedule[]>().build(apiCode.SUCCESS, schedules))
   }),
 

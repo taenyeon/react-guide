@@ -5,6 +5,8 @@ import ApiError from '@utils/error/ApiError'
 
 type ScheduleRepository = {
   findAll: () => Promise<Schedule[]>
+  findById: (id: number) => Promise<Schedule>
+  findByDate: (date: { year: number; month?: number; day?: number }) => Promise<Schedule[]>
   add: (schedule: Schedule) => Promise<null | number>
   delete: (id: number) => Promise<void>
   modify: (id: number, schedule: Schedule) => Promise<void>
@@ -19,6 +21,22 @@ const scheduleRepository: ScheduleRepository = {
 
     if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
 
+    return apiResponse.body
+  },
+  findById: async (id: number) => {
+    const response = await api().get(`schedule/${id}`)
+    const apiResponse = new ApiResponse<Schedule>().parseData(response)
+
+    if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
+
+    return apiResponse.body
+  },
+  findByDate: async (date: { year: number; month?: number; day?: number }) => {
+    const response = await api().get('schedule', { params: date })
+    const body = response.data.body.map(schedule => new Schedule(schedule))
+    const apiResponse = new ApiResponse<Schedule[]>().parseClass(response, body)
+
+    if (apiResponse.isFailure) throw new ApiError(apiResponse.code)
     return apiResponse.body
   },
   add: async (schedule: Schedule) => {

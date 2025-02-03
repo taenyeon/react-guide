@@ -11,6 +11,7 @@ const MonthlyCalendarPage: React.FC = () => {
   useEffect(() => {
     if (
       calendar == null ||
+      calendar.type != 'MONTHLY' ||
       !(currentDate.year == calendar.year && currentDate.month == calendar.month)
     )
       init()
