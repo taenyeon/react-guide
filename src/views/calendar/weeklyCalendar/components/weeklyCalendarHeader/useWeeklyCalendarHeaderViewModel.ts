@@ -18,7 +18,7 @@ const useWeeklyCalendarHeaderViewModel = () => {
       year: currentDate.year,
       month: currentDate.month,
       day: currentDate.day,
-    }).add(1, 'day')
+    }).add(1, 'week')
 
     const targetDate = new DateOfCalendar({
       year: nextMonth.year(),
@@ -33,7 +33,7 @@ const useWeeklyCalendarHeaderViewModel = () => {
       year: currentDate.year,
       month: currentDate.month,
       day: currentDate.day,
-    }).subtract(1, 'day')
+    }).subtract(1, 'week')
 
     setCurrentDate(
       new DateOfCalendar({

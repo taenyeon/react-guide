@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import './monthlyCalendarModifyPopup.scss'
-import useMonthlyCalendarModifyPopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarModifyPopup/useMonthlyCalendarModifyPopupViewModel'
+import './scheduleModifyPopup.scss'
+import useScheduleModifyPopupViewModel from '@views/calendar/popup/scheduleModifyPopup/useScheduleModifyPopupViewModel'
 import { scheduleType } from '@typings/constants/ScheduleType'
 
-const MonthlyCalendarModifyPopup: React.FC = () => {
+const ScheduleModifyPopup: React.FC = () => {
   const timeDateTypes: Array<'year' | 'month' | 'day' | 'hour' | 'minute'> = [
     'year',
     'month',
@@ -27,7 +27,7 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
     inputEndedAt,
     modifySchedule,
     unselectSchedule,
-  } = useMonthlyCalendarModifyPopupViewModel()
+  } = useScheduleModifyPopupViewModel()
 
   useEffect(() => {
     setEvent()
@@ -160,4 +160,4 @@ const MonthlyCalendarModifyPopup: React.FC = () => {
   )
 }
 
-export default MonthlyCalendarModifyPopup
+export default ScheduleModifyPopup

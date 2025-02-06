@@ -3,7 +3,7 @@ import useMonthlyCalendarViewModel from '@views/calendar/monthlyCalendar/useMont
 import './monthlyCalendarPage.scss'
 import MonthlyCalendarHeader from '@views/calendar/monthlyCalendar/components/monthlyCalendarHeader/MonthlyCalendarHeader'
 import MonthlyCalendarBody from '@views/calendar/monthlyCalendar/components/monthlyCalendarBody/MonthlyCalendarBody'
-import MonthlyCalendarPopups from '@views/calendar/monthlyCalendar/components/popup/MonthlyCalendarPopups'
+import SchedulePopups from '@views/calendar/popup/SchedulePopups'
 
 const MonthlyCalendarPage: React.FC = () => {
   const { calculatedMonthlyCalendar: calendar, currentDate, init } = useMonthlyCalendarViewModel()
@@ -17,14 +17,14 @@ const MonthlyCalendarPage: React.FC = () => {
       init()
   }, [currentDate])
 
-  if (!calendar) return <div></div>
+  if (!calendar) return null
 
   return (
     <>
       <div className="monthly-calendar">
         <MonthlyCalendarHeader />
         <MonthlyCalendarBody calendar={calendar} />
-        <MonthlyCalendarPopups />
+        <SchedulePopups />
       </div>
     </>
   )

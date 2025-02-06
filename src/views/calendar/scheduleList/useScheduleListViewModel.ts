@@ -5,6 +5,7 @@ import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { useMemo } from 'react'
 import dayjs from 'dayjs'
 import { Schedule } from '@typings/Schedule'
+import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 
 const useScheduleListViewModel = () => {
   const { stringToDate } = dateFormatUtil
@@ -14,8 +15,10 @@ const useScheduleListViewModel = () => {
       setSchedules: state.setSchedules,
     })),
   )
+  const selectedCalendarType = useCalendarSelectStore(state => state.selectedCalendarType)
 
   const init = async () => {
+    console.log('useScheduleListViewModel init')
     const scheduleList = await scheduleRepository.findAll()
     setSchedules(
       scheduleList.sort((a, b) =>
@@ -35,9 +38,9 @@ const useScheduleListViewModel = () => {
 
       return map
     }, new Map())
-  }, [])
+  }, [schedules])
 
-  return { schedules, calculatedSchedules, init }
+  return { schedules, calculatedSchedules, selectedCalendarType, init }
 }
 
 export default useScheduleListViewModel

@@ -7,7 +7,7 @@ import scheduleRepository from '@repositories/ScheduleRepository'
 import { useShallow } from 'zustand/react/shallow'
 import { scheduleType } from '@typings/constants/ScheduleType'
 
-const useMonthlyCalendarModifyPopupViewModel = () => {
+const useScheduleModifyPopupViewModel = () => {
   const { getDate, dateToString, stringToDate } = dateFormatUtil
 
   const modifySchedules = useScheduleStore(state => state.modifySchedules)
@@ -204,4 +204,4 @@ const useMonthlyCalendarModifyPopupViewModel = () => {
   }
 }
 
-export default useMonthlyCalendarModifyPopupViewModel
+export default useScheduleModifyPopupViewModel

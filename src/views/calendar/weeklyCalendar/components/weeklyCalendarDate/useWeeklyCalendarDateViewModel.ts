@@ -2,7 +2,7 @@ import useCalendarSelectStore from '@stores/useCalendarSelectStore'
 import { useShallow } from 'zustand/react/shallow'
 import { DateOfCalendar } from '@typings/DateOfCalendar'
 
-const useMonthlyCalendarDateViewModel = () => {
+const useWeeklyCalendarDateViewModel = () => {
   const { selectDate, setCurrentDate } = useCalendarSelectStore(
     useShallow(state => ({
       selectDate: state.selectDate,
@@ -10,8 +10,8 @@ const useMonthlyCalendarDateViewModel = () => {
     })),
   )
 
-  const selectDay = (date: DateOfCalendar) => {
-    selectDate(date)
+  const selectDay = (index: number, date: DateOfCalendar) => {
+    selectDate(index)
     setCurrentDate(date)
   }
 
@@ -20,4 +20,4 @@ const useMonthlyCalendarDateViewModel = () => {
   }
 }
 
-export default useMonthlyCalendarDateViewModel
+export default useWeeklyCalendarDateViewModel

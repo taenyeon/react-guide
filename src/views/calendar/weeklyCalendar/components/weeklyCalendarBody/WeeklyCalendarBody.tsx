@@ -2,7 +2,7 @@ import React from 'react'
 import { Calendar } from '@typings/Calendar'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { weekday } from '@typings/constants/Weekday'
-import MonthlyCalendarDate from '@views/calendar/monthlyCalendar/components/monthlyCalendarDate/MonthlyCalendarDate'
+import WeeklyCalendarDate from '@views/calendar/weeklyCalendar/components/weeklyCalendarDate/WeeklyCalendarDate'
 
 interface DailyCalendarBodyProps {
   calendar?: Calendar
@@ -10,17 +10,23 @@ interface DailyCalendarBodyProps {
 
 const WeeklyCalendarBody: React.FC<DailyCalendarBodyProps> = ({ calendar }) => {
   const weekDays = Object.values(weekday).map(value => value.desc)
+
   const now = dateFormatUtil.getDate()
+
+  const { getTime } = dateFormatUtil
+
+  const hours = Array.from({ length: 24 }, (_, index) => index)
+
   const getColorClass = (weekday: string) => {
     if (weekday == 'SUN') return 'weekly-calendar__cell--holiday'
     if (weekday == 'SAT') return 'weekly-calendar__cell--saturday'
     return ''
   }
 
-  console.log('date : ', calendar.dates)
   return (
     <>
       <div className="weekly-calendar__header">
+        <div className="weekly-calendar__day">TIME</div>
         {weekDays.map((weekday, index) => (
           <div
             key={index}
@@ -31,15 +37,16 @@ const WeeklyCalendarBody: React.FC<DailyCalendarBodyProps> = ({ calendar }) => {
         ))}
       </div>
       <div className="weekly-calendar__body">
+        <div className="weekly-calendar__cell">
+          <div className="weekly-calendar__cell-wrapper">
+            {hours.map(hour => (
+              <div className="weekly-calendar__row-header">{getTime(hour, 0)}</div>
+            ))}
+          </div>
+        </div>
         {calendar.dates.map((date, index) => {
           return (
-            <MonthlyCalendarDate
-              key={index}
-              index={index}
-              date={date}
-              now={now}
-              isOtherMonth={date.month != calendar.month}
-            />
+            <WeeklyCalendarDate key={index} date={date} isOtherYear={date.year != now.year()} />
           )
         })}
       </div>

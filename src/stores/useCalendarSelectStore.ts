@@ -10,8 +10,8 @@ interface SelectedDateStore {
   currentDate: DateOfCalendar
   setCurrentDate: (currentDate: DateOfCalendar) => void
 
-  selectedDateIndex: null | number
-  selectDate: (selectedDateIndex: number) => void
+  selectedDate: null | DateOfCalendar
+  selectDate: (selectedDate: DateOfCalendar) => void
   unselectDate: () => void
 
   selectedSchedule: null | Schedule
@@ -32,9 +32,9 @@ const useCalendarSelectStore = create<SelectedDateStore>(set => ({
   currentDate: new DateOfCalendar(),
   setCurrentDate: currentDate => set({ currentDate }),
 
-  selectedDateIndex: null,
-  selectDate: selectedDateIndex => set({ selectedDateIndex }),
-  unselectDate: () => set({ selectedDateIndex: null }),
+  selectedDate: null,
+  selectDate: selectedDate => set({ selectedDate }),
+  unselectDate: () => set({ selectedDate: null }),
 
   selectedSchedule: null,
   selectSchedule: selectedSchedule => set({ selectedSchedule }),
@@ -44,7 +44,7 @@ const useCalendarSelectStore = create<SelectedDateStore>(set => ({
   openAddPopup: () => set({ isOpenAddPopup: true }),
   closeAddPopup: () => set({ isOpenAddPopup: false }),
 
-  clearSelected: () => set({ selectedDateIndex: null, selectSchedule: null }),
+  clearSelected: () => set({ selectedDate: null, selectSchedule: null }),
 }))
 
 export default useCalendarSelectStore

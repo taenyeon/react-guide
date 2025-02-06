@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
-import './monthlyCalendarDatePopup.scss'
-import useMonthlyCalendarDatePopupViewModel from '@views/calendar/monthlyCalendar/components/popup/monthlyCalendarDatePopup/useMonthlyCalendarDatePopupViewModel'
+import './dateSchedulePopup.scss'
+import useDateSchedulePopupViewModel from '@views/calendar/popup/dateSchedulePopup/useDateSchedulePopupViewModel'
 
-const MonthlyCalendarDatePopup: React.FC = () => {
+const DateSchedulePopup: React.FC = () => {
   const {
-    selectedDate,
+    targetDate,
     swipedSchedule,
     onClose,
     setEvent,
@@ -16,7 +16,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
     deleteSchedule,
     openScheduleModifyPopup,
     openScheduleAddPopup,
-  } = useMonthlyCalendarDatePopupViewModel()
+  } = useDateSchedulePopupViewModel()
 
   const { getTime } = dateFormatUtil
 
@@ -36,7 +36,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
     ))
   }
 
-  if (!selectedDate) return null
+  if (!targetDate) return null
 
   return (
     <div className="date-popup">
@@ -46,12 +46,10 @@ const MonthlyCalendarDatePopup: React.FC = () => {
           &times;
         </button>
         <h2 className="date-popup__title">
-          {selectedDate.year}/{selectedDate.month}/{selectedDate.day}
+          {targetDate.year}/{targetDate.month}/{targetDate.day}
         </h2>
 
-        {!selectedDate.schedules.length && (
-          <p className="date-popup__empty">Let's Add a schedule!</p>
-        )}
+        {!targetDate.schedules.length && <p className="date-popup__empty">Let's Add a schedule!</p>}
 
         <div className="date-popup__schedule-container">
           <div className="date-popup__shedule-wrapper">
@@ -61,7 +59,7 @@ const MonthlyCalendarDatePopup: React.FC = () => {
               </div>
             </div>
           </div>
-          {selectedDate.schedules
+          {targetDate.schedules
             .filter(schedule => schedule != null)
             .map(schedule => (
               <div className="date-popup__shedule-wrapper" key={schedule.id}>
@@ -121,4 +119,4 @@ const MonthlyCalendarDatePopup: React.FC = () => {
   )
 }
 
-export default MonthlyCalendarDatePopup
+export default DateSchedulePopup

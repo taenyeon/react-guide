@@ -41,7 +41,7 @@ interface AddScheduleEndedAt {
   error: string
 }
 
-const useMonthlyCalendarAddPopupViewModel = () => {
+const useScheduleAddPopupViewModel = () => {
   const { getDate, dateToString } = dateFormatUtil
 
   const { isOpenAddPopup, currentDate, closeAddPopup } = useCalendarSelectStore(
@@ -324,4 +324,4 @@ const useMonthlyCalendarAddPopupViewModel = () => {
   }
 }
 
-export default useMonthlyCalendarAddPopupViewModel
+export default useScheduleAddPopupViewModel

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import useDailyCalendarViewModel from '@views/calendar/dailyCalendar/useDailyCalendarViewModel'
-import MonthlyCalendarPopups from '@views/calendar/monthlyCalendar/components/popup/MonthlyCalendarPopups'
+import SchedulePopups from '@views/calendar/popup/SchedulePopups'
 import './dailyCalendarPage.scss'
 import DailyCalendarHeader from '@views/calendar/dailyCalendar/components/dailyCalendarHeader/DailyCalendarHeader'
 import DailyCalendarBody from '@views/calendar/dailyCalendar/components/dailyCalendarBody/DailyCalendarBody'
@@ -25,7 +25,7 @@ const DailyCalendarPage: React.FC = () => {
     <div className="daily-calendar">
       <DailyCalendarHeader />
       <DailyCalendarBody calendar={calendar} />
-      <MonthlyCalendarPopups />
+      <SchedulePopups />
     </div>
   )
 }

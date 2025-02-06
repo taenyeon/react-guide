@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import useWeeklyCalendarViewModel from '@views/calendar/weeklyCalendar/useWeeklyCalendarViewModel'
-import MonthlyCalendarPopups from '@views/calendar/monthlyCalendar/components/popup/MonthlyCalendarPopups'
+import SchedulePopups from '@views/calendar/popup/SchedulePopups'
 import WeeklyCalendarHeader from '@views/calendar/weeklyCalendar/components/weeklyCalendarHeader/WeeklyCalendarHeader'
 import WeeklyCalendarBody from '@views/calendar/weeklyCalendar/components/weeklyCalendarBody/WeeklyCalendarBody'
 import './weeklyCalendarPage.scss'
@@ -25,7 +25,7 @@ const WeeklyCalendarPage: React.FC = () => {
     <div className="weekly-calendar">
       <WeeklyCalendarHeader />
       <WeeklyCalendarBody calendar={calendar} />
-      <MonthlyCalendarPopups />
+      <SchedulePopups />
     </div>
   )
 }

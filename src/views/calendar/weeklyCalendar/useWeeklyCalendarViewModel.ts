@@ -91,11 +91,7 @@ const useWeeklyCalendarViewModel = () => {
       day: currentDate.day,
     })
 
-    const scheduleList = await scheduleRepository.findByDate({
-      year: currentDate.year,
-      month: currentDate.month,
-      day: currentDate.day,
-    })
+    const scheduleList = await scheduleRepository.findAll()
 
     setCalendar(dailyCalendar)
 
