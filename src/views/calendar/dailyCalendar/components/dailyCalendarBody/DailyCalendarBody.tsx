@@ -2,6 +2,7 @@ import React from 'react'
 import { Calendar } from '@typings/Calendar'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { ScheduleOfDate } from '@typings/ScheduleOfDate'
+import useDailyCalendarBodyViewModel from '@views/calendar/dailyCalendar/components/dailyCalendarBody/useDailyCalendarBody'
 
 interface DailyCalendarBodyProps {
   calendar?: Calendar
@@ -9,6 +10,7 @@ interface DailyCalendarBodyProps {
 
 const DailyCalendarBody: React.FC<DailyCalendarBodyProps> = ({ calendar }) => {
   const { getTime } = dateFormatUtil
+  const { selectSchedule } = useDailyCalendarBodyViewModel()
   const hours = Array.from({ length: 24 }, (_, index) => index)
   const schedules: Array<ScheduleOfDate | null> = calendar.dates[0].schedules
   return (
@@ -19,7 +21,13 @@ const DailyCalendarBody: React.FC<DailyCalendarBodyProps> = ({ calendar }) => {
           {schedules != null &&
             schedules
               .filter(schedule => schedule.isAllDay)
-              .map(schedule => <div className="daily-calendar__schedule">{schedule.title}</div>)}
+              .map(schedule => (
+                <div
+                  className="daily-calendar__schedule"
+                  onClick={() => selectSchedule(schedule.id)}>
+                  {schedule.title}
+                </div>
+              ))}
         </div>
         {hours.map((hour, index) => (
           <div className="daily-calendar__cell" key={index}>
@@ -30,7 +38,13 @@ const DailyCalendarBody: React.FC<DailyCalendarBodyProps> = ({ calendar }) => {
                   schedule =>
                     !schedule.isAllDay && schedule.startHour <= hour && schedule.endHour >= hour,
                 )
-                .map(schedule => <div className="daily-calendar__schedule">{schedule.title}</div>)}
+                .map(schedule => (
+                  <div
+                    className="daily-calendar__schedule"
+                    onClick={() => selectSchedule(schedule.id)}>
+                    {schedule.title}
+                  </div>
+                ))}
           </div>
         ))}
       </div>

@@ -85,6 +85,9 @@ const useMonthlyCalendarViewModel = () => {
   }, [calendar, schedules])
 
   const setMonthlyCalendar = async () => {
+    setCalendar(null)
+    setSchedules([])
+
     const monthlyCalendar = await calendarRepository.getMonthlyCalendar({
       year: currentDate.year,
       month: currentDate.month,

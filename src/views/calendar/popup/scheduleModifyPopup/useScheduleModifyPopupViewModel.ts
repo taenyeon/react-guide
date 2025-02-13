@@ -1,4 +1,4 @@
-import { KeyboardEvent, useState } from 'react'
+import { KeyboardEvent, useMemo, useState } from 'react'
 import dateFormatUtil from '@utils/date/dateFormatUtil'
 import { Schedule } from '@typings/Schedule'
 import useScheduleStore from '@stores/useScheduleStore'
@@ -10,14 +10,25 @@ import { scheduleType } from '@typings/constants/ScheduleType'
 const useScheduleModifyPopupViewModel = () => {
   const { getDate, dateToString, stringToDate } = dateFormatUtil
 
-  const modifySchedules = useScheduleStore(state => state.modifySchedules)
-
-  const { selectedSchedule, unselectSchedule } = useCalendarSelectStore(
+  const { modifySchedules, schedules } = useScheduleStore(
     useShallow(state => ({
-      selectedSchedule: state.selectedSchedule,
+      modifySchedules: state.modifySchedules,
+      schedules: state.schedules,
+    })),
+  )
+
+  const { selectedScheduleId, unselectSchedule } = useCalendarSelectStore(
+    useShallow(state => ({
+      selectedScheduleId: state.selectedSchedule,
       unselectSchedule: state.unselectSchedule,
     })),
   )
+
+  console.log('selectedScheduleId : ', selectedScheduleId)
+
+  const selectedSchedule = useMemo(() => {
+    return schedules.find(schedule => schedule.id == selectedScheduleId)
+  }, [schedules, selectedScheduleId])
 
   const [title, setTitle] = useState({ value: selectedSchedule.title || '', error: '' })
 
@@ -192,7 +203,7 @@ const useScheduleModifyPopupViewModel = () => {
     contents,
     startedAt,
     endedAt,
-    selectedSchedule,
+    selectedSchedule: selectedScheduleId,
     setEvent,
     removeEvent,
     inputTitle,

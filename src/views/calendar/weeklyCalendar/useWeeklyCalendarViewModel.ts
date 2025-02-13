@@ -85,6 +85,8 @@ const useWeeklyCalendarViewModel = () => {
   }, [calendar, schedules])
 
   const setWeeklyCalendar = async () => {
+    setCalendar(null)
+    setSchedules([])
     const dailyCalendar = await calendarRepository.getWeeklyCalendar({
       year: currentDate.year,
       month: currentDate.month,

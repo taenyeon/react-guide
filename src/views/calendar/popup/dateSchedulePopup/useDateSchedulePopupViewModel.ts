@@ -15,12 +15,7 @@ const useDateSchedulePopupViewModel = () => {
     })),
   )
 
-  const { schedules, deleteSchedules } = useScheduleStore(
-    useShallow(state => ({
-      schedules: state.schedules,
-      deleteSchedules: state.deleteSchedules,
-    })),
-  )
+  const deleteSchedules = useScheduleStore(state => state.deleteSchedules)
 
   const targetDate = useCalendarStore(
     useShallow(state =>
@@ -80,8 +75,7 @@ const useDateSchedulePopupViewModel = () => {
     deleteSchedules(id)
   }
 
-  const openScheduleModifyPopup = (id: number) =>
-    selectSchedule(schedules.find(schedule => schedule.id == id))
+  const openScheduleModifyPopup = (id: number) => selectSchedule(id)
 
   const openScheduleAddPopup = () => openAddPopup()
 

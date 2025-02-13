@@ -21,6 +21,8 @@ const DailyCalendarPage: React.FC = () => {
       init()
   }, [currentDate])
 
+  if (!calendar) return null
+
   return (
     <div className="daily-calendar">
       <DailyCalendarHeader />

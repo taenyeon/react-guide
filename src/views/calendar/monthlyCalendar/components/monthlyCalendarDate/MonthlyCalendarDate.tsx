@@ -32,9 +32,7 @@ const MonthlyCalendarDate: React.FC<MonthlyCalendarDateProps> = ({
 
   return (
     <>
-      <div
-        className={`monthly-calendar__cell ${colorClass}`}
-        onClick={() => selectDay(index, date)}>
+      <div className={`monthly-calendar__cell ${colorClass}`} onClick={() => selectDay(date)}>
         <div className="monthly-calendar__cell-date">
           {date.holiday && <span className="monthly-calendar__cell-text">{date.holiday}</span>}
           <div className="monthly-calendar__cell-day">
