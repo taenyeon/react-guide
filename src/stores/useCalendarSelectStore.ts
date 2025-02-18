@@ -14,7 +14,7 @@ interface SelectedDateStore {
   unselectDate: () => void
 
   selectedScheduleId: null | number
-  selectSchedule: (selectedSchedule: number) => void
+  selectSchedule: (selectedScheduleId: number) => void
   unselectSchedule: () => void
 
   isOpenAddPopup: boolean

@@ -5,7 +5,7 @@ const useSchedulePopupsViewModel = () => {
   const { selectedDate, selectedSchedule, isOpenAddPopup } = useCalendarSelectStore(
     useShallow(state => ({
       selectedDate: state.selectedDate,
-      selectedSchedule: state.selectedSchedule,
+      selectedSchedule: state.selectedScheduleId,
       isOpenAddPopup: state.isOpenAddPopup,
     })),
   )

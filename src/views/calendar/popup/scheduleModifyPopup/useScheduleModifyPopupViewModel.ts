@@ -19,7 +19,7 @@ const useScheduleModifyPopupViewModel = () => {
 
   const { selectedScheduleId, unselectSchedule } = useCalendarSelectStore(
     useShallow(state => ({
-      selectedScheduleId: state.selectedSchedule,
+      selectedScheduleId: state.selectedScheduleId,
       unselectSchedule: state.unselectSchedule,
     })),
   )
